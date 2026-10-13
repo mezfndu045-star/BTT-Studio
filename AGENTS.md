@@ -56,6 +56,34 @@ Deux mods sont déployés dans `C:\Users\FlowUP\AppData\Roaming\yuzu\load\010000
 
 ## Problemes connus — Journal de suivi
 
+### A TESTER — Timer : types "Capture" et "Moon Get"
+
+- **Capture** : `PlayerHackKeeper::startHackStartDemo` et `startHackStartDemoPuppetable` (début de l'animation de capture).
+- **Moon Get** : 1re frame de `Shine::exeWaitRequestDemo` (mis par `Shine::receiveMsg` au contact et par `getDirect`) + `Shine::getDirectWithDemo`. Pas `Shine::get` (appelé plus tard, pendant la cinématique).
+- Anti-doublon : même type ignoré pendant 0,5 s (`eventOnce` dans `TimerHooks.cpp`). Types ajoutés à la fin de `TimerHookType` (u8 sauvegardé).
+- **Black Screen / White Screen** : `exeCloseEnd` n'est JAMAIS exécuté (constaté en jeu) → événement après `al::WipeSimple::exeClose` quand `isCloseEnd` devient vrai, et après `startCloseEnd` (fermeture instantanée). Noir = archives `FadeBlack` + `WipeCircle` (tuyaux), blanc = `FadeWhite` (téléportations). La couleur est mémorisée par pointeur dans les constructeurs (C1 : this, name, archive, info, suffix ; **C2 : this, VTT, name, archive, info, suffix** — héritage virtuel).
+- `Timer::event` réécrit : le type de départ remet à zéro et relance toujours ; le type de fin arrête toujours ; départ == fin → alterne départ/arrêt (ou split si Timer Split) ; les autres types sont ignorés.
+- **Escape Wire** : fil électrique final de la fuite du Pays de la Lune (Bowser capturé). Se déclenche quand Bowser part le long du fil après le swing (`ElectricWireKoopa` passe de InWait à InCharge, nerf `ElectricWireKoopaNrvInCharge` 0x1cf5458 dans custom.sym, détecté via le hook `al::setNerve`). L’ancien hook `ElectricWire::endCapture` (fin d’un fil normal) a été retiré.
+- **Press Start** (remplace "New Game", même valeur `TimerHookType::GameStart`) : = appuyer sur A sur l'écran de choix du mode d'une nouvelle partie ("Start" / "Start in Assist Mode", capture d'écran de l'utilisateur) → `SceneStateSelectMode` passe de Wait au nerve Decide (`SceneStateSelectModeNrvDecide` = 0x1d8b7e0), détecté dans le hook `al::setNerve`. Essais précédents retirés : bouton +, nerve wipe de `TitleMenuScene` (0x1d95c38, trop tôt), FadeToNewGame du menu pause.
+- *(ancien)* **New Game depuis l'écran titre** : `TitleMenuScene` passe de son menu au nerve 0x1d95c38 (`TitleMenuSceneNrvWipe`) quand on valide (Start/A) ; événement si `TitleMenuScene::isNewGame` (emplacement vide ou "nouvelle partie"). Le nerve FadeToNewGame ci-dessous ne sert qu'au menu pause.
+- **Liste des types dans les menus** : `VisibleTimerHookTypes` / `VisibleTimerHookTypeNames` (Menu.h) sans Capture Glow (non implémenté). L'enum `TimerHookType` garde toutes ses valeurs (réglages sauvegardés en u8). Ancien tableau `TimerHookTypes` supprimé.
+- **Start Count / End Count** (réglages u8 `mTimerStartCount` / `mTimerEndCount`, ajoutés en fin de `Settings`, défaut 1, 0 traité comme 1, 1–99) : nombre d’événements du Start Type / End Type nécessaires pour lancer / arrêter le timer (ex. End Type Black Screen + End Count 3 = 3e écran noir). Compteurs `mStartEventCount` / `mEndEventCount` dans `Timer` : le compteur de fin ne compte que pendant que le timer tourne, les deux sont remis à 0 au start(), au reset() et quand on change un type ou un nombre. Valable pour tous les types.
+- **New Game** (`TimerHookType::GameStart`, ancien "Game Start (Not Implemented)") : `HakoniwaSequence` passe au nerve 0x1d97880 (exécuteur 0x510e94 = copie inlinée de `exeFadeToNewGame`) quand on choisit une nouvelle partie → détecté dans le même hook `al::setNerve` que Black/White Screen (`HakoniwaSequenceNrvFadeToNewGame`). Noms affichés : "2 Moons (Grab)", "2 Moons (Tick)".
+- **2 Moons Tick** : `Timer::onMoonTick` (appelé par le hook `ShineCounter::exeShineCountAdd`, step 1, qui envoie aussi `ShineTick`) compte les ticks du compteur de lunes depuis le dernier `start()` (`mMoonTickCount`). Nom affiché de `TwoMoons` changé en "2 Moons Grab".
+- **2 Moons** : `Timer::onMoonGet` compte les lunes depuis le dernier `start()` (`mMoonCount`) et envoie `TwoMoons` toutes les 2 lunes. **Damage** : dans `NoDamageHook` (`GameDataFunction::damagePlayer`), envoyé même si No Damage est actif.
+
+### A TESTER — Moon Shards Refresh sur une sauvegarde où la lune des fragments est déjà prise
+
+- **Cause** : en plus de `ShineChip::init` (déjà patché via `ShineChipRefresh`), `ShineChipWatcher` vérifie `rs::isGotShine(lune des fragments)` ; si elle est déjà prise, il allume l'interrupteur "terminé" et les fragments restent cachés.
+- **Correction** : les 8 `bl rs::isGotShine` du watcher (init +0x1d4a60/+0x1d4ba4, `createShineChips` +0x1d4c30 qui crée les fragments "vides"/gris si la lune est prise, `initAfterPlacement` +0x1d4df4/+0x1d4ff4/+0x1d50bc, `updateHints` +0x1d5174, `appear` +0x1d5314 → `ShineChipWatcherGotCheck1..8`) renvoient `false` quand l'option est active. 1re version (3 appels seulement) : fragments encore gris. Recharger la scène après avoir activé l'option.
+- **Compteur en haut de l'écran** : `StageSceneLayout` / `ShineChipLayoutParts` ne l'affichent pas si `rs::isCurrentShineChipWatcherTypeEmpty` (= lune du watcher déjà prise) → trampoline qui renvoie `false` avec l'option.
+
+### PUBLIÉ — v1.2.0 sur le compte GitHub mezfndu045-star (13/10/2026)
+
+- Dépôt : https://github.com/mezfndu045-star/BTT-Studio — site : https://mezfndu045-star.github.io/BTT-Studio/ (Pages depuis `main /docs`).
+- Publié comme **instantané** (1 commit, sans historique) **sans** `.github/workflows/release.yml` : le jeton de ce compte n'a pas le scope `workflow`. Pour publier à nouveau : refaire un instantané (`git read-tree` / `git commit-tree` sans le workflow) et `git push` avec `credential.helper='!gh auth git-credential'`, compte gh actif = mezfndu045-star.
+- Le remote local `origin` reste ademjab33-create/BTT-Studio (v1.1.0 en ligne là-bas, v1.2.0 non poussée).
+
 ### A TESTER — Menu Options en 2 colonnes (BTT-Studio 1.0)
 
 - **Description** : La catégorie **Options** du menu vertical s'affiche sur 2 colonnes. Gauche : Moon Refresh → Skip Cloud (14). Droite : All Checkpoints → Disable Moon Lock, puis Reload Scene at Pos.
@@ -369,3 +397,6 @@ Le fichier `main.npdm` definit les permissions du module.
 - L'utilisateur utilise Yuzu sur PC pour tester le mod.
 - L'utilisateur parle **francais**.
 - Quand un probleme est resolu, **mettre a jour ce fichier** en changeant le statut.
+- **Seeds Refresh / Seeds Growing** (séparés) : Seeds Refresh = `getGrowFlowerTime` -> 0 et `isUsedGrowFlowerSeed` -> false (graine réapparaît, pot vide). Le niveau de pousse sauvegardé passe au max dès que la lune du pot est prise (`GrowFlowerPot::initAfterPlacement`), d'où la pousse instantanée d'avant : avec Seeds Refresh, `rs::getGrowFlowerGrowLevel` / `rs::addGrowFlowerGrowLevel` (appelés uniquement par GrowFlowerPot, actor = le pot) utilisent une table en mémoire par pot (64 max, vidée au `StageScene::init`), sans toucher à la sauvegarde. Seeds Growing (`mIsEnableSeedGrowing`, ajouté en fin de Settings) : `getGrowFlowerGrowLevel` -> 32, le pot plafonne à son max+2 donc la graine plantée pousse tout de suite.
+- **Noclip** : déjà présent (`noclipHook` sur `PlayerActorHakoniwa::movement`, `Menu::mIsEnableNoclip`, non sauvegardé) mais seulement dans l'ancien menu ImGui ; ajouté dans Options (colonne de droite). Commandes : stick gauche = avancer, ZR = monter, ZL = descendre, X/Y = plus vite, A/B = moins vite. Mario passe en demo puppetable (pas de collision ni de gravité) ; `endDemoPuppetable` quand on désactive.
+- **Sauvegarde des réglages** : avant, `ThreadSave` n'écrivait que toutes les 60 s et aucun `sd:/BTT-Studio/Settings.bin` n'existait dans `%APPDATA%/yuzu/sdmc`. Maintenant : vérification chaque seconde, écriture dès qu'un réglage diffère de la copie `mLastSavedSettings` (memcmp). `writeFileToPath` renvoyait `ConstructResult(1)` (échec) même en cas de réussite → renvoie 0 ; handle fermé si WriteFile échoue. Si `CreateDirectory` échoue, on refait `MountSdCardForDebug("sd")` et on réessaie. Logs yuzu : "Settings saved/loaded" ou "Settings: cannot ..." avec le code d'erreur (5 max).

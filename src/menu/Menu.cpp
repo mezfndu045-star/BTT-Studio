@@ -42,6 +42,7 @@ void Menu::initCategories() {
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableRefreshKingdomEnter, "Kingdom Enter Refresh"));
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableRefreshWarpText, "Warp Text Refresh"));
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableFlowerPotRefresh, "Seeds Refresh"));
+    mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableSeedGrowing, "Seeds Growing"));
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableRefreshNpc, "Cutscene Refresh"));
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableAlwaysManualCutscene, "Always Manual Cutscene"));
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableAlwaysCheckpoints, "Always Checkpoints"));
@@ -62,6 +63,8 @@ void Menu::initCategories() {
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableAlwaysOdysseyPowerUp, "Always Odyssey Power Up"));
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableOdysseyInAllKingdoms, "Odyssey In All Kingdoms"));
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableNightMetroMultiMoon, "Night Metro Multi Moon"));
+    // Noclip: left stick moves, ZR goes up, ZL goes down, X/Y speed up, A/B slow down (see noclipHook)
+    mCategories[0].components.push_back(new BoolMenuComponent(&mIsEnableNoclip, "Noclip"));
     mCategories[0].components.push_back(new BoolMenuComponent(&mIsReloadPos, "Reload Scene at Pos"));
 
     // 1: Stages
@@ -139,8 +142,26 @@ void Menu::initCategories() {
     mCategories[3].name = "Timer";
     mCategories[3].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableSegmentTimer, "Segment Timer"));
     mCategories[3].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableSegTimerSplit, "Timer Split"));
-    mCategories[3].components.push_back(new EnumMenuComponent<TimerHookType>(&set->getSettings()->mTimerStartType, TimerHookTypes, IM_ARRAYSIZE(TimerHookTypes), "Start Type"));
-    mCategories[3].components.push_back(new EnumMenuComponent<TimerHookType>(&set->getSettings()->mTimerEndType, TimerHookTypes, IM_ARRAYSIZE(TimerHookTypes), "End Type"));
+    static int sTimerStartTypeIdx = findVisibleTimerHookType(set->getSettings()->mTimerStartType);
+    static int sTimerEndTypeIdx = findVisibleTimerHookType(set->getSettings()->mTimerEndType);
+    mCategories[3].components.push_back(new EnumMenuComponent<int>(&sTimerStartTypeIdx, VisibleTimerHookTypeNames, IM_ARRAYSIZE(VisibleTimerHookTypeNames), "Start Type", 34, [](int i) {
+        SettingsMgr::getSettings()->mTimerStartType = VisibleTimerHookTypes[i];
+        if (btt::Timer::sInstance) btt::Timer::sInstance->resetEventCounts();
+    }));
+    static int sTimerStartCount = set->getSettings()->mTimerStartCount ? set->getSettings()->mTimerStartCount : 1;
+    mCategories[3].components.push_back(new IntMenuComponent<int>(&sTimerStartCount, "Start Count", 1, 99, 1, 34, [](int n) {
+        SettingsMgr::getSettings()->mTimerStartCount = (u8)n;
+        if (btt::Timer::sInstance) btt::Timer::sInstance->resetEventCounts();
+    }));
+    mCategories[3].components.push_back(new EnumMenuComponent<int>(&sTimerEndTypeIdx, VisibleTimerHookTypeNames, IM_ARRAYSIZE(VisibleTimerHookTypeNames), "End Type", 34, [](int i) {
+        SettingsMgr::getSettings()->mTimerEndType = VisibleTimerHookTypes[i];
+        if (btt::Timer::sInstance) btt::Timer::sInstance->resetEventCounts();
+    }));
+    static int sTimerEndCount = set->getSettings()->mTimerEndCount ? set->getSettings()->mTimerEndCount : 1;
+    mCategories[3].components.push_back(new IntMenuComponent<int>(&sTimerEndCount, "End Count", 1, 99, 1, 34, [](int n) {
+        SettingsMgr::getSettings()->mTimerEndCount = (u8)n;
+        if (btt::Timer::sInstance) btt::Timer::sInstance->resetEventCounts();
+    }));
     mCategories[3].components.push_back(new ButtonMenuComponent("Start Timer", []() {
         if (btt::Timer::sInstance) btt::Timer::sInstance->start();
     }));

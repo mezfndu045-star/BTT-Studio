@@ -69,7 +69,8 @@ Le menu vertical translucide s'ouvre avec la combinaison **`L + D-Pad Gauche`**.
 - **Moon Shards Refresh** : Fait réapparaître les 5 fragments de lune.
 - **Kingdom Enter Refresh** : Rejoue l'arrivée de l'Odyssée dans le pays.
 - **Warp Text Refresh** : Réactive l'explication de Cappy au drapeau.
-- **Seeds Refresh** : Réinitialise les pots et graines dorées.
+- **Seeds Refresh** : Les graines réapparaissent et les pots sont vides ; la plante pousse normalement.
+- **Seeds Growing** : Une graine plantée pousse tout de suite et la lune apparaît.
 - **Cutscene Refresh** : Réactive les cinématiques et dialogues initiaux des PNJ.
 - **Always Manual Cutscene** : Permet de passer les cinématiques sans attente.
 - **Always Checkpoints** : Valide les checkpoints dès qu'on s'en approche.
@@ -88,6 +89,7 @@ Le menu vertical translucide s'ouvre avec la combinaison **`L + D-Pad Gauche`**.
 - **Always Odyssey Power Up** : À chaque passage à l'Odyssée (même sans lune), elle se recharge et propose le royaume suivant de l'histoire ; l'arrivée joue l'intro, l'atterrissage et le scénario.
 - **Odyssey In All Kingdoms** : L'Odyssée est là dans tous les royaumes et on peut s'y téléporter depuis la carte. *(en test)*
 - **Night Metro Multi Moon** : Au début de la Ville de nuit, la Multi-Lune de Méca-Chenille tombe près de Mario pour passer à la Ville de jour. *(en test)*
+- **Noclip** : Mario vole et traverse tout (stick = avancer, ZR = monter, ZL = descendre, X/Y = plus vite, A/B = moins vite).
 - **Reload Scene at Pos** : Recharge tout le niveau en restant exactement à sa position.
 
 ### 🗺️ 2. Stages (Téléportation)
@@ -117,6 +119,8 @@ Le menu vertical translucide s'ouvre avec la combinaison **`L + D-Pad Gauche`**.
 ### ⏱️ 4. Timer (Chronomètre)
 - **Segment Timer** : Affiche le chronomètre de speedrun à l'écran.
 - **Timer Split** : Active le découpage automatique des temps aux checkpoints.
+- **Start Type / End Type** : Événement qui lance / arrête le chronomètre (Press Start, Odyssey Power Up, Black Screen, White Screen, Capture, Damage, Escape Wire, Moon Get, Shine Tick, 2 Moons, Shine Grab).
+- **Start Count / End Count** : Nombre de fois que l'événement doit arriver avant de lancer / arrêter le chronomètre (1 à 99).
 - **Start Timer** : Démarre le chronomètre.
 - **Stop Timer** : Met le chronomètre en pause.
 - **Reset Timer** : Remet le chronomètre à zéro (00:00:00).
@@ -153,6 +157,7 @@ Le menu vertical translucide s'ouvre avec la combinaison **`L + D-Pad Gauche`**.
 
 ### 🛠️ 8. Settings (Configuration)
 - **Menu Corner** : Choisit l'angle de l'écran où s'ancre le menu vertical (Haut-Gauche, Haut-Droite, Bas-Gauche, Bas-Droite).
+- **Sauvegarde** : Les options sont enregistrées environ 1 seconde après chaque changement (`sd:/BTT-Studio/Settings.bin`).
 
 ---
 

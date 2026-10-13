@@ -30,6 +30,7 @@ nn::Result writeFileToPath(void* buf, size_t size, const char* path) {
     );
     if (result.IsFailure()) {
         // Logger::log("Failed to Write to File.\n");
+        nn::fs::CloseFile(handle);
         return result;
     }
 
@@ -37,7 +38,7 @@ nn::Result writeFileToPath(void* buf, size_t size, const char* path) {
 
     nn::fs::CloseFile(handle);
 
-    return nn::result::detail::ConstructResult(1);
+    return nn::result::detail::ConstructResult(0);
 }
 
 // make sure to free buffer after usage is done

@@ -138,13 +138,25 @@ void Menu::drawTimerCat() {
         if (ImGui::Button("Reset")) {
             btt::Timer::sInstance->reset();
         }
-        static int startType = (u8)set->getSettings()->mTimerStartType;
-        static int endType = (u8)set->getSettings()->mTimerEndType;
+        int startType = findVisibleTimerHookType(set->getSettings()->mTimerStartType);
+        int endType = findVisibleTimerHookType(set->getSettings()->mTimerEndType);
 
-        if (ImGui::Combo("Start Type", &startType, TimerHookTypes, IM_ARRAYSIZE(TimerHookTypes)))
-            set->getSettings()->mTimerStartType = (TimerHookType)startType;
-        if (ImGui::Combo("End Type", &endType, TimerHookTypes, IM_ARRAYSIZE(TimerHookTypes)))
-            set->getSettings()->mTimerEndType = (TimerHookType)endType;
+        if (ImGui::Combo("Start Type", &startType, VisibleTimerHookTypeNames, IM_ARRAYSIZE(VisibleTimerHookTypeNames)))
+            set->getSettings()->mTimerStartType = VisibleTimerHookTypes[startType];
+        if (ImGui::Combo("End Type", &endType, VisibleTimerHookTypeNames, IM_ARRAYSIZE(VisibleTimerHookTypeNames)))
+            set->getSettings()->mTimerEndType = VisibleTimerHookTypes[endType];
+        int startCount = set->getSettings()->mTimerStartCount ? set->getSettings()->mTimerStartCount : 1;
+        int endCount = set->getSettings()->mTimerEndCount ? set->getSettings()->mTimerEndCount : 1;
+        ImGui::PushItemWidth(200);
+        if (ImGui::InputInt("Start Count", &startCount, 1)) {
+            set->getSettings()->mTimerStartCount = (u8)(startCount < 1 ? 1 : startCount > 99 ? 99 : startCount);
+            btt::Timer::sInstance->resetEventCounts();
+        }
+        if (ImGui::InputInt("End Count", &endCount, 1)) {
+            set->getSettings()->mTimerEndCount = (u8)(endCount < 1 ? 1 : endCount > 99 ? 99 : endCount);
+            btt::Timer::sInstance->resetEventCounts();
+        }
+        ImGui::PopItemWidth();
         static int posX = set->getSettings()->mTimerPos.x;
         static int posY = set->getSettings()->mTimerPos.y;
         ImGui::PushItemWidth(200);

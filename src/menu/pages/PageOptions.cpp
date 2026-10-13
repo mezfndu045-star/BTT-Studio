@@ -18,6 +18,7 @@ void Menu::drawPageOptions() {
             ImGui::Checkbox("Refresh Purple Coins", &set->getSettings()->mIsEnableRefreshPurps);
             ImGui::Checkbox("Refresh Doors", &set->getSettings()->mIsEnableDoorRefresh);
             ImGui::Checkbox("Refresh Seeds", &set->getSettings()->mIsEnableFlowerPotRefresh);
+            ImGui::Checkbox("Seeds Growing", &set->getSettings()->mIsEnableSeedGrowing);
             ImGui::Checkbox("Refresh Toad Text", &set->getSettings()->mIsEnableRefreshNpc);
             ImGui::Checkbox("Disable Saving Coin Stacks", &set->getSettings()->mIsEnableDisableCoinStackSave);
             ImGui::Checkbox(

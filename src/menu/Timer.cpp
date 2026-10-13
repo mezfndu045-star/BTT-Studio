@@ -20,6 +20,40 @@ void Timer::start() {
     mStartTick = nn::os::GetSystemTick().value;
     mIsRunning = true;
     mFrames = 0;
+    mMoonCount = 0;
+    mMoonTickCount = 0;
+    mStartEventCount = 0;
+    mEndEventCount = 0;
+}
+
+void Timer::resetEventCounts() {
+    mStartEventCount = 0;
+    mEndEventCount = 0;
+}
+
+// Counts one event toward a Start Count / End Count setting, true once the count is reached
+static bool countEvent(int* count, u8 needed) {
+    if (++*count < (needed ? needed : 1)) return false;
+    *count = 0;
+    return true;
+}
+
+// Moon Get fires on every moon, 2 Moons on every second moon since the timer last started
+void Timer::onMoonGet() {
+    event(TimerHookType::MoonGet);
+    if (++mMoonCount >= 2) {
+        mMoonCount = 0;
+        event(TimerHookType::TwoMoons);
+    }
+}
+
+// Shine Tick fires each time the moon counter goes up, 2 Moons Tick on every second tick since the timer last started
+void Timer::onMoonTick() {
+    event(TimerHookType::ShineTick);
+    if (++mMoonTickCount >= 2) {
+        mMoonTickCount = 0;
+        event(TimerHookType::TwoMoonsTick);
+    }
 }
 
 void Timer::stop() {
@@ -35,17 +69,35 @@ void Timer::reset() {
     mEndTick = now.value;
     mIsRunning = false;
     mFrames = 0;
+    resetEventCounts();
 }
 
 void Timer::event(TimerHookType type) {
-    bool isStartEvent = btt::SettingsMgr::instance()->getSettings()->mTimerStartType == type;
-    bool isEndEvent = btt::SettingsMgr::instance()->getSettings()->mTimerEndType == type;
-    if (!mIsRunning && isStartEvent)
-        start();
-    else if (btt::SettingsMgr::instance()->getSettings()->mIsEnableSegTimerSplit)
-        showSplit();
-    else if (mIsRunning && isEndEvent) {
-        stop();
+    auto* settings = btt::SettingsMgr::instance()->getSettings();
+    bool isStartEvent = settings->mTimerStartType == type;
+    bool isEndEvent = settings->mTimerEndType == type;
+    if (!isStartEvent && !isEndEvent) return;
+
+    // Same start and end type: each event stops a running timer (or shows a lap with Timer Split), else starts it
+    if (isStartEvent && isEndEvent) {
+        if (!mIsRunning) {
+            if (countEvent(&mStartEventCount, settings->mTimerStartCount)) start();
+        } else if (countEvent(&mEndEventCount, settings->mTimerEndCount)) {
+            if (settings->mIsEnableSegTimerSplit)
+                showSplit();
+            else
+                stop();
+        }
+        return;
+    }
+    // The start type restarts the timer from zero, the end type stops it (each after its count of events)
+    if (isStartEvent) {
+        if (countEvent(&mStartEventCount, settings->mTimerStartCount)) {
+            mShowSplitTick = 0;
+            start();
+        }
+    } else if (mIsRunning) {
+        if (countEvent(&mEndEventCount, settings->mTimerEndCount)) stop();
     }
 }
 

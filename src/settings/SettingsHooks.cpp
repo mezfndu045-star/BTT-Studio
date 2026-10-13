@@ -31,6 +31,7 @@
 #include "helpers/InputHelper.h"
 #include "logger.h"
 #include "menu/Menu.h"
+#include "menu/Timer.h"
 #include "settings/DemoHooks.hpp"
 #include "src/settings/SettingsMgr.h"
 
@@ -126,9 +127,13 @@ HkTrampoline mofumofuInitHook = [](TrampolineStatic(), al::LiveActor* mofumofu, 
     if (shine) sNightMetroShine = shine;
 };
 
+// Pots with a grow level kept in memory by Seeds Refresh (see seedGetGrowLevelHook), reset on each scene
+static int sSeedGrowLevelNum = 0;
+
 HkTrampoline stageSceneInitHook = [](TrampolineStatic(), StageScene* stageScene, const al::SceneInitInfo& info) -> void {
     sNightMetroShine = nullptr;
     sIsNightMetroShineAppeared = false;
+    sSeedGrowLevelNum = 0;
     orig(stageScene, info);
 };
 
@@ -436,6 +441,8 @@ HkTrampoline disableMoonLockHook = [](TrampolineStatic(), GameDataHolder* thisPt
 };
 
 HkTrampoline NoDamageHook = [](TrampolineStatic(), PlayerHitPointData* hitPointData) -> void {
+    // Timer "Damage" type: Mario got hit, even when No Damage keeps his health
+    if (Timer::sInstance) Timer::sInstance->event(TimerHookType::Damage);
     if (!SettingsMgr::instance()->getSettings()->mIsEnableNoDamage) orig(hitPointData);
 };
 
@@ -616,6 +623,41 @@ HkTrampoline seedRefreshHook2 = [](TrampolineStatic(), al::LiveActor* actor, al:
     return SettingsMgr::instance()->getSettings()->mIsEnableFlowerPotRefresh ? false : orig(actor, id);
 };
 
+// The saved grow level of a pot is set to its max once its moon is got, so a refreshed seed would grow at once. With
+// Seeds Refresh, pots keep their grow level (water, Gamaner...) in memory for the current scene only.
+struct SeedGrowLevel {
+    const al::LiveActor* pot;
+    u32 level;
+};
+static SeedGrowLevel sSeedGrowLevels[64];
+
+static SeedGrowLevel* findSeedGrowLevel(const al::LiveActor* pot) {
+    for (int i = 0; i < sSeedGrowLevelNum; i++)
+        if (sSeedGrowLevels[i].pot == pot) return &sSeedGrowLevels[i];
+    if (sSeedGrowLevelNum >= 64) return nullptr;
+    sSeedGrowLevels[sSeedGrowLevelNum] = { pot, 0 };
+    return &sSeedGrowLevels[sSeedGrowLevelNum++];
+}
+
+// Seeds Growing: a big grow level makes a planted seed grow at once (the pot caps it at its max level)
+HkTrampoline seedGetGrowLevelHook = [](TrampolineStatic(), al::LiveActor* actor, al::PlacementId* id) -> u32 {
+    auto* s = SettingsMgr::instance()->getSettings();
+    if (s->mIsEnableSeedGrowing) return 32;
+    if (s->mIsEnableFlowerPotRefresh) {
+        SeedGrowLevel* entry = findSeedGrowLevel(actor);
+        return entry ? entry->level : 0;
+    }
+    return orig(actor, id);
+};
+
+HkTrampoline seedAddGrowLevelHook = [](TrampolineStatic(), al::LiveActor* actor, al::PlacementId* id, u32 level) -> void {
+    if (SettingsMgr::instance()->getSettings()->mIsEnableFlowerPotRefresh) {
+        if (SeedGrowLevel* entry = findSeedGrowLevel(actor)) entry->level += level;
+        return;
+    }
+    orig(actor, id, level);
+};
+
 HkTrampoline hintPhotoHook = [](TrampolineStatic(), al::LiveActor* actor, char* name) -> bool {
     auto* s = SettingsMgr::instance()->getSettings();
     return (s && (s->mIsEnableHintPhotoSpawn || s->mIsEnableLuigiPixels)) ? true : orig(actor, name);
@@ -685,6 +727,19 @@ bool shardRefreshHook(SaveObjInfo* info) {
     return SettingsMgr::getSettings()->mIsEnableShardRefresh ? false : info->isOn;
 }
 
+// ShineChipWatcher creates the shards empty (grey), hides them and skips counting them when the moon made of the
+// shards is already got in the save: with Moon Shards Refresh, treat that moon as not got at every one of its checks
+extern "C" bool rs_isGotShine(const void* shine) asm("_ZN2rs10isGotShineEPK5Shine");
+bool shardWatcherIsGotShine(const void* shine) {
+    return !SettingsMgr::getSettings()->mIsEnableShardRefresh && rs_isGotShine(shine);
+}
+
+// The shard counter at the top of the screen (StageSceneLayout / ShineChipLayoutParts) is not shown for an
+// "empty" watcher, i.e. when its moon is already got
+HkTrampoline shardWatcherTypeEmptyHook = [](TrampolineStatic(), const al::IUseSceneObjHolder* holder) -> bool {
+    return !SettingsMgr::getSettings()->mIsEnableShardRefresh && orig(holder);
+};
+
 int pipeRandomness(int param) {
     // not overridden, as no randomness
     if (param == 0 || param == 1) return al::getRandom(param);
@@ -711,6 +766,15 @@ inline void installPipeRandoHooks() {
 
 void SettingsHooks::installSettingsHooks() {
     hk::hook::writeBranchLinkAtSym<"ShineChipRefresh">(shardRefreshHook);
+    hk::hook::writeBranchLinkAtSym<"ShineChipWatcherGotCheck1">(shardWatcherIsGotShine);
+    hk::hook::writeBranchLinkAtSym<"ShineChipWatcherGotCheck2">(shardWatcherIsGotShine);
+    hk::hook::writeBranchLinkAtSym<"ShineChipWatcherGotCheck3">(shardWatcherIsGotShine);
+    hk::hook::writeBranchLinkAtSym<"ShineChipWatcherGotCheck4">(shardWatcherIsGotShine);
+    hk::hook::writeBranchLinkAtSym<"ShineChipWatcherGotCheck5">(shardWatcherIsGotShine);
+    hk::hook::writeBranchLinkAtSym<"ShineChipWatcherGotCheck6">(shardWatcherIsGotShine);
+    hk::hook::writeBranchLinkAtSym<"ShineChipWatcherGotCheck7">(shardWatcherIsGotShine);
+    hk::hook::writeBranchLinkAtSym<"ShineChipWatcherGotCheck8">(shardWatcherIsGotShine);
+    shardWatcherTypeEmptyHook.installAtSym<"_ZN2rs34isCurrentShineChipWatcherTypeEmptyEPKN2al18IUseSceneObjHolderE">();
 
     installDemoHooks();
     installWigglerHooks();
@@ -772,6 +836,8 @@ void SettingsHooks::installSettingsHooks() {
     doorRefreshHook.installAtSym<"_ZN14DoorAreaChange4initERKN2al13ActorInitInfoE">();
     seedRefreshHook.installAtSym<"_ZN2rs17getGrowFlowerTimeEPKN2al9LiveActorEPKNS0_11PlacementIdE">();
     seedRefreshHook2.installAtSym<"_ZN2rs20isUsedGrowFlowerSeedEPKN2al9LiveActorEPKNS0_11PlacementIdE">();
+    seedGetGrowLevelHook.installAtSym<"_ZN2rs22getGrowFlowerGrowLevelEPKN2al9LiveActorEPKNS0_11PlacementIdE">();
+    seedAddGrowLevelHook.installAtSym<"_ZN2rs22addGrowFlowerGrowLevelEPKN2al9LiveActorEPKNS0_11PlacementIdEj">();
     checkpointFlagHook.installAtSym<"_ZN2rs31setTouchCheckpointFlagToWatcherEP14CheckpointFlag">();
     cloudSkipHook.installAtSym<"_ZNK10StageScene16isDefeatKoopaLv1Ev">();
     allCheckpointsHook

@@ -134,6 +134,10 @@ public:
         SETTING(AlwaysOdysseyPowerUp);
         SETTING(OdysseyInAllKingdoms);
         SETTING(NightMetroMultiMoon);
+        // How many Start Type / End Type events are needed to start / stop the timer
+        u8 mTimerStartCount = 1;
+        u8 mTimerEndCount = 1;
+        SETTING(SeedGrowing);
     } mSettings;
 
     // Settings* getSettings() { return &mSettings; }

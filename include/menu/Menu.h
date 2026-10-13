@@ -210,14 +210,22 @@ private:
         "MarioTuxedo",    "MarioInvisible"
     };
 
-    constexpr static const char* TimerHookTypes[] = {
-        "None",
-        "Shine Grab (Kinda Broken)",
-        "Shine Tick",
-        "Game Start (Not Implemented)",
-        "Escape Wire (Not Implemented)",
-        "Capture Glow (Not Implemented)",
-        "Odyssey Power Up",
+    // Timer types offered in the menus, without the unimplemented one (Capture Glow)
+    constexpr static TimerHookType VisibleTimerHookTypes[] = {
+        TimerHookType::None,         TimerHookType::GameStart,   TimerHookType::OdysseyPowerUp,
+        TimerHookType::BlackScreen,  TimerHookType::WhiteScreen, TimerHookType::Capture,
+        TimerHookType::Damage,       TimerHookType::EscapeWire,  TimerHookType::MoonGet,
+        TimerHookType::ShineTick,    TimerHookType::TwoMoons,    TimerHookType::TwoMoonsTick,
+        TimerHookType::ShineGrab,
     };
+    constexpr static const char* VisibleTimerHookTypeNames[] = {
+        "None",         "Press Start", "Odyssey Power Up", "Black Screen",   "White Screen",   "Capture",
+        "Damage",       "Escape Wire", "Moon Get", "Shine Tick", "2 Moons (Grab)", "2 Moons (Tick)", "Shine Grab",
+    };
+    static int findVisibleTimerHookType(TimerHookType type) {
+        for (int i = 0; i < (int)(sizeof(VisibleTimerHookTypes) / sizeof(VisibleTimerHookTypes[0])); i++)
+            if (VisibleTimerHookTypes[i] == type) return i;
+        return 0;
+    }
 };
 } // namespace btt
