@@ -16,7 +16,7 @@
   <header class="navbar">
     <a href="#" class="brand">
       <div class="brand-icon">B</div>
-      <div class="brand-title">BTT Studio <span class="brand-badge">v1.3 Update</span></div>
+      <div class="brand-title">BTT Studio <span class="brand-badge">v1.4 Update</span></div>
     </a>
     <nav class="nav-links">
       <a href="#options">Options</a>
@@ -38,7 +38,7 @@
     <div class="container">
       <div class="hero-pill">
         <span class="pulse-dot"></span>
-        Nouveau en v1.3 — Noclip, Seeds Growing, timer à compteur (Start/End Count), options sauvegardées
+        Nouveau en v1.4 — Téléportation vers les 156 sous-zones avec image, vibrations plus fluides, corrections
       </div>
       <h1>
         L'outil d'entraînement ultime pour <br>
@@ -50,7 +50,7 @@
       <div class="hero-cta">
         <a href="#installation" class="btn-primary">
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-          Installer le Mod v1.3
+          Installer le Mod v1.4
         </a>
         <a href="#options" class="btn-secondary">
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
@@ -112,7 +112,7 @@
             <li><strong>Always Manual Cutscene :</strong> Les cinématiques ne se passent jamais toutes seules : c'est toi qui décides quand les passer.</li>
             <li><strong>Always Checkpoints :</strong> Tu peux toujours te téléporter aux drapeaux depuis la carte, même là où le jeu l'interdit normalement.</li>
             <li><strong>Disable Autosave :</strong> Le jeu ne sauvegarde plus tout seul : ta sauvegarde ne bouge pas pendant l'entraînement.</li>
-            <li><strong>Disable TP Puppet :</strong> Désactive le placement automatique de Mario pendant l'animation de prise de lune.</li>
+            <li><strong>Disable TP Puppet :</strong> Désactive le placement automatique de Mario pendant l'animation de prise de lune. Le crash quand on chargeait sa position pendant une prise de lune est corrigé.</li>
             <li><strong>Skip Cloud :</strong> Passe automatiquement le Pays des Nuages pendant les voyages en Odyssée.</li>
           </ul>
           <p class="option-sub">Colonne de droite (→ sur la manette pour y aller)</p>
@@ -144,6 +144,7 @@
             <li><strong>Kingdom :</strong> Choix parmi les 17 royaumes (Cap, Cascade, Sand, Wooded, Metro, Moon, etc.).</li>
             <li><strong>Scenario :</strong> Choix du numéro de scénario d'histoire (0 à 15).</li>
             <li><strong>Warp to Stage :</strong> Bouton de téléportation immédiate au niveau sélectionné.</li>
+            <li><strong>Cap Sub Area … Darker Side Sub Area :</strong> Une ligne par royaume avec toutes ses sous-zones (156 en tout : salles secrètes, magasins, tours, courses du Bound Bowl, combats…). Sur une ligne, une image de la zone s'affiche à droite du menu. A pour choisir, Gauche/Droite pour changer de zone, A pour s'y téléporter, B pour annuler. Le réglage Scenario s'applique aussi. <span class="badge-tag-highlight">Nouveau</span></li>
           </ul>
         </div>
 
@@ -183,7 +184,7 @@
           <ul class="option-list">
             <li><strong>Segment Timer :</strong> Affiche le chronomètre à l'écran.</li>
             <li><strong>Timer Split :</strong> Au lieu de s'arrêter, le chronomètre affiche un temps intermédiaire.</li>
-            <li><strong>Start Type / End Type :</strong> Ce qui lance et arrête le chronomètre tout seul. Avec <em>Odyssey Power Up</em> sur les deux, il démarre quand l'écran devient noir après « L'Odyssée a été rechargée » et s'arrête à la fois suivante. <span class="badge-tag-highlight">Nouveau</span></li>
+            <li><strong>Start Type / End Type :</strong> Ce qui lance et arrête le chronomètre tout seul. Avec <em>Odyssey Power Up</em> sur les deux, il démarre quand l'écran devient noir après « L'Odyssée a été rechargée » et s'arrête à la fois suivante (seul cet écran noir compte : le timer s'arrête bien).</li>
             <li><strong>Types disponibles :</strong> Press Start (A sur l'écran de choix du mode d'une nouvelle partie), Odyssey Power Up, Black Screen (écran noir), White Screen (écran blanc), Capture, Damage (Mario prend un coup), Escape Wire (Bowser capturé part le long du fil électrique final de la fuite au Pays de la Lune), Moon Get, Shine Tick (le compteur de lunes monte), 2 Moons (Grab / Tick), Shine Grab. Le Start Type relance toujours le timer à zéro. <span class="badge-tag-highlight">Nouveau</span></li>
             <li><strong>Start Count / End Count :</strong> Combien de fois l'événement doit arriver pour lancer / arrêter le timer (1 à 99). Exemple : End Type Moon Get + End Count 3 = le timer s'arrête à la 3ᵉ lune. <span class="badge-tag-highlight">Nouveau</span></li>
             <li><strong>Start / Stop / Reset Timer :</strong> Lance, arrête ou remet à zéro le chronomètre à la main.</li>
@@ -219,7 +220,7 @@
             <h3>6. Keybinds (Raccourcis Manette)</h3>
           </div>
           <ul class="option-list">
-            <li><strong>Open Menu :</strong> Touche pour afficher le menu (défaut : <em>L + D-Pad Gauche</em>).</li>
+            <li><strong>Open Menu :</strong> Touche pour afficher le menu (défaut : <em>L + D-Pad Gauche</em>, qui marche toujours). Les sticks ne peuvent plus ouvrir le menu par accident.</li>
             <li><strong>Save Position :</strong> Touche rapide pour sauver la position (défaut : <em>D-Pad Gauche</em>).</li>
             <li><strong>Load Position :</strong> Touche rapide de téléportation (défaut : <em>D-Pad Droite</em>).</li>
             <li><strong>Restart Scene :</strong> Touche rapide pour relancer le niveau (défaut : <em>D-Pad Haut</em>).</li>
@@ -477,8 +478,8 @@
           <div class="dl-icon">💻</div>
           <h3>Émulateur Yuzu</h3>
           <p>Package prêt à l'emploi pour le dossier <code>load/0100000000010000/</code>.</p>
-          <div class="dl-meta">Version 1.3.0 • 4.6 Mo</div>
-          <a href="downloads/BTT-Studio-1.0-Yuzu-v1.3.0.zip" class="btn-download" download>
+          <div class="dl-meta">Version 1.4.0 • 7.4 Mo</div>
+          <a href="downloads/BTT-Studio-1.0-Yuzu-v1.4.0.zip" class="btn-download" download>
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
             Télécharger (Yuzu)
           </a>
@@ -489,8 +490,8 @@
           <div class="dl-icon">🕹️</div>
           <h3>Simple Mod Manager</h3>
           <p>Prêt à glisser-déposer directement dans <code>SD:/mods/</code>.</p>
-          <div class="dl-meta">Version 1.3.0 • 4.6 Mo</div>
-          <a href="downloads/BTT-Studio-1.0-SimpleModManager-v1.3.0.zip" class="btn-download primary" download>
+          <div class="dl-meta">Version 1.4.0 • 7.4 Mo</div>
+          <a href="downloads/BTT-Studio-1.0-SimpleModManager-v1.4.0.zip" class="btn-download primary" download>
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
             Télécharger (SMM)
           </a>
@@ -501,8 +502,8 @@
           <div class="dl-icon">⚡</div>
           <h3>Atmosphere Direct</h3>
           <p>Arborescence <code>atmosphere/contents/</code> prête à copier à la racine SD.</p>
-          <div class="dl-meta">Version 1.3.0 • 4.6 Mo</div>
-          <a href="downloads/BTT-Studio-1.0-Atmosphere-v1.3.0.zip" class="btn-download" download>
+          <div class="dl-meta">Version 1.4.0 • 7.4 Mo</div>
+          <a href="downloads/BTT-Studio-1.0-Atmosphere-v1.4.0.zip" class="btn-download" download>
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
             Télécharger (Atmosphere)
           </a>

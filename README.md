@@ -75,7 +75,7 @@ Le menu vertical translucide s'ouvre avec la combinaison **`L + D-Pad Gauche`**.
 - **Always Manual Cutscene** : Permet de passer les cinématiques sans attente.
 - **Always Checkpoints** : Valide les checkpoints dès qu'on s'en approche.
 - **Disable Autosave** : Coupe la sauvegarde auto pour garder sa partie propre.
-- **Disable TP Puppet** : Supprime l'animation d'attente de Mario pendant un warp.
+- **Disable TP Puppet** : Supprime l'animation d'attente de Mario pendant un warp (crash au chargement de position pendant une prise de lune corrigé).
 - **Skip Cloud** : Passe les transitions nuageuses entre les zones.
 - **All Checkpoints** : Débloque tous les drapeaux de téléportation du niveau.
 - **Luigi Pixels** : Le vrai Luigi 8-bit sort à chaque fois des buissons concernés (10 % de chance normalement).
@@ -96,6 +96,7 @@ Le menu vertical translucide s'ouvre avec la combinaison **`L + D-Pad Gauche`**.
 - **Kingdom** : Sélection du pays parmi les 17 royaumes (Bonneton jusqu'à Côté Très Sombre).
 - **Scenario** : Sélection du chapitre d'histoire (0 à 15).
 - **Warp to Stage** : Bouton pour se téléporter immédiatement au monde et scénario choisis.
+- **Cap Sub Area … Darker Side Sub Area** : Toutes les sous-zones de chaque royaume (156), avec une image de la zone à côté du menu. A = choisir, Gauche/Droite = zone, A = téléporter, B = annuler.
 
 ### 🎒 3. Misc (Actions & Utilitaires)
 - **Outfit Body** : Sélection de la tenue parmi 42 costumes officiels.
@@ -139,7 +140,7 @@ Le menu vertical translucide s'ouvre avec la combinaison **`L + D-Pad Gauche`**.
 - **Multicolor** : Effet dynamique arc-en-ciel RGB animé fluide sur n'importe quel élément.
 
 ### 🕹️ 6. Keybinds (Raccourcis Manette)
-- **Open Menu** : Touche pour ouvrir le menu (*L + D-Pad Gauche* par défaut).
+- **Open Menu** : Touche pour ouvrir le menu (*L + D-Pad Gauche* par défaut, toujours actif ; les sticks ne l'ouvrent plus).
 - **Save Position** : Touche rapide pour sauver la position (*D-Pad Gauche* par défaut).
 - **Load Position** : Touche rapide pour se téléporter (*D-Pad Droite* par défaut).
 - **Restart Scene** : Touche rapide pour relancer le niveau (*D-Pad Haut* par défaut).

@@ -376,6 +376,17 @@ void drawStageWarpWindow() {
     }
 }
 
+void warpToStage(const char* stageName, int scenarioNo) {
+    HakoniwaSequence* gameSeq = helpers::tryGetHakoniwaSequence();
+    if (!gameSeq || !gameSeq->mGameDataHolderAccessor.mData || !stageName) return;
+    int sc = scenarioNo == 0 ? -1 : scenarioNo;
+    ChangeStageInfo stageInfo(
+        gameSeq->mGameDataHolderAccessor.mData, "start", stageName, false, sc,
+        ChangeStageInfo::SubScenarioType::NO_SUB_SCENARIO
+    );
+    gameSeq->mGameDataHolderAccessor.mData->changeNextStage(&stageInfo, 0);
+}
+
 void warpToKingdom(int kingdomIdx, int scenarioNo) {
     HakoniwaSequence* gameSeq = helpers::tryGetHakoniwaSequence();
     if (!gameSeq || !gameSeq->mGameDataHolderAccessor.mData) return;

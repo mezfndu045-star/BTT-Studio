@@ -21,6 +21,10 @@ public:
     virtual void onAction() {}
     virtual void onLeft() {}
     virtual void onRight() {}
+    // A pressed again while the component is focused (after choosing a value)
+    virtual void onConfirm() {}
+    // Drawn next to the selected component, right of the menu cards (at = top left corner)
+    virtual void drawPreview(const ImVec2& at) {}
 
     void setIsFocused(bool f) { mIsFocused = f; }
     void setIsHovered(bool h) { mIsHovered = h; }

@@ -19,9 +19,42 @@
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "menu/stage_warp.h"
+#include "menu/SubAreaImages.h"
+#include "menu/SubAreaList.h"
 #include "src/settings/SettingsMgr.h"
 
 namespace btt {
+
+// One line per kingdom in Stages: Left/Right picks a sub area (its picture is shown next to the menu), A warps there
+class SubAreaMenuComponent : public EnumMenuComponent<int> {
+    const KingdomSubAreas& mKingdom;
+    const int* mScenario;
+    int mIndex = 0;
+
+public:
+    SubAreaMenuComponent(const KingdomSubAreas& kingdom, const int* scenario)
+        : EnumMenuComponent<int>(&mIndex, kingdom.names, kingdom.count, kingdom.title), mKingdom(kingdom),
+          mScenario(scenario) {}
+
+    void onConfirm() override { warpToStage(mKingdom.areas[mIndex].stage, mScenario ? *mScenario : 0); }
+
+    void drawPreview(const ImVec2& at) override {
+        constexpr float cWidth = 384.0f, cHeight = 216.0f, cPad = 6.0f;
+        ImDrawList* drawList = ImGui::GetForegroundDrawList();
+        ImVec2 tl(at.x, std::min(at.y, 900.0f - cHeight - 2 * cPad - 40.0f));
+        ImVec2 br(tl.x + cWidth + 2 * cPad, tl.y + cHeight + 2 * cPad + 40.0f);
+        drawList->AddRectFilled(tl, br, IM_COL32(0, 0, 0, 190), 12.0f);
+        ImVec2 imgTl(tl.x + cPad, tl.y + cPad);
+        ImTextureID image = getSubAreaImage(mKingdom.areas[mIndex].stage);
+        if (image)
+            drawList->AddImage(image, imgTl, ImVec2(imgTl.x + cWidth, imgTl.y + cHeight));
+        else
+            drawList->AddText(ImGui::GetFont(), 28.0f, ImVec2(imgTl.x + 12.0f, imgTl.y + cHeight / 2 - 14.0f),
+                              IM_COL32(200, 200, 200, 255), "No picture");
+        drawList->AddText(ImGui::GetFont(), 28.0f, ImVec2(imgTl.x + 4.0f, imgTl.y + cHeight + 6.0f),
+                          IM_COL32(255, 255, 255, 255), mKingdom.names[mIndex]);
+    }
+};
 
 SEAD_SINGLETON_DISPOSER_IMPL(Menu);
 
@@ -31,6 +64,8 @@ void Menu::initCategories() {
     if (!set || !set->getSettings()) return;
 
     mCategoriesInitialized = true;
+    // Older settings could pick a stick to open the menu: fall back to L + DLeft
+    if (set->getSettings()->mMenuKey >= IM_ARRAYSIZE(MenuKeys)) set->getSettings()->mMenuKey = 0;
 
     // 0: Options
     mCategories[0].name = "Options";
@@ -82,6 +117,9 @@ void Menu::initCategories() {
     mCategories[1].components.push_back(new ButtonMenuComponent("Warp to Stage", []() {
         warpToKingdom(sSelectedStageIdx, sSelectedScenario);
     }));
+    // Sub areas of every kingdom (they use the Scenario above too)
+    for (const KingdomSubAreas& kingdom : sKingdomSubAreas)
+        mCategories[1].components.push_back(new SubAreaMenuComponent(kingdom, &sSelectedScenario));
 
     // 2: Misc
     mCategories[2].name = "Misc";
@@ -252,7 +290,7 @@ void Menu::initCategories() {
 
     // 5: Keybinds
     mCategories[5].name = "Keybinds";
-    mCategories[5].components.push_back(new EnumMenuComponent<u8>(&set->getSettings()->mMenuKey, MenuKeys, 6, "Open Menu"));
+    mCategories[5].components.push_back(new EnumMenuComponent<u8>(&set->getSettings()->mMenuKey, MenuKeys, IM_ARRAYSIZE(MenuKeys), "Open Menu"));
     mCategories[5].components.push_back(new EnumMenuComponent<SettingsMgr::TpKey>(&set->getSettings()->mSavePosKey, TpKeys, 20, "Save Position"));
     mCategories[5].components.push_back(new EnumMenuComponent<SettingsMgr::TpKey>(&set->getSettings()->mLoadPosKey, TpKeys, 20, "Load Position"));
     mCategories[5].components.push_back(new EnumMenuComponent<SettingsMgr::TpKey>(&set->getSettings()->mRestartSceneKey, TpKeys, 20, "Restart Scene"));
@@ -372,6 +410,7 @@ void Menu::drawExpandedCategory() {
 
     ImDrawList* drawList = ImGui::GetForegroundDrawList();
     float drawY = 0;
+    ImVec2 previewAt(0, 0);
     for (int i = scrollOffset; i < endIndex; i++) {
         MenuComponent* comp = cat.components[i];
         if (!comp) continue;
@@ -400,9 +439,12 @@ void Menu::drawExpandedCategory() {
         comp->setIsHovered(mCurrentComponentInCategory == i);
         comp->setIsFocused(mCurrentComponentInCategory == i && mIsFocusedOnCurrentComponent);
         comp->draw(ImVec2(mBgSize.x + 8.0f, startY + drawY));
+        if (mCurrentComponentInCategory == i) previewAt = ImVec2(mBgSize.x + 8.0f + subX + 12.0f, startY + drawY);
 
         drawY += itemH + 3.0f;
     }
+    if (mCurrentComponentInCategory >= scrollOffset && mCurrentComponentInCategory < endIndex)
+        cat.components[mCurrentComponentInCategory]->drawPreview(previewAt);
 }
 
 void Menu::drawTwoColumnCategory(Category& cat) {
@@ -455,12 +497,9 @@ void Menu::drawTwoColumnCategory(Category& cat) {
 static bool isPressMenuKey() {
     if (InputHelper::isHoldL() && InputHelper::isPressPadLeft()) return true;
     switch (SettingsMgr::getSettings()->mMenuKey) {
-    case 0: return InputHelper::isPressStickL();
-    case 1: return InputHelper::isPressStickR();
-    case 2: return InputHelper::isHoldL() && InputHelper::isPressPadLeft();
-    case 3: return InputHelper::isHoldL() && InputHelper::isPressPadRight();
-    case 4: return InputHelper::isHoldR() && InputHelper::isPressPadLeft();
-    case 5: return InputHelper::isHoldR() && InputHelper::isPressPadRight();
+    case 1: return InputHelper::isHoldL() && InputHelper::isPressPadRight();
+    case 2: return InputHelper::isHoldR() && InputHelper::isPressPadLeft();
+    case 3: return InputHelper::isHoldR() && InputHelper::isPressPadRight();
     default: return false;
     }
 }
@@ -537,7 +576,10 @@ void Menu::updateMenuInput() {
                     comp->onLeft();
                 } else if (InputHelper::isPressPadRight()) {
                     comp->onRight();
-                } else if (InputHelper::isPressA() || InputHelper::isPressB()) {
+                } else if (InputHelper::isPressA()) {
+                    mIsFocusedOnCurrentComponent = false;
+                    comp->onConfirm();
+                } else if (InputHelper::isPressB()) {
                     mIsFocusedOnCurrentComponent = false;
                 }
             }

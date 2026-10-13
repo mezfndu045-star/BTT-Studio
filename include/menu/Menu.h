@@ -157,8 +157,8 @@ private:
     constexpr static const char* Keys[] {
         "Disabled", "None", "L", "R", "ZL", "ZR", "L + R", "L + ZL", "L + ZR", "R + ZL", "R + ZR",
     };
-    constexpr static const char* MenuKeys[] { "LStick",     "RStick",    "L + DLeft",
-                                              "L + DRight", "R + DLeft", "R + DRight" };
+    // The sticks can no longer open the menu (pressed by accident while playing)
+    constexpr static const char* MenuKeys[] { "L + DLeft", "L + DRight", "R + DLeft", "R + DRight" };
     constexpr static const char* TpKeys[] {
         "D-Pad Left",
         "D-Pad Right",

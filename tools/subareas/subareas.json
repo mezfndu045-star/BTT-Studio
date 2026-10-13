@@ -1,0 +1,1260 @@
+[
+ {
+  "kingdom": "CapWorldHomeStage",
+  "world": "Cap",
+  "areas": [
+   {
+    "stage": "PoisonWaveExStage",
+    "category": "ExStage",
+    "moons": [
+     "Skimming the Poison Tide",
+     "Slipping Through the Poison Tide"
+    ]
+   },
+   {
+    "stage": "PushBlockExStage",
+    "category": "ExStage",
+    "moons": [
+     "Push-Block Peril",
+     "Hidden Among the Push-Blocks"
+    ]
+   },
+   {
+    "stage": "FrogSearchExStage",
+    "category": "ExStage",
+    "moons": [
+     "Secrets of the Frog Pond",
+     "Searching the Frog Pond"
+    ]
+   },
+   {
+    "stage": "CapWorldTowerStage",
+    "category": "MainRouteStage",
+    "moons": []
+   },
+   {
+    "stage": "RollingExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Precision Rolling",
+     "Roll On and On"
+    ]
+   }
+  ]
+ },
+ {
+  "kingdom": "WaterfallWorldHomeStage",
+  "world": "Waterfall",
+  "areas": [
+   {
+    "stage": "CapAppearExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Across the Mysterious Clouds",
+     "Atop a Wall Among the Clouds"
+    ]
+   },
+   {
+    "stage": "WanwanClashExStage",
+    "category": "ExStage",
+    "moons": [
+     "Nice Shot with the Chain Chomp!",
+     "Very Nice Shot with the Chain Chomp!"
+    ]
+   },
+   {
+    "stage": "Lift2DExStage",
+    "category": "ExStage",
+    "moons": [
+     "Hidden Chasm Passage",
+     "Past the Chasm Lifts"
+    ]
+   },
+   {
+    "stage": "WindBlowExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Flying Far Away from Gusty Bridges",
+     "Across the Gusty Bridges"
+    ]
+   },
+   {
+    "stage": "TrexPoppunExStage",
+    "category": "ExStage",
+    "moons": [
+     "Dinosaur Nest: Big Cleanup!",
+     "Dinosaur Nest: Running Wild!"
+    ]
+   }
+  ]
+ },
+ {
+  "kingdom": "SandWorldHomeStage",
+  "world": "Sand",
+  "areas": [
+   {
+    "stage": "SandWorldMeganeExStage",
+    "category": "ExStage",
+    "moons": [
+     "The Invisible Maze",
+     "Skull Sign in the Transparent Maze"
+    ]
+   },
+   {
+    "stage": "SandWorldSphinxExStage",
+    "category": "ExStage",
+    "moons": [
+     "Jaxi Stunt Driving",
+     "Jaxi Driver"
+    ]
+   },
+   {
+    "stage": "SandWorldUnderground000Stage",
+    "category": "MainRouteStage",
+    "moons": [
+     "Underground Treasure Chest",
+     "Goomba Tower Assembly"
+    ]
+   },
+   {
+    "stage": "SandWorldKillerExStage",
+    "category": "ExStage",
+    "moons": [
+     "The Bullet Bill Maze: Side Path",
+     "The Bullet Bill Maze: Break Through!"
+    ]
+   },
+   {
+    "stage": "SandWorldShopStage",
+    "category": "ShopStage",
+    "moons": [
+     "Employees Only",
+     "Shopping in Tostarena"
+    ]
+   },
+   {
+    "stage": "SandWorldPressExStage",
+    "category": "PathwayStage",
+    "moons": [
+     "Ice Cave Treasure"
+    ]
+   },
+   {
+    "stage": "SandWorldPyramid000Stage",
+    "category": "MainRouteStage",
+    "moons": []
+   },
+   {
+    "stage": "SandWorldPyramid001Stage",
+    "category": "MainRouteStage",
+    "moons": [
+     "Hidden Room in the Inverted Pyramid"
+    ]
+   },
+   {
+    "stage": "SandWorldCostumeStage",
+    "category": "SmallStage",
+    "moons": [
+     "Dancing with New Friends"
+    ]
+   },
+   {
+    "stage": "SandWorldUnderground001Stage",
+    "category": "MainRouteStage",
+    "moons": [
+     "The Hole in the Desert",
+     "Binding Band Returned",
+     "Under the Mummy's Curse"
+    ]
+   },
+   {
+    "stage": "SandWorldRotateExStage",
+    "category": "ExStage",
+    "moons": [
+     "Strange Neighborhood",
+     "Above a Strange Neighborhood"
+    ]
+   },
+   {
+    "stage": "SandWorldSlotStage",
+    "category": "SmallStage",
+    "moons": [
+     "Sand Kingdom Slots"
+    ]
+   },
+   {
+    "stage": "SandWorldSecretStage",
+    "category": "SmallStage",
+    "moons": [
+     "Sphynx's Treasure Vault"
+    ]
+   },
+   {
+    "stage": "MeganeLiftExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Jump Onto the Transparent Lift",
+     "Where the Transparent Platforms End"
+    ]
+   },
+   {
+    "stage": "RocketFlowerExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Colossal Ruins: Dash! Jump!",
+     "Sinking Colossal Ruins: Hurry!"
+    ]
+   },
+   {
+    "stage": "WaterTubeExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Freezing Waterway: Hidden Room",
+     "Through the Freezing Waterway"
+    ]
+   },
+   {
+    "stage": "SandWorldVibrationStage",
+    "category": "SmallStage",
+    "moons": [
+     "A Rumble from the Sandy Floor"
+    ]
+   }
+  ]
+ },
+ {
+  "kingdom": "ForestWorldHomeStage",
+  "world": "Forest",
+  "areas": [
+   {
+    "stage": "ForestWorldTowerStage",
+    "category": "MainRouteStage",
+    "moons": [
+     "Stretching Your Legs",
+     "Nut Planted in the Tower"
+    ]
+   },
+   {
+    "stage": "ForestWorldWaterExStage",
+    "category": "ExStage",
+    "moons": [
+     "Flooding Pipeway",
+     "Flooding Pipeway Ceiling Secret"
+    ]
+   },
+   {
+    "stage": "ForestWorldCloudBonusExStage",
+    "category": "ExStage",
+    "moons": [
+     "Walking on Clouds",
+     "Above the Clouds"
+    ]
+   },
+   {
+    "stage": "ShootingElevatorExStage",
+    "category": "ExStage",
+    "moons": [
+     "Elevator Escalation",
+     "Elevator Blind Spot"
+    ]
+   },
+   {
+    "stage": "FogMountainExStage",
+    "category": "ExStage",
+    "moons": [
+     "Wandering in the Fog",
+     "Nut Hidden in the Fog"
+    ]
+   },
+   {
+    "stage": "ForestWorldBossStage",
+    "category": "MainRouteStage",
+    "moons": [
+     "Defend the Secret Flower Field!",
+     "Make the Secret Flower Field Bloom"
+    ]
+   },
+   {
+    "stage": "RailCollisionExStage",
+    "category": "ExStage",
+    "moons": [
+     "Flower Road Reach",
+     "Flower Road Run"
+    ]
+   },
+   {
+    "stage": "AnimalChaseExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Herding Sheep on the Iron Bridge",
+     "Herding Sheep Above the Forest Fog"
+    ]
+   },
+   {
+    "stage": "ForestWorldWoodsStage",
+    "category": "PathwayStage",
+    "moons": [
+     "Glowing in the Deep Woods",
+     "A Treasure Made from Coins",
+     "Past the Peculiar Pipes",
+     "The Hard Rock in Deep Woods",
+     "By the Babbling Brook in Deep Woods",
+     "Rolling Rock in the Deep Woods",
+     "Beneath the Roots of the Moving Tree"
+    ]
+   },
+   {
+    "stage": "ForestWorldWoodsTreasureStage",
+    "category": "SmallStage",
+    "moons": [
+     "Deep Woods Treasure Trap"
+    ]
+   },
+   {
+    "stage": "PackunPoisonExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Invisible Road: Hidden Room",
+     "Invisible Road: Danger!"
+    ]
+   },
+   {
+    "stage": "ForestWorldBonusStage",
+    "category": "SmallStage",
+    "moons": [
+     "Spinning-Platforms Treasure"
+    ]
+   },
+   {
+    "stage": "ForestWorldWoodsCostumeStage",
+    "category": "SmallStage",
+    "moons": [
+     "Exploring for Treasure"
+    ]
+   },
+   {
+    "stage": "KillerRoadExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Down and Back Breakdown Road",
+     "Below Breakdown Road"
+    ]
+   }
+  ]
+ },
+ {
+  "kingdom": "LakeWorldHomeStage",
+  "world": "Lake",
+  "areas": [
+   {
+    "stage": "LakeWorldShopStage",
+    "category": "ShopStage",
+    "moons": [
+     "Shopping in Lake Lamode"
+    ]
+   },
+   {
+    "stage": "FrogPoisonExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Waves of Poison: Hoppin' Over",
+     "Waves of Poison: Hop to It!"
+    ]
+   },
+   {
+    "stage": "TrampolineWallCatchExStage",
+    "category": "ExStage",
+    "moons": [
+     "Jump, Grab, Cling, and Climb",
+     "Jump, Grab, and Climb Some More"
+    ]
+   },
+   {
+    "stage": "GotogotonExStage",
+    "category": "SmallStage",
+    "moons": [
+     "A Successful Repair Job"
+    ]
+   },
+   {
+    "stage": "FastenerExStage",
+    "category": "ExStage",
+    "moons": [
+     "Unzip the Chasm",
+     "Super-Secret Zipper"
+    ]
+   }
+  ]
+ },
+ {
+  "kingdom": "CloudWorldHomeStage",
+  "world": "Cloud",
+  "areas": [
+   {
+    "stage": "Cube2DExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "King of the Cube!",
+     "The Sixth Face"
+    ]
+   },
+   {
+    "stage": "FukuwaraiKuriboStage",
+    "category": "MiniGame",
+    "moons": [
+     "Picture Match: Basically a Goomba",
+     "Picture Match: A Stellar Goomba!"
+    ]
+   }
+  ]
+ },
+ {
+  "kingdom": "ClashWorldHomeStage",
+  "world": "Clash",
+  "areas": [
+   {
+    "stage": "ClashWorldShopStage",
+    "category": "ShopStage",
+    "moons": [
+     "Shopping on Forgotten Isle"
+    ]
+   },
+   {
+    "stage": "ImomuPoisonExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Aglow in the Jungle",
+     "Stretch and Traverse the Jungle"
+    ]
+   },
+   {
+    "stage": "JangoExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Extremely Hot Bath",
+     "Chasing Klepto"
+    ]
+   }
+  ]
+ },
+ {
+  "kingdom": "CityWorldHomeStage",
+  "world": "City",
+  "areas": [
+   {
+    "stage": "CityWorldShop01Stage",
+    "category": "ShopStage",
+    "moons": [
+     "Shopping in New Donk City"
+    ]
+   },
+   {
+    "stage": "Note2D3DRoomExStage",
+    "category": "SmallStage",
+    "moons": [
+     "Taking Notes: In the Private Room"
+    ]
+   },
+   {
+    "stage": "CityWorldFactoryStage",
+    "category": "MainRouteStage",
+    "moons": [
+     "Powering Up the Station",
+     "Powering Up the Power Plant"
+    ]
+   },
+   {
+    "stage": "CityWorldMainTowerStage",
+    "category": "MainRouteStage",
+    "moons": [
+     "City Hall Lost & Found"
+    ]
+   },
+   {
+    "stage": "PoleKillerExStage",
+    "category": "ExStage",
+    "moons": [
+     "Bullet Billding",
+     "One Man's Trash..."
+    ]
+   },
+   {
+    "stage": "BikeSteelExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Motor Scooter Daredevil!",
+     "Full-Throttle Scooting!"
+    ]
+   },
+   {
+    "stage": "CapRotatePackunExStage",
+    "category": "ExStage",
+    "moons": [
+     "Outside the Rotating Maze",
+     "Inside the Rotating Maze"
+    ]
+   },
+   {
+    "stage": "ElectricWireExStage",
+    "category": "ExStage",
+    "moons": [
+     "Rewiring the Neighborhood",
+     "Off the Beaten Wire"
+    ]
+   },
+   {
+    "stage": "CityWorldSandSlotStage",
+    "category": "SmallStage",
+    "moons": [
+     "Metro Kingdom Slots"
+    ]
+   },
+   {
+    "stage": "RadioControlExStage",
+    "category": "MiniGame",
+    "moons": [
+     "RC Car Pro!",
+     "RC Car Champ!"
+    ]
+   },
+   {
+    "stage": "ShootingCityExStage",
+    "category": "ExStage",
+    "moons": [
+     "Moon Shards Under Siege",
+     "Sharpshooting Under Siege"
+    ]
+   },
+   {
+    "stage": "SwingSteelExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Swinging Scaffolding: Break!",
+     "Swinging Scaffolding: Jump!"
+    ]
+   },
+   {
+    "stage": "PoleGrabCeilExStage",
+    "category": "ExStage",
+    "moons": [
+     "Vaulting Up a High-Rise",
+     "Hanging from a High-Rise"
+    ]
+   },
+   {
+    "stage": "Theater2DExStage",
+    "category": "ExStage",
+    "moons": [
+     "Up on the Big Screen",
+     "Down Inside the Big Screen"
+    ]
+   },
+   {
+    "stage": "DonsukeExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Scaling Pitchblack Mountain",
+     "Reaching Pitchblack Island"
+    ]
+   },
+   {
+    "stage": "CityPeopleRoadStage",
+    "category": "PathwayStage",
+    "moons": [
+     "High Over the Crowd",
+     "Hat-and-Seek: In the Crowd",
+     "Pushing Through the Crowd"
+    ]
+   },
+   {
+    "stage": "TrexBikeExStage",
+    "category": "ExStage",
+    "moons": [
+     "Big Jump: Escape!",
+     "Motor Scooter: Escape!"
+    ]
+   }
+  ]
+ },
+ {
+  "kingdom": "SeaWorldHomeStage",
+  "world": "Sea",
+  "areas": [
+   {
+    "stage": "SeaWorldCostumeStage",
+    "category": "SmallStage",
+    "moons": [
+     "A Relaxing Dance"
+    ]
+   },
+   {
+    "stage": "WaterValleyExStage",
+    "category": "ExStage",
+    "moons": [
+     "Fly Through the Narrow Valley",
+     "Treasure Chest in the Narrow Valley"
+    ]
+   },
+   {
+    "stage": "SeaWorldSecretStage",
+    "category": "SmallStage",
+    "moons": [
+     "The Sphynx's Underwater Vault"
+    ]
+   },
+   {
+    "stage": "CloudExStage",
+    "category": "ExStage",
+    "moons": [
+     "Sunken Treasure in the Cloud Sea",
+     "Wading in the Cloud Sea"
+    ]
+   },
+   {
+    "stage": "SenobiTowerExStage",
+    "category": "ExStage",
+    "moons": [
+     "Stretch on the Side Path",
+     "Hurry and Stretch"
+    ]
+   },
+   {
+    "stage": "ReflectBombExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Aim! Poke!",
+     "Poke! Roll!"
+    ]
+   },
+   {
+    "stage": "TogezoRotateExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "The Spinning Maze: Search!",
+     "The Spinning Maze: Open!"
+    ]
+   },
+   {
+    "stage": "SeaWorldSneakingManStage",
+    "category": "SmallStage",
+    "moons": [
+     "Wriggling on the Sandy Bottom"
+    ]
+   },
+   {
+    "stage": "SeaWorldVibrationStage",
+    "category": "SmallStage",
+    "moons": [
+     "A Rumble on the Seaside Floor"
+    ]
+   }
+  ]
+ },
+ {
+  "kingdom": "SnowWorldHomeStage",
+  "world": "Snow",
+  "areas": [
+   {
+    "stage": "IceWaterBlockExStage",
+    "category": "ExStage",
+    "moons": [
+     "Freezing Water Near the Ceiling",
+     "Jump 'n' Swim in the Freezing Water"
+    ]
+   },
+   {
+    "stage": "SnowWorldTownStage",
+    "category": "MainRouteStage",
+    "moons": [
+     "The Ice Wall Barrier",
+     "The Shiverian Treasure Chest",
+     "Entrance to Shiveria",
+     "Shining in the Snow in Town",
+     "Found with Snow Kingdom Art",
+     "The Icicle Barrier",
+     "I'm Not Cold!",
+     "The Gusty Barrier",
+     "The Snowy Mountain Barrier",
+     "Peach in the Snow Kingdom"
+    ]
+   },
+   {
+    "stage": "ByugoPuzzleExStage",
+    "category": "ExStage",
+    "moons": [
+     "Blowing and Sliding"
+    ]
+   },
+   {
+    "stage": "IceWaterDashExStage",
+    "category": "ExStage",
+    "moons": [
+     "Dashing Over Cold Water!",
+     "Dashing Above and Beyond!"
+    ]
+   },
+   {
+    "stage": "KillerRailCollisionExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Running the Flower Road",
+     "Looking Back on the Flower Road"
+    ]
+   },
+   {
+    "stage": "SnowWorldCloudBonusExStage",
+    "category": "ExStage",
+    "moons": [
+     "High-Altitude Spinning",
+     "Spinning Above the Clouds"
+    ]
+   },
+   {
+    "stage": "SnowWorldLobby000Stage",
+    "category": "MainRouteStage",
+    "moons": [
+     "Forgotten in the Holding Room",
+     "Snowline Circuit Class S",
+     "Hat-and-Seek in the Snow"
+    ]
+   },
+   {
+    "stage": "SnowWorldLobby001Stage",
+    "category": "MainRouteStage",
+    "moons": [
+     "The Bound Bowl Grand Prix"
+    ]
+   },
+   {
+    "stage": "SnowWorldShopStage",
+    "category": "ShopStage",
+    "moons": [
+     "Shopping in Shiveria"
+    ]
+   },
+   {
+    "stage": "SnowWorldRace000Stage",
+    "category": "MainRouteStage",
+    "moons": []
+   },
+   {
+    "stage": "IceWalkerExStage",
+    "category": "MiniGame",
+    "moons": [
+     "Walking on Ice!",
+     "Even More Walking on Ice!"
+    ]
+   },
+   {
+    "stage": "SnowWorldLobbyExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Iceburn Circuit Class A",
+     "Iceburn Circuit Class S"
+    ]
+   },
+   {
+    "stage": "SnowWorldRaceExStage",
+    "category": "MoonExStage",
+    "moons": []
+   },
+   {
+    "stage": "SnowWorldCostumeStage",
+    "category": "ExStage",
+    "moons": [
+     "Moon Shards in the Cold Room",
+     "Slip Behind the Ice"
+    ]
+   },
+   {
+    "stage": "SnowWorldRaceTutorialStage",
+    "category": "MainRouteStage",
+    "moons": []
+   },
+   {
+    "stage": "SnowWorldRace001Stage",
+    "category": "ExStage",
+    "moons": []
+   },
+   {
+    "stage": "SnowWorldRaceHardExStage",
+    "category": "MoonExStage",
+    "moons": []
+   }
+  ]
+ },
+ {
+  "kingdom": "LavaWorldHomeStage",
+  "world": "Lava",
+  "areas": [
+   {
+    "stage": "LavaWorldUpDownExStage",
+    "category": "ExStage",
+    "moons": [
+     "Magma Swamp: Floating and Sinking",
+     "Corner of the Magma Swamp"
+    ]
+   },
+   {
+    "stage": "LavaWorldBubbleLaneExStage",
+    "category": "ExStage",
+    "moons": [
+     "Magma Narrow Path",
+     "Crossing to the Magma"
+    ]
+   },
+   {
+    "stage": "LavaWorldFenceLiftExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Treasure of the Lava Islands",
+     "Flying Over the Lava Islands"
+    ]
+   },
+   {
+    "stage": "LavaWorldClockExStage",
+    "category": "ExStage",
+    "moons": [
+     "Taking Notes: Spinning Athletics",
+     "Spinning Athletics End Goal"
+    ]
+   },
+   {
+    "stage": "LavaWorldExcavationExStage",
+    "category": "ExStage",
+    "moons": [
+     "Excavate 'n' Search the Cheese Rocks",
+     "Climb the Cheese Rocks"
+    ]
+   },
+   {
+    "stage": "LavaWorldShopStage",
+    "category": "ShopStage",
+    "moons": [
+     "Shopping in Mount Volbono"
+    ]
+   },
+   {
+    "stage": "CapAppearLavaLiftExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Volcano Cave Cruisin'",
+     "Volcano Cave and Mysterious Clouds"
+    ]
+   },
+   {
+    "stage": "ForkExStage",
+    "category": "ExStage",
+    "moons": [
+     "Fork Flickin' to the Summit",
+     "Fork Flickin' Detour"
+    ]
+   },
+   {
+    "stage": "GabuzouClockExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Stepping Over the Gears",
+     "Lanterns on the Gear Steps"
+    ]
+   },
+   {
+    "stage": "LavaWorldTreasureStage",
+    "category": "SmallStage",
+    "moons": [
+     "The Treasure Chest in the Veggies"
+    ]
+   },
+   {
+    "stage": "LavaWorldCostumeStage",
+    "category": "SmallStage",
+    "moons": [
+     "A Strong Simmer",
+     "An Extreme Simmer"
+    ]
+   }
+  ]
+ },
+ {
+  "kingdom": "BossRaidWorldHomeStage",
+  "world": "Attack",
+  "areas": [
+   {
+    "stage": "BullRunExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "The Mummy Army's Curse",
+     "Charging Through an Army"
+    ]
+   },
+   {
+    "stage": "DotTowerExStage",
+    "category": "ExStage",
+    "moons": [
+     "Roulette Tower: Climbed",
+     "Roulette Tower: Stopped"
+    ]
+   }
+  ]
+ },
+ {
+  "kingdom": "SkyWorldHomeStage",
+  "world": "Sky",
+  "areas": [
+   {
+    "stage": "SkyWorldShopStage",
+    "category": "ShopStage",
+    "moons": [
+     "Shopping at Bowser's Castle"
+    ]
+   },
+   {
+    "stage": "SkyWorldCostumeStage",
+    "category": "ExStage",
+    "moons": [
+     "Taking Notes: In the Folding Screen",
+     "Scene of Crossing the Poison Swamp"
+    ]
+   },
+   {
+    "stage": "TsukkunClimbExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Climb the Wooden Tower",
+     "Poke the Wooden Tower"
+    ]
+   },
+   {
+    "stage": "TsukkunRotateExStage",
+    "category": "ExStage",
+    "moons": [
+     "On Top of the Spinning Tower",
+     "Down and Up the Spinning Tower"
+    ]
+   },
+   {
+    "stage": "JizoSwitchExStage",
+    "category": "ExStage",
+    "moons": [
+     "Jizo's Big Adventure",
+     "Jizo and the Hidden Room"
+    ]
+   },
+   {
+    "stage": "SkyWorldCloudBonusExStage",
+    "category": "ExStage",
+    "moons": [
+     "Dashing Through the Clouds",
+     "Dashing Above the Clouds"
+    ]
+   },
+   {
+    "stage": "KaronWingTowerStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Searching Hexagon Tower",
+     "Center of Hexagon Tower"
+    ]
+   },
+   {
+    "stage": "SkyWorldTreasureStage",
+    "category": "SmallStage",
+    "moons": [
+     "Bowser's Castle Treasure Vault"
+    ]
+   }
+  ]
+ },
+ {
+  "kingdom": "MoonWorldHomeStage",
+  "world": "Moon",
+  "areas": [
+   {
+    "stage": "MoonWorldWeddingRoomStage",
+    "category": "MainRouteStage",
+    "moons": [
+     "Up in the Rafters"
+    ]
+   },
+   {
+    "stage": "MoonWorldShopRoom",
+    "category": "ShopStage",
+    "moons": [
+     "Shopping in Honeylune Ridge"
+    ]
+   },
+   {
+    "stage": "MoonWorldSphinxRoom",
+    "category": "SmallStage",
+    "moons": [
+     "Sphynx's Hidden Vault"
+    ]
+   },
+   {
+    "stage": "MoonWorldCaptureParadeStage",
+    "category": "MainRouteStage",
+    "moons": [
+     "Fly to the Treasure Chest and Back",
+     "Under the Bowser Statue"
+    ]
+   },
+   {
+    "stage": "MoonAthleticExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "A Swing on Top of a Swing",
+     "Navigating Giant Swings"
+    ]
+   },
+   {
+    "stage": "Galaxy2DExStage",
+    "category": "MoonExStage",
+    "moons": [
+     "Center of the Galaxy",
+     "Edge of the Galaxy"
+    ]
+   },
+   {
+    "stage": "MoonWorldBasementStage",
+    "category": "MainRouteStage",
+    "moons": []
+   },
+   {
+    "stage": "MoonWorldKoopa1Stage",
+    "category": "MainRouteStage",
+    "moons": []
+   },
+   {
+    "stage": "MoonWorldKoopa2Stage",
+    "category": "MainRouteStage",
+    "moons": []
+   },
+   {
+    "stage": "MoonWorldWeddingRoom2Stage",
+    "category": "BossRevenge",
+    "moons": []
+   }
+  ]
+ },
+ {
+  "kingdom": "PeachWorldHomeStage",
+  "world": "Peach",
+  "areas": [
+   {
+    "stage": "PeachWorldCastleStage",
+    "category": "MainRouteStage",
+    "moons": [
+     "Found with Mushroom Kingdom Art",
+     "Loose-Tile Trackdown",
+     "Light from the Ceiling"
+    ]
+   },
+   {
+    "stage": "PeachWorldPictureBossMagmaStage",
+    "category": "SmallStage",
+    "moons": []
+   },
+   {
+    "stage": "PeachWorldPictureMofumofuStage",
+    "category": "SmallStage",
+    "moons": []
+   },
+   {
+    "stage": "PeachWorldPictureBossRaidStage",
+    "category": "SmallStage",
+    "moons": []
+   },
+   {
+    "stage": "PeachWorldPictureBossForestStage",
+    "category": "SmallStage",
+    "moons": []
+   },
+   {
+    "stage": "PeachWorldPictureBossKnuckleStage",
+    "category": "SmallStage",
+    "moons": []
+   },
+   {
+    "stage": "PeachWorldPictureGiantWanderBossStage",
+    "category": "SmallStage",
+    "moons": []
+   },
+   {
+    "stage": "PeachWorldShopStage",
+    "category": "ShopStage",
+    "moons": [
+     "Shopping Near Peach's Castle"
+    ]
+   },
+   {
+    "stage": "PeachWorldCostumeStage",
+    "category": "SmallStage",
+    "moons": [
+     "Courtyard Chest Trap",
+     "Totally Classic!"
+    ]
+   },
+   {
+    "stage": "YoshiCloudExStage",
+    "category": "ExStage",
+    "moons": [
+     "Yoshi's Feast in the Sea of Clouds",
+     "Sunken Star in the Sea of Clouds"
+    ]
+   },
+   {
+    "stage": "FukuwaraiMarioStage",
+    "category": "MiniGame",
+    "moons": [
+     "Picture Match: Basically Mario",
+     "Picture Match: A Stellar Mario!"
+    ]
+   },
+   {
+    "stage": "DotHardExStage",
+    "category": "ExStage",
+    "moons": [
+     "Secret 2D Treasure",
+     "2D Boost from Bullet Bill"
+    ]
+   },
+   {
+    "stage": "RevengeMofumofuStage",
+    "category": "BossRevenge",
+    "moons": [
+     "Dust-Up in New Donk City: Rematch"
+    ]
+   },
+   {
+    "stage": "RevengeBossMagmaStage",
+    "category": "BossRevenge",
+    "moons": [
+     "Blowup at Mount Volbono: Rematch"
+    ]
+   },
+   {
+    "stage": "RevengeForestBossStage",
+    "category": "BossRevenge",
+    "moons": [
+     "Struggle in Steam Gardens: Rematch"
+    ]
+   },
+   {
+    "stage": "RevengeBossRaidStage",
+    "category": "BossRevenge",
+    "moons": [
+     "Rumble in Crumbleden: Rematch"
+    ]
+   },
+   {
+    "stage": "RevengeBossKnuckleStage",
+    "category": "BossRevenge",
+    "moons": [
+     "Tussle in Tostarena: Rematch"
+    ]
+   },
+   {
+    "stage": "RevengeGiantWanderBossStage",
+    "category": "BossRevenge",
+    "moons": [
+     "Battle in Bubblaine: Rematch"
+    ]
+   }
+  ]
+ },
+ {
+  "kingdom": "Special1WorldHomeStage",
+  "world": "Special1",
+  "areas": [
+   {
+    "stage": "PackunPoisonNoCapExStage",
+    "category": "MoonFarSideExStage",
+    "moons": [
+     "Invisible Road: Rush!",
+     "Invisible Road: Secret!"
+    ]
+   },
+   {
+    "stage": "KillerRoadNoCapExStage",
+    "category": "MoonFarSideExStage",
+    "moons": [
+     "Breakdown Road: Final Challenge!",
+     "Breakdown Road: Hurry!"
+    ]
+   },
+   {
+    "stage": "BikeSteelNoCapExStage",
+    "category": "MoonFarSideExStage",
+    "moons": [
+     "Vanishing Road Challenge",
+     "Vanishing Road Rush"
+    ]
+   },
+   {
+    "stage": "SenobiTowerYoshiExStage",
+    "category": "MoonFarSideExStage",
+    "moons": [
+     "Fruit Feast on the Sinking Island",
+     "Yoshi on the Sinking Island"
+    ]
+   },
+   {
+    "stage": "ShootingCityYoshiExStage",
+    "category": "MoonFarSideExStage",
+    "moons": [
+     "Fruit Feast Under Siege",
+     "Yoshi Under Siege"
+    ]
+   },
+   {
+    "stage": "LavaWorldUpDownYoshiExStage",
+    "category": "MoonFarSideExStage",
+    "moons": [
+     "Yoshi's Magma Swamp",
+     "Fruit Feast in the Magma Swamp!"
+    ]
+   },
+   {
+    "stage": "Special1WorldTowerStackerStage",
+    "category": "MainRouteStage",
+    "moons": []
+   },
+   {
+    "stage": "Special1WorldTowerBombTailStage",
+    "category": "MainRouteStage",
+    "moons": []
+   },
+   {
+    "stage": "Special1WorldTowerFireBlowerStage",
+    "category": "MainRouteStage",
+    "moons": []
+   },
+   {
+    "stage": "Special1WorldTowerCapThrowerStage",
+    "category": "MainRouteStage",
+    "moons": []
+   }
+  ]
+ },
+ {
+  "kingdom": "Special2WorldHomeStage",
+  "world": "Special2",
+  "areas": [
+   {
+    "stage": "Special2WorldKoopaStage",
+    "category": "MainRouteStage",
+    "moons": []
+   },
+   {
+    "stage": "Special2WorldLavaStage",
+    "category": "MainRouteStage",
+    "moons": []
+   },
+   {
+    "stage": "Special2WorldCloudStage",
+    "category": "MainRouteStage",
+    "moons": []
+   }
+  ]
+ }
+]

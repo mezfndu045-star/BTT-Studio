@@ -1,0 +1,626 @@
+{
+ "PoisonWaveExStage": {
+  "moon": "Skimming the Poison Tide",
+  "url": "https://mario.wiki.gallery/images/thumb/a/a0/SMO_Cap_Moon_6.png/384px-SMO_Cap_Moon_6.png"
+ },
+ "PushBlockExStage": {
+  "moon": "Push-Block Peril",
+  "url": "https://mario.wiki.gallery/images/thumb/c/cd/SMO_Cap_Moon_8.png/384px-SMO_Cap_Moon_8.png"
+ },
+ "FrogSearchExStage": {
+  "moon": "Secrets of the Frog Pond",
+  "url": "https://mario.wiki.gallery/images/thumb/f/f0/SMO_Cap_Moon_11.png/384px-SMO_Cap_Moon_11.png"
+ },
+ "CapWorldTowerStage": {
+  "page": "Top-Hat Tower",
+  "url": "https://mario.wiki.gallery/images/thumb/f/f8/TopHatTower-Plaza.jpg/384px-TopHatTower-Plaza.jpg"
+ },
+ "RollingExStage": {
+  "moon": "Precision Rolling",
+  "url": "https://mario.wiki.gallery/images/thumb/a/a2/SMO_Cap_Moon_31.png/384px-SMO_Cap_Moon_31.png"
+ },
+ "CapAppearExStage": {
+  "moon": "Across the Mysterious Clouds",
+  "url": "https://mario.wiki.gallery/images/thumb/f/fd/SMO_Cascade_Moon_37.png/384px-SMO_Cascade_Moon_37.png"
+ },
+ "WanwanClashExStage": {
+  "moon": "Nice Shot with the Chain Chomp!",
+  "url": "https://mario.wiki.gallery/images/thumb/a/a3/SMO_Cascade_Moon_14.png/384px-SMO_Cascade_Moon_14.png"
+ },
+ "Lift2DExStage": {
+  "moon": "Hidden Chasm Passage",
+  "url": "https://mario.wiki.gallery/images/thumb/f/f0/SMO_Cascade_Moon_17.png/384px-SMO_Cascade_Moon_17.png"
+ },
+ "WindBlowExStage": {
+  "moon": "Flying Far Away from Gusty Bridges",
+  "url": "https://mario.wiki.gallery/images/thumb/c/ca/SMO_Cascade_Moon_40.png/384px-SMO_Cascade_Moon_40.png"
+ },
+ "TrexPoppunExStage": {
+  "moon": "Dinosaur Nest: Big Cleanup!",
+  "url": "https://mario.wiki.gallery/images/thumb/3/35/SMO_Cascade_Moon_12.png/384px-SMO_Cascade_Moon_12.png"
+ },
+ "SandWorldMeganeExStage": {
+  "moon": "The Invisible Maze",
+  "url": "https://mario.wiki.gallery/images/thumb/a/ae/SMO_Sand_Moon_54.png/384px-SMO_Sand_Moon_54.png"
+ },
+ "SandWorldSphinxExStage": {
+  "moon": "Jaxi Stunt Driving",
+  "url": "https://mario.wiki.gallery/images/thumb/a/ad/SMO_Sand_Moon_59.png/384px-SMO_Sand_Moon_59.png"
+ },
+ "SandWorldUnderground000Stage": {
+  "moon": "Underground Treasure Chest",
+  "url": "https://mario.wiki.gallery/images/thumb/8/8d/SMO_Sand_Moon_47.png/384px-SMO_Sand_Moon_47.png"
+ },
+ "SandWorldKillerExStage": {
+  "moon": "The Bullet Bill Maze: Side Path",
+  "url": "https://mario.wiki.gallery/images/thumb/e/ec/SMO_Sand_Moon_57.png/384px-SMO_Sand_Moon_57.png"
+ },
+ "SandWorldShopStage": {
+  "moon": "Employees Only",
+  "url": "https://mario.wiki.gallery/images/thumb/7/7c/SMO_Sand_Moon_43.png/384px-SMO_Sand_Moon_43.png"
+ },
+ "SandWorldPressExStage": {
+  "moon": "Ice Cave Treasure",
+  "url": "https://mario.wiki.gallery/images/thumb/f/fa/SMO_Sand_Moon_50.png/384px-SMO_Sand_Moon_50.png"
+ },
+ "SandWorldPyramid000Stage": {
+  "page": "Inverted Pyramid",
+  "url": "https://mario.wiki.gallery/images/thumb/2/27/SMO_Sand_Brochure_D.png/384px-SMO_Sand_Brochure_D.png"
+ },
+ "SandWorldPyramid001Stage": {
+  "moon": "Hidden Room in the Inverted Pyramid",
+  "url": "https://mario.wiki.gallery/images/thumb/b/b3/SMO_Sand_Moon_46.png/384px-SMO_Sand_Moon_46.png"
+ },
+ "SandWorldCostumeStage": {
+  "moon": "Dancing with New Friends",
+  "url": "https://mario.wiki.gallery/images/thumb/b/bd/SMO_Sand_Moon_53.png/384px-SMO_Sand_Moon_53.png"
+ },
+ "SandWorldUnderground001Stage": {
+  "moon": "The Hole in the Desert",
+  "url": "https://mario.wiki.gallery/images/thumb/6/65/SMO_Sand_Moon_4.png/384px-SMO_Sand_Moon_4.png"
+ },
+ "SandWorldRotateExStage": {
+  "moon": "Strange Neighborhood",
+  "url": "https://mario.wiki.gallery/images/thumb/8/80/SMO_Sand_Moon_60.png/384px-SMO_Sand_Moon_60.png"
+ },
+ "SandWorldSlotStage": {
+  "moon": "Sand Kingdom Slots",
+  "url": "https://mario.wiki.gallery/images/thumb/2/23/SMO_Sand_Moon_44.png/384px-SMO_Sand_Moon_44.png"
+ },
+ "SandWorldSecretStage": {
+  "moon": "Sphynx's Treasure Vault",
+  "url": "https://mario.wiki.gallery/images/thumb/9/96/SMO_Sand_Moon_51.png/384px-SMO_Sand_Moon_51.png"
+ },
+ "MeganeLiftExStage": {
+  "moon": "Jump Onto the Transparent Lift",
+  "url": "https://mario.wiki.gallery/images/thumb/f/f8/SMO_Sand_Moon_85.png/384px-SMO_Sand_Moon_85.png"
+ },
+ "RocketFlowerExStage": {
+  "moon": "Colossal Ruins: Dash! Jump!",
+  "url": "https://mario.wiki.gallery/images/thumb/3/33/SMO_Sand_Moon_86.png/384px-SMO_Sand_Moon_86.png"
+ },
+ "WaterTubeExStage": {
+  "moon": "Freezing Waterway: Hidden Room",
+  "url": "https://mario.wiki.gallery/images/thumb/6/6a/SMO_Sand_Moon_89.png/384px-SMO_Sand_Moon_89.png"
+ },
+ "SandWorldVibrationStage": {
+  "moon": "A Rumble from the Sandy Floor",
+  "url": "https://mario.wiki.gallery/images/thumb/3/31/SMO_Sand_Moon_52.png/384px-SMO_Sand_Moon_52.png"
+ },
+ "ForestWorldTowerStage": {
+  "moon": "Stretching Your Legs",
+  "url": "https://mario.wiki.gallery/images/thumb/0/0f/SMO_Wooded_Moon_25.png/384px-SMO_Wooded_Moon_25.png"
+ },
+ "ForestWorldWaterExStage": {
+  "moon": "Flooding Pipeway",
+  "url": "https://mario.wiki.gallery/images/thumb/3/36/SMO_Wooded_Moon_39.png/384px-SMO_Wooded_Moon_39.png"
+ },
+ "ForestWorldCloudBonusExStage": {
+  "moon": "Walking on Clouds",
+  "url": "https://mario.wiki.gallery/images/thumb/b/bc/SMO_Wooded_Moon_47.png/384px-SMO_Wooded_Moon_47.png"
+ },
+ "ShootingElevatorExStage": {
+  "moon": "Elevator Escalation",
+  "url": "https://mario.wiki.gallery/images/thumb/2/24/SMO_Wooded_Moon_45.png/384px-SMO_Wooded_Moon_45.png"
+ },
+ "FogMountainExStage": {
+  "moon": "Wandering in the Fog",
+  "url": "https://mario.wiki.gallery/images/thumb/b/bf/SMO_Wooded_Moon_41.png/384px-SMO_Wooded_Moon_41.png"
+ },
+ "ForestWorldBossStage": {
+  "moon": "Defend the Secret Flower Field!",
+  "url": "https://mario.wiki.gallery/images/thumb/4/44/SMO_Wooded_Moon_4.png/384px-SMO_Wooded_Moon_4.png"
+ },
+ "RailCollisionExStage": {
+  "moon": "Flower Road Reach",
+  "url": "https://mario.wiki.gallery/images/thumb/4/4e/SMO_Wooded_Moon_44.png/384px-SMO_Wooded_Moon_44.png"
+ },
+ "AnimalChaseExStage": {
+  "moon": "Herding Sheep on the Iron Bridge",
+  "url": "https://mario.wiki.gallery/images/thumb/7/77/SMO_Wooded_Moon_74.png/384px-SMO_Wooded_Moon_74.png"
+ },
+ "ForestWorldWoodsStage": {
+  "moon": "Glowing in the Deep Woods",
+  "url": "https://mario.wiki.gallery/images/thumb/1/12/SMO_Wooded_Moon_29.png/384px-SMO_Wooded_Moon_29.png"
+ },
+ "ForestWorldWoodsTreasureStage": {
+  "moon": "Deep Woods Treasure Trap",
+  "url": "https://mario.wiki.gallery/images/thumb/7/77/SMO_Wooded_Moon_35.png/384px-SMO_Wooded_Moon_35.png"
+ },
+ "PackunPoisonExStage": {
+  "moon": "Invisible Road: Hidden Room",
+  "url": "https://mario.wiki.gallery/images/thumb/3/35/SMO_Wooded_Moon_72.png/384px-SMO_Wooded_Moon_72.png"
+ },
+ "ForestWorldBonusStage": {
+  "moon": "Spinning-Platforms Treasure",
+  "url": "https://mario.wiki.gallery/images/thumb/0/05/SMO_Wooded_Moon_26.png/384px-SMO_Wooded_Moon_26.png"
+ },
+ "ForestWorldWoodsCostumeStage": {
+  "moon": "Exploring for Treasure",
+  "url": "https://mario.wiki.gallery/images/thumb/9/99/SMO_Wooded_Moon_36.png/384px-SMO_Wooded_Moon_36.png"
+ },
+ "KillerRoadExStage": {
+  "moon": "Down and Back Breakdown Road",
+  "url": "https://mario.wiki.gallery/images/thumb/2/2c/SMO_Wooded_Moon_75.png/384px-SMO_Wooded_Moon_75.png"
+ },
+ "LakeWorldShopStage": {
+  "moon": "Shopping in Lake Lamode",
+  "url": "https://mario.wiki.gallery/images/thumb/f/fa/SMO_Lake_Moon_19.png/384px-SMO_Lake_Moon_19.png"
+ },
+ "FrogPoisonExStage": {
+  "moon": "Waves of Poison: Hoppin' Over",
+  "url": "https://mario.wiki.gallery/images/thumb/d/d7/SMO_Lake_Moon_41.png/384px-SMO_Lake_Moon_41.png"
+ },
+ "TrampolineWallCatchExStage": {
+  "moon": "Jump, Grab, Cling, and Climb",
+  "url": "https://mario.wiki.gallery/images/thumb/3/37/SMO_Lake_Moon_24.png/384px-SMO_Lake_Moon_24.png"
+ },
+ "GotogotonExStage": {
+  "moon": "A Successful Repair Job",
+  "url": "https://mario.wiki.gallery/images/thumb/2/20/SMO_Lake_Moon_20.png/384px-SMO_Lake_Moon_20.png"
+ },
+ "FastenerExStage": {
+  "moon": "Unzip the Chasm",
+  "url": "https://mario.wiki.gallery/images/thumb/8/89/SMO_Lake_Moon_22.png/384px-SMO_Lake_Moon_22.png"
+ },
+ "Cube2DExStage": {
+  "moon": "King of the Cube!",
+  "url": "https://mario.wiki.gallery/images/thumb/4/42/SMO_Cloud_Moon_8.png/384px-SMO_Cloud_Moon_8.png"
+ },
+ "FukuwaraiKuriboStage": {
+  "moon": "Picture Match: Basically a Goomba",
+  "url": "https://mario.wiki.gallery/images/thumb/7/78/SMO_Cloud_Moon_1.png/384px-SMO_Cloud_Moon_1.png"
+ },
+ "ClashWorldShopStage": {
+  "moon": "Shopping on Forgotten Isle",
+  "url": "https://mario.wiki.gallery/images/thumb/6/63/SMO_Lost_Moon_21.png/384px-SMO_Lost_Moon_21.png"
+ },
+ "ImomuPoisonExStage": {
+  "moon": "Aglow in the Jungle",
+  "url": "https://mario.wiki.gallery/images/thumb/6/6b/SMO_Lost_Moon_33.png/384px-SMO_Lost_Moon_33.png"
+ },
+ "JangoExStage": {
+  "moon": "Extremely Hot Bath",
+  "url": "https://mario.wiki.gallery/images/thumb/9/98/SMO_Lost_Moon_35.png/384px-SMO_Lost_Moon_35.png"
+ },
+ "CityWorldShop01Stage": {
+  "moon": "Shopping in New Donk City",
+  "url": "https://mario.wiki.gallery/images/thumb/2/2b/SMO_Metro_Moon_27.png/384px-SMO_Metro_Moon_27.png"
+ },
+ "Note2D3DRoomExStage": {
+  "moon": "Taking Notes: In the Private Room",
+  "url": "https://mario.wiki.gallery/images/thumb/3/37/SMO_Metro_Moon_33.png/384px-SMO_Metro_Moon_33.png"
+ },
+ "CityWorldFactoryStage": {
+  "moon": "Powering Up the Station",
+  "url": "https://mario.wiki.gallery/images/thumb/6/65/SMO_Metro_Moon_6.png/384px-SMO_Metro_Moon_6.png"
+ },
+ "CityWorldMainTowerStage": {
+  "moon": "City Hall Lost & Found",
+  "url": "https://mario.wiki.gallery/images/thumb/9/97/SMO_Metro_Moon_34.png/384px-SMO_Metro_Moon_34.png"
+ },
+ "PoleKillerExStage": {
+  "moon": "Bullet Billding",
+  "url": "https://mario.wiki.gallery/images/thumb/5/5e/SMO_Metro_Moon_47.png/384px-SMO_Metro_Moon_47.png"
+ },
+ "BikeSteelExStage": {
+  "moon": "Motor Scooter Daredevil!",
+  "url": "https://mario.wiki.gallery/images/thumb/3/3d/SMO_Metro_Moon_80.png/384px-SMO_Metro_Moon_80.png"
+ },
+ "CapRotatePackunExStage": {
+  "moon": "Outside the Rotating Maze",
+  "url": "https://mario.wiki.gallery/images/thumb/6/6a/SMO_Metro_Moon_44.png/384px-SMO_Metro_Moon_44.png"
+ },
+ "ElectricWireExStage": {
+  "moon": "Rewiring the Neighborhood",
+  "url": "https://mario.wiki.gallery/images/thumb/a/af/SMO_Metro_Moon_39.png/384px-SMO_Metro_Moon_39.png"
+ },
+ "CityWorldSandSlotStage": {
+  "moon": "Metro Kingdom Slots",
+  "url": "https://mario.wiki.gallery/images/thumb/1/1a/SMO_Metro_Moon_28.png/384px-SMO_Metro_Moon_28.png"
+ },
+ "RadioControlExStage": {
+  "moon": "RC Car Pro!",
+  "url": "https://mario.wiki.gallery/images/thumb/8/88/SMO_Metro_Moon_32.png/384px-SMO_Metro_Moon_32.png"
+ },
+ "ShootingCityExStage": {
+  "moon": "Moon Shards Under Siege",
+  "url": "https://mario.wiki.gallery/images/thumb/2/2a/SMO_Metro_Moon_41.png/384px-SMO_Metro_Moon_41.png"
+ },
+ "SwingSteelExStage": {
+  "moon": "Swinging Scaffolding: Break!",
+  "url": "https://mario.wiki.gallery/images/thumb/c/c7/SMO_Metro_Moon_79.png/384px-SMO_Metro_Moon_79.png"
+ },
+ "PoleGrabCeilExStage": {
+  "moon": "Vaulting Up a High-Rise",
+  "url": "https://mario.wiki.gallery/images/thumb/3/32/SMO_Metro_Moon_46.png/384px-SMO_Metro_Moon_46.png"
+ },
+ "Theater2DExStage": {
+  "moon": "Up on the Big Screen",
+  "url": "https://mario.wiki.gallery/images/thumb/a/a1/SMO_Metro_Moon_64.png/384px-SMO_Metro_Moon_64.png"
+ },
+ "DonsukeExStage": {
+  "moon": "Scaling Pitchblack Mountain",
+  "url": "https://mario.wiki.gallery/images/thumb/8/8b/SMO_Metro_Moon_76.png/384px-SMO_Metro_Moon_76.png"
+ },
+ "CityPeopleRoadStage": {
+  "moon": "High Over the Crowd",
+  "url": "https://mario.wiki.gallery/images/thumb/e/e0/SMO_Metro_Moon_38.png/384px-SMO_Metro_Moon_38.png"
+ },
+ "TrexBikeExStage": {
+  "moon": "Big Jump: Escape!",
+  "url": "https://mario.wiki.gallery/images/thumb/0/05/SMO_Metro_Moon_50.png/384px-SMO_Metro_Moon_50.png"
+ },
+ "SeaWorldCostumeStage": {
+  "moon": "A Relaxing Dance",
+  "url": "https://mario.wiki.gallery/images/thumb/c/c9/SMO_Seaside_Moon_42.png/384px-SMO_Seaside_Moon_42.png"
+ },
+ "WaterValleyExStage": {
+  "moon": "Fly Through the Narrow Valley",
+  "url": "https://mario.wiki.gallery/images/thumb/b/b8/SMO_Seaside_Moon_45.png/384px-SMO_Seaside_Moon_45.png"
+ },
+ "SeaWorldSecretStage": {
+  "moon": "The Sphynx's Underwater Vault",
+  "url": "https://mario.wiki.gallery/images/thumb/5/54/SMO_Seaside_Moon_40.png/384px-SMO_Seaside_Moon_40.png"
+ },
+ "CloudExStage": {
+  "moon": "Sunken Treasure in the Cloud Sea",
+  "url": "https://mario.wiki.gallery/images/thumb/c/c6/SMO_Seaside_Moon_44.png/384px-SMO_Seaside_Moon_44.png"
+ },
+ "SenobiTowerExStage": {
+  "moon": "Stretch on the Side Path",
+  "url": "https://mario.wiki.gallery/images/thumb/0/0f/SMO_Seaside_Moon_48.png/384px-SMO_Seaside_Moon_48.png"
+ },
+ "ReflectBombExStage": {
+  "moon": "Aim! Poke!",
+  "url": "https://mario.wiki.gallery/images/thumb/c/c3/SMO_Seaside_Moon_68.png/384px-SMO_Seaside_Moon_68.png"
+ },
+ "TogezoRotateExStage": {
+  "moon": "The Spinning Maze: Search!",
+  "url": "https://mario.wiki.gallery/images/thumb/1/1e/SMO_Seaside_Moon_70.png/384px-SMO_Seaside_Moon_70.png"
+ },
+ "SeaWorldSneakingManStage": {
+  "moon": "Wriggling on the Sandy Bottom",
+  "url": "https://mario.wiki.gallery/images/thumb/6/6e/SMO_Seaside_Moon_20.png/384px-SMO_Seaside_Moon_20.png"
+ },
+ "SeaWorldVibrationStage": {
+  "moon": "A Rumble on the Seaside Floor",
+  "url": "https://mario.wiki.gallery/images/thumb/9/9e/SMO_Seaside_Moon_41.png/384px-SMO_Seaside_Moon_41.png"
+ },
+ "IceWaterBlockExStage": {
+  "moon": "Freezing Water Near the Ceiling",
+  "url": "https://mario.wiki.gallery/images/thumb/7/7d/SMO_Snow_Moon_27.png/384px-SMO_Snow_Moon_27.png"
+ },
+ "SnowWorldTownStage": {
+  "moon": "The Ice Wall Barrier",
+  "url": "https://mario.wiki.gallery/images/thumb/4/41/SMO_Snow_Moon_2.png/384px-SMO_Snow_Moon_2.png"
+ },
+ "ByugoPuzzleExStage": {
+  "moon": "Blowing and Sliding",
+  "url": "https://mario.wiki.gallery/images/thumb/d/d3/SMO_Snow_Moon_28.png/384px-SMO_Snow_Moon_28.png"
+ },
+ "IceWaterDashExStage": {
+  "moon": "Dashing Over Cold Water!",
+  "url": "https://mario.wiki.gallery/images/thumb/1/17/SMO_Snow_Moon_24.png/384px-SMO_Snow_Moon_24.png"
+ },
+ "KillerRailCollisionExStage": {
+  "moon": "Running the Flower Road",
+  "url": "https://mario.wiki.gallery/images/thumb/f/fd/SMO_Snow_Moon_54.png/384px-SMO_Snow_Moon_54.png"
+ },
+ "SnowWorldCloudBonusExStage": {
+  "moon": "High-Altitude Spinning",
+  "url": "https://mario.wiki.gallery/images/thumb/9/90/SMO_Snow_Moon_32.png/384px-SMO_Snow_Moon_32.png"
+ },
+ "SnowWorldLobby000Stage": {
+  "moon": "Forgotten in the Holding Room",
+  "url": "https://mario.wiki.gallery/images/thumb/f/f6/SMO_Snow_Moon_42.png/384px-SMO_Snow_Moon_42.png"
+ },
+ "SnowWorldLobby001Stage": {
+  "moon": "The Bound Bowl Grand Prix",
+  "url": "https://mario.wiki.gallery/images/thumb/6/62/SMO_Snow_Moon_5.png/384px-SMO_Snow_Moon_5.png"
+ },
+ "SnowWorldShopStage": {
+  "moon": "Shopping in Shiveria",
+  "url": "https://mario.wiki.gallery/images/thumb/f/f3/SMO_Snow_Moon_21.png/384px-SMO_Snow_Moon_21.png"
+ },
+ "SnowWorldRace000Stage": {
+  "page": "Bound Bowl Grand Prix",
+  "url": "https://mario.wiki.gallery/images/thumb/0/0c/BoundBowlGrandPrix.png/384px-BoundBowlGrandPrix.png"
+ },
+ "IceWalkerExStage": {
+  "moon": "Walking on Ice!",
+  "url": "https://mario.wiki.gallery/images/thumb/6/6e/SMO_Snow_Moon_22.png/384px-SMO_Snow_Moon_22.png"
+ },
+ "SnowWorldLobbyExStage": {
+  "moon": "Iceburn Circuit Class A",
+  "url": "https://mario.wiki.gallery/images/thumb/f/fc/SMO_Snow_Moon_52.png/384px-SMO_Snow_Moon_52.png"
+ },
+ "SnowWorldRaceExStage": {
+  "page": "Bound Bowl Grand Prix",
+  "url": "https://mario.wiki.gallery/images/thumb/0/0c/BoundBowlGrandPrix.png/384px-BoundBowlGrandPrix.png"
+ },
+ "SnowWorldCostumeStage": {
+  "moon": "Moon Shards in the Cold Room",
+  "url": "https://mario.wiki.gallery/images/thumb/6/68/SMO_Snow_Moon_29.png/384px-SMO_Snow_Moon_29.png"
+ },
+ "SnowWorldRaceTutorialStage": {
+  "page": "Bound Bowl Grand Prix",
+  "url": "https://mario.wiki.gallery/images/thumb/0/0c/BoundBowlGrandPrix.png/384px-BoundBowlGrandPrix.png"
+ },
+ "SnowWorldRace001Stage": {
+  "page": "Bound Bowl Grand Prix",
+  "url": "https://mario.wiki.gallery/images/thumb/0/0c/BoundBowlGrandPrix.png/384px-BoundBowlGrandPrix.png"
+ },
+ "SnowWorldRaceHardExStage": {
+  "page": "Bound Bowl Grand Prix",
+  "url": "https://mario.wiki.gallery/images/thumb/0/0c/BoundBowlGrandPrix.png/384px-BoundBowlGrandPrix.png"
+ },
+ "LavaWorldUpDownExStage": {
+  "moon": "Magma Swamp: Floating and Sinking",
+  "url": "https://mario.wiki.gallery/images/thumb/7/74/SMO_Luncheon_Moon_37.png/384px-SMO_Luncheon_Moon_37.png"
+ },
+ "LavaWorldBubbleLaneExStage": {
+  "moon": "Magma Narrow Path",
+  "url": "https://mario.wiki.gallery/images/thumb/d/d5/SMO_Luncheon_Moon_39.png/384px-SMO_Luncheon_Moon_39.png"
+ },
+ "LavaWorldFenceLiftExStage": {
+  "moon": "Treasure of the Lava Islands",
+  "url": "https://mario.wiki.gallery/images/thumb/4/4d/SMO_Luncheon_Moon_67.png/384px-SMO_Luncheon_Moon_67.png"
+ },
+ "LavaWorldClockExStage": {
+  "moon": "Taking Notes: Spinning Athletics",
+  "url": "https://mario.wiki.gallery/images/thumb/4/48/SMO_Luncheon_Moon_46.png/384px-SMO_Luncheon_Moon_46.png"
+ },
+ "LavaWorldExcavationExStage": {
+  "moon": "Excavate 'n' Search the Cheese Rocks",
+  "url": "https://mario.wiki.gallery/images/thumb/6/6c/SMO_Luncheon_Moon_43.png/384px-SMO_Luncheon_Moon_43.png"
+ },
+ "LavaWorldShopStage": {
+  "moon": "Shopping in Mount Volbono",
+  "url": "https://mario.wiki.gallery/images/thumb/5/55/SMO_Luncheon_Moon_25.png/384px-SMO_Luncheon_Moon_25.png"
+ },
+ "CapAppearLavaLiftExStage": {
+  "moon": "Volcano Cave Cruisin'",
+  "url": "https://mario.wiki.gallery/images/thumb/7/7c/SMO_Luncheon_Moon_65.png/384px-SMO_Luncheon_Moon_65.png"
+ },
+ "ForkExStage": {
+  "moon": "Fork Flickin' to the Summit",
+  "url": "https://mario.wiki.gallery/images/thumb/5/51/SMO_Luncheon_Moon_41.png/384px-SMO_Luncheon_Moon_41.png"
+ },
+ "GabuzouClockExStage": {
+  "moon": "Stepping Over the Gears",
+  "url": "https://mario.wiki.gallery/images/thumb/b/ba/SMO_Luncheon_Moon_63.png/384px-SMO_Luncheon_Moon_63.png"
+ },
+ "LavaWorldTreasureStage": {
+  "moon": "The Treasure Chest in the Veggies",
+  "url": "https://mario.wiki.gallery/images/thumb/5/5f/SMO_Luncheon_Moon_34.png/384px-SMO_Luncheon_Moon_34.png"
+ },
+ "LavaWorldCostumeStage": {
+  "moon": "A Strong Simmer",
+  "url": "https://mario.wiki.gallery/images/thumb/5/57/SMO_Luncheon_Moon_27.png/384px-SMO_Luncheon_Moon_27.png"
+ },
+ "BullRunExStage": {
+  "moon": "The Mummy Army's Curse",
+  "url": "https://mario.wiki.gallery/images/thumb/5/5a/SMO_Ruined_Moon_10.png/384px-SMO_Ruined_Moon_10.png"
+ },
+ "DotTowerExStage": {
+  "moon": "Roulette Tower: Climbed",
+  "url": "https://mario.wiki.gallery/images/thumb/e/e1/SMO_Ruined_Moon_3.png/384px-SMO_Ruined_Moon_3.png"
+ },
+ "SkyWorldShopStage": {
+  "moon": "Shopping at Bowser's Castle",
+  "url": "https://mario.wiki.gallery/images/thumb/6/69/SMO_Bowser%27s_Moon_29.png/384px-SMO_Bowser%27s_Moon_29.png"
+ },
+ "SkyWorldCostumeStage": {
+  "moon": "Taking Notes: In the Folding Screen",
+  "url": "https://mario.wiki.gallery/images/thumb/1/14/SMO_Bowser%27s_Moon_32.png/384px-SMO_Bowser%27s_Moon_32.png"
+ },
+ "TsukkunClimbExStage": {
+  "moon": "Climb the Wooden Tower",
+  "url": "https://mario.wiki.gallery/images/thumb/b/bb/SMO_Bowser%27s_Moon_61.png/384px-SMO_Bowser%27s_Moon_61.png"
+ },
+ "TsukkunRotateExStage": {
+  "moon": "On Top of the Spinning Tower",
+  "url": "https://mario.wiki.gallery/images/thumb/e/eb/SMO_Bowser%27s_Moon_33.png/384px-SMO_Bowser%27s_Moon_33.png"
+ },
+ "JizoSwitchExStage": {
+  "moon": "Jizo's Big Adventure",
+  "url": "https://mario.wiki.gallery/images/thumb/2/2b/SMO_Bowser%27s_Moon_35.png/384px-SMO_Bowser%27s_Moon_35.png"
+ },
+ "SkyWorldCloudBonusExStage": {
+  "moon": "Dashing Through the Clouds",
+  "url": "https://mario.wiki.gallery/images/thumb/5/53/SMO_Bowser%27s_Moon_38.png/384px-SMO_Bowser%27s_Moon_38.png"
+ },
+ "KaronWingTowerStage": {
+  "moon": "Searching Hexagon Tower",
+  "url": "https://mario.wiki.gallery/images/thumb/3/3e/SMO_Bowser%27s_Moon_59.png/384px-SMO_Bowser%27s_Moon_59.png"
+ },
+ "SkyWorldTreasureStage": {
+  "moon": "Bowser's Castle Treasure Vault",
+  "url": "https://mario.wiki.gallery/images/thumb/f/fd/SMO_Bowser%27s_Moon_30.png/384px-SMO_Bowser%27s_Moon_30.png"
+ },
+ "MoonWorldWeddingRoomStage": {
+  "moon": "Up in the Rafters",
+  "url": "https://mario.wiki.gallery/images/thumb/1/1d/SMO_Moon_Moon_14.png/384px-SMO_Moon_Moon_14.png"
+ },
+ "MoonWorldShopRoom": {
+  "moon": "Shopping in Honeylune Ridge",
+  "url": "https://mario.wiki.gallery/images/thumb/a/a2/SMO_Moon_Moon_20.png/384px-SMO_Moon_Moon_20.png"
+ },
+ "MoonWorldSphinxRoom": {
+  "moon": "Sphynx's Hidden Vault",
+  "url": "https://mario.wiki.gallery/images/thumb/3/3a/SMO_Moon_Moon_24.png/384px-SMO_Moon_Moon_24.png"
+ },
+ "MoonWorldCaptureParadeStage": {
+  "moon": "Fly to the Treasure Chest and Back",
+  "url": "https://mario.wiki.gallery/images/thumb/b/b2/SMO_Moon_Moon_13.png/384px-SMO_Moon_Moon_13.png"
+ },
+ "MoonAthleticExStage": {
+  "moon": "A Swing on Top of a Swing",
+  "url": "https://mario.wiki.gallery/images/thumb/c/cc/SMO_Moon_Moon_38.png/384px-SMO_Moon_Moon_38.png"
+ },
+ "Galaxy2DExStage": {
+  "moon": "Center of the Galaxy",
+  "url": "https://mario.wiki.gallery/images/thumb/c/c5/SMO_Moon_Moon_35.png/384px-SMO_Moon_Moon_35.png"
+ },
+ "MoonWorldBasementStage": {
+  "page": "Honeylune Ridge",
+  "url": "https://mario.wiki.gallery/images/thumb/8/82/SMO_Shot_-_Moon_Kingdom.jpg/384px-SMO_Shot_-_Moon_Kingdom.jpg"
+ },
+ "MoonWorldKoopa1Stage": {
+  "page": "Honeylune Ridge",
+  "url": "https://mario.wiki.gallery/images/thumb/8/82/SMO_Shot_-_Moon_Kingdom.jpg/384px-SMO_Shot_-_Moon_Kingdom.jpg"
+ },
+ "MoonWorldKoopa2Stage": {
+  "page": "Honeylune Ridge",
+  "url": "https://mario.wiki.gallery/images/thumb/8/82/SMO_Shot_-_Moon_Kingdom.jpg/384px-SMO_Shot_-_Moon_Kingdom.jpg"
+ },
+ "MoonWorldWeddingRoom2Stage": {
+  "page": "Honeylune Ridge",
+  "url": "https://mario.wiki.gallery/images/thumb/8/82/SMO_Shot_-_Moon_Kingdom.jpg/384px-SMO_Shot_-_Moon_Kingdom.jpg"
+ },
+ "PeachWorldCastleStage": {
+  "moon": "Found with Mushroom Kingdom Art",
+  "url": "https://mario.wiki.gallery/images/thumb/d/de/SMO_Mushroom_Moon_41.png/384px-SMO_Mushroom_Moon_41.png"
+ },
+ "PeachWorldPictureBossMagmaStage": {
+  "page": "Cookatiel",
+  "url": "https://mario.wiki.gallery/images/thumb/0/00/Cookatiel_Artwork_SMO.jpg/384px-Cookatiel_Artwork_SMO.jpg"
+ },
+ "PeachWorldPictureMofumofuStage": {
+  "page": "Mechawiggler",
+  "url": "https://mario.wiki.gallery/images/thumb/d/db/Mechawiggler_Artwork_SMO.jpg/384px-Mechawiggler_Artwork_SMO.jpg"
+ },
+ "PeachWorldPictureBossRaidStage": {
+  "page": "Lord of Lightning",
+  "url": "https://mario.wiki.gallery/images/thumb/1/11/Ruined_Dragon_Artwork_SMO.jpg/384px-Ruined_Dragon_Artwork_SMO.jpg"
+ },
+ "PeachWorldPictureBossForestStage": {
+  "page": "Torkdrift",
+  "url": "https://mario.wiki.gallery/images/thumb/0/0d/Torkdrift_Artwork_SMO.jpg/384px-Torkdrift_Artwork_SMO.jpg"
+ },
+ "PeachWorldPictureBossKnuckleStage": {
+  "page": "Knucklotec",
+  "url": "https://mario.wiki.gallery/images/thumb/0/07/SMO_Artwork_Knucklotec.png/384px-SMO_Artwork_Knucklotec.png"
+ },
+ "PeachWorldPictureGiantWanderBossStage": {
+  "page": "Mollusque-Lanceur",
+  "url": "https://mario.wiki.gallery/images/thumb/0/01/Mollosque-Lanceur_Artwork_SMO.jpg/384px-Mollosque-Lanceur_Artwork_SMO.jpg"
+ },
+ "PeachWorldShopStage": {
+  "moon": "Shopping Near Peach's Castle",
+  "url": "https://mario.wiki.gallery/images/thumb/c/c8/SMO_Mushroom_Moon_20.png/384px-SMO_Mushroom_Moon_20.png"
+ },
+ "PeachWorldCostumeStage": {
+  "moon": "Courtyard Chest Trap",
+  "url": "https://mario.wiki.gallery/images/thumb/a/a0/SMO_Mushroom_Moon_28.png/384px-SMO_Mushroom_Moon_28.png"
+ },
+ "YoshiCloudExStage": {
+  "moon": "Yoshi's Feast in the Sea of Clouds",
+  "url": "https://mario.wiki.gallery/images/thumb/8/8f/SMO_Mushroom_Moon_29.png/384px-SMO_Mushroom_Moon_29.png"
+ },
+ "FukuwaraiMarioStage": {
+  "moon": "Picture Match: Basically Mario",
+  "url": "https://mario.wiki.gallery/images/thumb/c/c6/SMO_Mushroom_Moon_23.png/384px-SMO_Mushroom_Moon_23.png"
+ },
+ "DotHardExStage": {
+  "moon": "Secret 2D Treasure",
+  "url": "https://mario.wiki.gallery/images/thumb/5/5e/SMO_Mushroom_Moon_31.png/384px-SMO_Mushroom_Moon_31.png"
+ },
+ "RevengeMofumofuStage": {
+  "moon": "Dust-Up in New Donk City: Rematch",
+  "url": "https://mario.wiki.gallery/images/thumb/6/67/SMO_Mushroom_Moon_35.png/384px-SMO_Mushroom_Moon_35.png"
+ },
+ "RevengeBossMagmaStage": {
+  "moon": "Blowup at Mount Volbono: Rematch",
+  "url": "https://mario.wiki.gallery/images/thumb/6/66/SMO_Mushroom_Moon_37.png/384px-SMO_Mushroom_Moon_37.png"
+ },
+ "RevengeForestBossStage": {
+  "moon": "Struggle in Steam Gardens: Rematch",
+  "url": "https://mario.wiki.gallery/images/thumb/4/48/SMO_Mushroom_Moon_34.png/384px-SMO_Mushroom_Moon_34.png"
+ },
+ "RevengeBossRaidStage": {
+  "moon": "Rumble in Crumbleden: Rematch",
+  "url": "https://mario.wiki.gallery/images/thumb/c/c4/SMO_Ruined_Dragon_Rematch_Streams_Attack.png/384px-SMO_Ruined_Dragon_Rematch_Streams_Attack.png"
+ },
+ "RevengeBossKnuckleStage": {
+  "moon": "Tussle in Tostarena: Rematch",
+  "url": "https://mario.wiki.gallery/images/thumb/7/7c/SMO_Mushroom_Moon_33.png/384px-SMO_Mushroom_Moon_33.png"
+ },
+ "RevengeGiantWanderBossStage": {
+  "moon": "Battle in Bubblaine: Rematch",
+  "url": "https://mario.wiki.gallery/images/thumb/f/f9/SMO_Mushroom_Moon_36.png/384px-SMO_Mushroom_Moon_36.png"
+ },
+ "PackunPoisonNoCapExStage": {
+  "moon": "Invisible Road: Rush!",
+  "url": "https://mario.wiki.gallery/images/thumb/7/7b/SMO_Dark_Side_Moon_5.png/384px-SMO_Dark_Side_Moon_5.png"
+ },
+ "KillerRoadNoCapExStage": {
+  "moon": "Breakdown Road: Final Challenge!",
+  "url": "https://mario.wiki.gallery/images/thumb/d/d1/SMO_Dark_Side_Moon_4.png/384px-SMO_Dark_Side_Moon_4.png"
+ },
+ "BikeSteelNoCapExStage": {
+  "moon": "Vanishing Road Challenge",
+  "url": "https://mario.wiki.gallery/images/thumb/1/1d/SMO_Dark_Side_Moon_8.png/384px-SMO_Dark_Side_Moon_8.png"
+ },
+ "SenobiTowerYoshiExStage": {
+  "moon": "Fruit Feast on the Sinking Island",
+  "url": "https://mario.wiki.gallery/images/thumb/3/3d/SMO_Dark_Side_Moon_12.png/384px-SMO_Dark_Side_Moon_12.png"
+ },
+ "ShootingCityYoshiExStage": {
+  "moon": "Fruit Feast Under Siege",
+  "url": "https://mario.wiki.gallery/images/thumb/6/68/SMO_Dark_Side_Moon_10.png/384px-SMO_Dark_Side_Moon_10.png"
+ },
+ "LavaWorldUpDownYoshiExStage": {
+  "moon": "Yoshi's Magma Swamp",
+  "url": "https://mario.wiki.gallery/images/thumb/1/12/SMO_Dark_Side_Moon_13.png/384px-SMO_Dark_Side_Moon_13.png"
+ },
+ "Special1WorldTowerStackerStage": {
+  "page": "Rabbit Ridge",
+  "url": "https://mario.wiki.gallery/images/thumb/1/11/RabbitRidgeTowerSMO.jpg/384px-RabbitRidgeTowerSMO.jpg"
+ },
+ "Special1WorldTowerBombTailStage": {
+  "page": "Rabbit Ridge",
+  "url": "https://mario.wiki.gallery/images/thumb/1/11/RabbitRidgeTowerSMO.jpg/384px-RabbitRidgeTowerSMO.jpg"
+ },
+ "Special1WorldTowerFireBlowerStage": {
+  "page": "Rabbit Ridge",
+  "url": "https://mario.wiki.gallery/images/thumb/1/11/RabbitRidgeTowerSMO.jpg/384px-RabbitRidgeTowerSMO.jpg"
+ },
+ "Special1WorldTowerCapThrowerStage": {
+  "page": "Rabbit Ridge",
+  "url": "https://mario.wiki.gallery/images/thumb/1/11/RabbitRidgeTowerSMO.jpg/384px-RabbitRidgeTowerSMO.jpg"
+ },
+ "Special2WorldKoopaStage": {
+  "page": "Culmina Crater",
+  "url": "https://mario.wiki.gallery/images/thumb/d/d9/SMOLongJourney%27sEnd.jpg/384px-SMOLongJourney%27sEnd.jpg"
+ },
+ "Special2WorldLavaStage": {
+  "page": "Culmina Crater",
+  "url": "https://mario.wiki.gallery/images/thumb/d/d9/SMOLongJourney%27sEnd.jpg/384px-SMOLongJourney%27sEnd.jpg"
+ },
+ "Special2WorldCloudStage": {
+  "page": "Culmina Crater",
+  "url": "https://mario.wiki.gallery/images/thumb/d/d9/SMOLongJourney%27sEnd.jpg/384px-SMOLongJourney%27sEnd.jpg"
+ }
+}

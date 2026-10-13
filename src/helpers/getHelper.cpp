@@ -246,15 +246,15 @@ bool isGetShineState(StageScene* stageScene) {
     const al::Nerve* currentNerve = p->getNerveKeeper()->mCurrentNerve;
     if (!currentNerve) return false;
 
-    // stateName = demangle(typeid(*state->state).name()) + strlen("StageSceneState");
-    stateNameScene = abi::__cxa_demangle(typeid(*stateScene->state).name(), nullptr, nullptr, &status) +
-                     strlen("StageSceneState");
-    nrvNameP = abi::__cxa_demangle(typeid(*currentNerve).name(), nullptr, nullptr, &status) +
-               strlen("(anonymous namespace)::PlayerActorHakoniwaNrv");
+    // Free the strings __cxa_demangle returned, not the pointers moved past their prefix: freeing those corrupted the
+    // heap and crashed the game a little later (load position during a moon get with Disable TP Puppet)
+    stateNameScene = abi::__cxa_demangle(typeid(*stateScene->state).name(), nullptr, nullptr, &status);
+    nrvNameP = abi::__cxa_demangle(typeid(*currentNerve).name(), nullptr, nullptr, &status);
 
-    bool cmp = strcmp(stateNameScene, "GetShine") == 0 && strcmp(nrvNameP, "Demo") == 0;
-    free(stateNameScene);
-    free(nrvNameP);
+    bool cmp = stateNameScene && nrvNameP && strcmp(stateNameScene, "StageSceneStateGetShine") == 0 &&
+               strcmp(nrvNameP, "(anonymous namespace)::PlayerActorHakoniwaNrvDemo") == 0;
+    if (stateNameScene) free(stateNameScene);
+    if (nrvNameP) free(nrvNameP);
     return cmp;
 
     return false;

@@ -42,8 +42,9 @@ HkTrampoline shineGrabHook = [](TrampolineStatic(), StageScene* thisPtr) -> void
 };
 
 // Odyssey Power Up: the frame the screen is fully black after the "The Odyssey has powered up" message
-// (ShineTowerRocket::exeGoToWorldMapWithFade closes its wipe at +0x268, then opens the world map). Repairs and
-// the attacked Odyssey skip that message and wait on a black screen in exeDemoUpLevelWaitFade instead.
+// (ShineTowerRocket::exeGoToWorldMapWithFade closes its wipe at +0x268, then opens the world map). Only this black
+// screen counts: every power up also goes through the black screen of exeDemoUpLevelWaitFade before the message, and
+// firing there too stopped the timer and started it again right away.
 extern "C" bool WipeSimple_isCloseEnd(const void* wipe) asm("_ZNK2al10WipeSimple10isCloseEndEv");
 
 static bool sIsOdysseyPowerUpMessageShown = false;
@@ -61,10 +62,6 @@ HkTrampoline odysseyGoToWorldMapWithFadeHook = [](TrampolineStatic(), al::LiveAc
         sIsOdysseyPowerUpMessageShown = false;
         Timer::sInstance->event(TimerHookType::OdysseyPowerUp);
     }
-};
-HkTrampoline odysseyUpLevelWaitFadeHook = [](TrampolineStatic(), al::LiveActor* rocket) -> void {
-    if (al::isFirstStep(rocket)) Timer::sInstance->event(TimerHookType::OdysseyPowerUp);
-    orig(rocket);
 };
 
 // Capture and Moon Get fire once per event: ignore a repeat of the same type within half a second
@@ -183,7 +180,6 @@ void TimerHooks::installTimerHooks() {
     shineTickHook.installAtSym<"_ZN12ShineCounter16exeShineCountAddEv">();
     shineGrabHook.installAtSym<"_ZN10StageScene15exeDemoShineGetEv">();
     odysseyPowerUpMessageHook.installAtSym<"_ZN16ShineTowerRocket27exeDemoInformPowerUpMessageEv">();
-    odysseyUpLevelWaitFadeHook.installAtSym<"_ZN16ShineTowerRocket22exeDemoUpLevelWaitFadeEv">();
     odysseyGoToWorldMapWithFadeHook.installAtSym<"_ZN16ShineTowerRocket23exeGoToWorldMapWithFadeEv">();
     hackStartDemoHook.installAtSym<"_ZN16PlayerHackKeeper18startHackStartDemoEPN2al9LiveActorE">();
     hackStartDemoPuppetableHook.installAtSym<"_ZN16PlayerHackKeeper28startHackStartDemoPuppetableEPN2al9LiveActorE">();
