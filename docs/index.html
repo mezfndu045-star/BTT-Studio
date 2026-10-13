@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BTT Studio — Practice Mod 1.0 (Super Mario Odyssey)</title>
+  <meta name="description" content="Découvrez BTT Studio Practice Mod 1.0 pour Super Mario Odyssey : l'outil d'entraînement ultime combinant le moteur 1.0.0 avec l'interface graphique verticale moderne de la 1.3, caméra instantanée, Input Display RGB Multicolor, Skip Broodals et bien plus.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <a href="#" class="brand">
+      <div class="brand-icon">B</div>
+      <div class="brand-title">BTT Studio <span class="brand-badge">v1.2 Update</span></div>
+    </a>
+    <nav class="nav-links">
+      <a href="#options">Options</a>
+      <a href="#features">Nouveautés</a>
+      <a href="#comparison">Comparatif</a>
+      <a href="#installation">Installation</a>
+      <a href="#keybinds">Raccourcis</a>
+      <a href="https://github.com/mezfndu045-star/BTT-Studio" target="_blank" class="btn-nav-github">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+        </svg>
+        GitHub
+      </a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-pill">
+        <span class="pulse-dot"></span>
+        Nouveau en v1.2 — Odyssée toujours rechargée, Odyssée partout, timer Odyssée déplaçable
+      </div>
+      <h1>
+        L'outil d'entraînement ultime pour <br>
+        <span class="gradient-text">Super Mario Odyssey</span>
+      </h1>
+      <p class="lead">
+        Découvrez la fusion parfaite entre toutes les mécaniques et glitchs natifs de <strong>SMO 1.0.0</strong> et la superbe interface translucide du <strong>Practice Mod 1.3</strong> : caméra instantanée, Input Display RGB libre, rechargement à la position, Skip Broodals et le vrai Luigi 8-bit du jeu.
+      </p>
+      <div class="hero-cta">
+        <a href="#installation" class="btn-primary">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Installer le Mod v1.2
+        </a>
+        <a href="#options" class="btn-secondary">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+          Voir les Options du Mod
+        </a>
+      </div>
+
+      <div class="hero-badges-row">
+        <div class="badge-chip">
+          <span>🎮</span> Title ID: <strong>0100000000010000</strong>
+        </div>
+        <div class="badge-chip">
+          <span>⚡</span> SMO Version: <strong>1.0.0</strong>
+        </div>
+        <div class="badge-chip">
+          <span>✨</span> Module Binaire: <strong>subsdk4 (~595 Ko)</strong>
+        </div>
+        <div class="badge-chip">
+          <span>💻</span> Émulateur: <strong>Yuzu Compatible</strong>
+        </div>
+        <div class="badge-chip">
+          <span>🕹️</span> Console: <strong>Atmosphere CFW</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mod Options Section -->
+  <section class="mod-options" id="options">
+    <div class="container">
+      <div class="section-title-wrap">
+        <div class="hero-pill" style="margin-bottom: 1rem;">
+          <span class="pulse-dot"></span>
+          Ouverture du menu : L + D-Pad Gauche
+        </div>
+        <h2>Toutes les Options du Menu</h2>
+        <p>Une organisation claire en 8 catégories simples pour maîtriser votre entraînement sans prise de tête. La catégorie Options s'affiche sur 2 colonnes : D-Pad Droite pour passer à la colonne de droite, D-Pad Gauche pour revenir.</p>
+      </div>
+
+      <div class="options-grid">
+        <!-- 1. Options -->
+        <div class="option-card">
+          <div class="option-header">
+            <span class="option-icon">⚙️</span>
+            <h3>1. Options (Entraînement)</h3>
+          </div>
+          <p class="option-sub">Colonne de gauche</p>
+          <ul class="option-list">
+            <li><strong>Moon Refresh :</strong> Les lunes que tu prends ne sont pas sauvegardées : tu peux les reprendre autant de fois que tu veux.</li>
+            <li><strong>Gray Moon Refresh :</strong> Les lunes déjà obtenues redeviennent normales (pas grises), comme si tu ne les avais jamais prises.</li>
+            <li><strong>Purple Coins Refresh :</strong> Les pièces violettes réapparaissent quand tu recharges la scène.</li>
+            <li><strong>Doors Refresh :</strong> Les portes déjà ouvertes se referment quand tu recharges la scène.</li>
+            <li><strong>Moon Shards Refresh :</strong> Les fragments de lune réapparaissent quand tu recharges la scène.</li>
+            <li><strong>Kingdom Enter Refresh :</strong> Rejoue la cinématique d'arrivée de l'Odyssée dans le royaume.</li>
+            <li><strong>Warp Text Refresh :</strong> Cappy réexplique la téléportation quand tu touches un drapeau.</li>
+            <li><strong>Seeds Refresh :</strong> Les pots de fleurs et les graines repartent de zéro.</li>
+            <li><strong>Cutscene Refresh :</strong> Les cinématiques et les premiers dialogues des personnages (Toads, Peach…) se rejouent.</li>
+            <li><strong>Always Manual Cutscene :</strong> Les cinématiques ne se passent jamais toutes seules : c'est toi qui décides quand les passer.</li>
+            <li><strong>Always Checkpoints :</strong> Tu peux toujours te téléporter aux drapeaux depuis la carte, même là où le jeu l'interdit normalement.</li>
+            <li><strong>Disable Autosave :</strong> Le jeu ne sauvegarde plus tout seul : ta sauvegarde ne bouge pas pendant l'entraînement.</li>
+            <li><strong>Disable TP Puppet :</strong> Désactive le placement automatique de Mario pendant l'animation de prise de lune.</li>
+            <li><strong>Skip Cloud :</strong> Passe automatiquement le Pays des Nuages pendant les voyages en Odyssée.</li>
+          </ul>
+          <p class="option-sub">Colonne de droite (→ sur la manette pour y aller)</p>
+          <ul class="option-list">
+            <li><strong>All Checkpoints :</strong> Tous les drapeaux du royaume sont disponibles sur la carte, même ceux pas encore touchés.</li>
+            <li><strong>Luigi Pixels :</strong> Le Luigi 8-bit caché dans certains buissons sort à chaque fois (10 % de chance dans le jeu normal). Recharge la scène après l'avoir activé. <span class="badge-tag-highlight">en test</span></li>
+            <li><strong>Spawn All Hint Art :</strong> Toutes les peintures d'indices apparaissent, sans avoir besoin de les débloquer.</li>
+            <li><strong>Pipe Maze Override :</strong> Force le chemin des labyrinthes de tuyaux.</li>
+            <li><strong>No Checkpoint Touch :</strong> Toucher un drapeau ne l'active pas (pratique pour ne pas fausser tes essais).</li>
+            <li><strong>No Damage :</strong> Mario ne perd plus de vie.</li>
+            <li><strong>Disable Music :</strong> Coupe la musique pour n'entendre que les bruitages.</li>
+            <li><strong>Disable Moon Lock :</strong> L'Odyssée peut partir sans avoir le nombre de lunes demandé.</li>
+            <li><strong>Skip Broodals :</strong> Dès la fin de l'intro d'un combat de Broodals (Hariet, Rango, Spewart, Madame Broode), le boss est vaincu et sa Multi-Lune apparaît. <span class="badge-tag-highlight">Nouveau</span></li>
+            <li><strong>Always Odyssey Power Up :</strong> Chaque fois que tu vas à l'Odyssée, même sans lune, elle se recharge et te propose de partir vers le royaume suivant de l'histoire (Chutes → Sables → Lac → Bois…). Le royaume d'arrivée joue son intro et son scénario comme dans le vrai jeu. <span class="badge-tag-highlight">Nouveau</span></li>
+            <li><strong>Odyssey In All Kingdoms :</strong> L'Odyssée est présente dans tous les royaumes, même ceux que ta sauvegarde n'a pas encore atteints, et tu peux t'y téléporter depuis la carte. <span class="badge-tag-highlight">Nouveau</span> <span class="badge-tag-highlight">en test</span></li>
+            <li><strong>Night Metro Multi Moon :</strong> Au début de la Ville de nuit, la Multi-Lune de Méca-Chenille tombe à côté de Mario : prends-la pour passer directement à la Ville de jour. <span class="badge-tag-highlight">Nouveau</span> <span class="badge-tag-highlight">en test</span></li>
+            <li><strong>Reload Scene at Pos :</strong> Quand tu recharges la scène, Mario revient exactement là où il était.</li>
+          </ul>
+        </div>
+
+        <!-- 2. Stages -->
+        <div class="option-card">
+          <div class="option-header">
+            <span class="option-icon">🗺️</span>
+            <h3>2. Stages (Téléportation)</h3>
+          </div>
+          <ul class="option-list">
+            <li><strong>Kingdom :</strong> Choix parmi les 17 royaumes (Cap, Cascade, Sand, Wooded, Metro, Moon, etc.).</li>
+            <li><strong>Scenario :</strong> Choix du numéro de scénario d'histoire (0 à 15).</li>
+            <li><strong>Warp to Stage :</strong> Bouton de téléportation immédiate au niveau sélectionné.</li>
+          </ul>
+        </div>
+
+        <!-- 3. Misc -->
+        <div class="option-card">
+          <div class="option-header">
+            <span class="option-icon">🎒</span>
+            <h3>3. Misc (Actions & Utilitaires)</h3>
+          </div>
+          <ul class="option-list">
+            <li><strong>Outfit Body :</strong> Sélection de la tenue parmi 42 costumes officiels.</li>
+            <li><strong>Outfit Cap :</strong> Sélection du chapeau parmi 42 casquettes/chapeaux.</li>
+            <li><strong>Apply Outfit :</strong> Applique et équipe la tenue immédiatement.</li>
+            <li><strong>Save Position :</strong> Sauvegarde manuellement les coordonnées actuelles.</li>
+            <li><strong>Load Position :</strong> Téléporte Mario à la sauvegarde (caméra instantanée).</li>
+            <li><strong>Restart Scene :</strong> Relance la scène au point de départ normal.</li>
+            <li><strong>Reload at Pos :</strong> Active le rechargement de scène à la position actuelle.</li>
+            <li><strong>Restart at Pos :</strong> Bouton d'action directe pour recharger à la position.</li>
+            <li><strong>Kill Mario :</strong> Élimine Mario immédiatement (mort instantanée).</li>
+            <li><strong>Damage Mario :</strong> Enlève 1 point de vie pour tester les réactions aux coups.</li>
+            <li><strong>Life Up Heart :</strong> Donne un cœur géant (passe la barre à 6 PV maximum).</li>
+            <li><strong>Heal Mario :</strong> Restaure toute la vie de Mario à 100%.</li>
+            <li><strong>Add 1000 Coins :</strong> Ajoute 1000 pièces d'or au compteur.</li>
+            <li><strong>Remove 1000 Coins :</strong> Retire 1000 pièces d'or du compteur.</li>
+            <li><strong>Reload Scene :</strong> Forcer un redémarrage propre de la scène.</li>
+            <li><strong>Previous Scene :</strong> Retourne dans la zone ou le monde précédent.</li>
+            <li><strong>Wiggler Pattern :</strong> Définit le pattern d'attaque du boss Méca-Wiggler (23 choix).</li>
+          </ul>
+        </div>
+
+        <!-- 4. Timer -->
+        <div class="option-card">
+          <div class="option-header">
+            <span class="option-icon">⏱️</span>
+            <h3>4. Timer (Chronomètre)</h3>
+          </div>
+          <ul class="option-list">
+            <li><strong>Segment Timer :</strong> Affiche le chronomètre à l'écran.</li>
+            <li><strong>Timer Split :</strong> Au lieu de s'arrêter, le chronomètre affiche un temps intermédiaire.</li>
+            <li><strong>Start Type / End Type :</strong> Ce qui lance et arrête le chronomètre tout seul. Avec <em>Odyssey Power Up</em> sur les deux, il démarre quand l'écran devient noir après « L'Odyssée a été rechargée » et s'arrête à la fois suivante. <span class="badge-tag-highlight">Nouveau</span></li>
+            <li><strong>Start / Stop / Reset Timer :</strong> Lance, arrête ou remet à zéro le chronomètre à la main.</li>
+            <li><strong>Preset Pos / Position X / Position Y / Reset Position :</strong> Place le chronomètre où tu veux (tu peux aussi le glisser à la souris quand le menu est ouvert). <span class="badge-tag-highlight">Nouveau</span></li>
+          </ul>
+        </div>
+
+        <!-- 5. Input Display -->
+        <div class="option-card">
+          <div class="option-header">
+            <span class="option-icon">🎮</span>
+            <h3>5. Input Display (Affichage Manette)</h3>
+          </div>
+          <ul class="option-list">
+            <li><strong>Input Display :</strong> Affiche ou cache la manette sur l'écran de jeu.</li>
+            <li><strong>2P Mode :</strong> Affiche également les commandes de la 2e manette (Cappy).</li>
+            <li><strong>Preset Pos :</strong> Place la manette au Centre ou dans les 4 coins d'un clic.</li>
+            <li><strong>Position X & Y :</strong> Réglage fin par pas de 25px (ou glisser-déposer à la souris).</li>
+            <li><strong>Reset Position :</strong> Replace automatiquement la manette au centre.</li>
+            <li><strong>Button Color :</strong> Couleur des boutons au repos (13 teintes au choix).</li>
+            <li><strong>Pressed Color :</strong> Couleur des boutons lorsqu'on appuie dessus.</li>
+            <li><strong>Stick Color :</strong> Couleur du stick analogique.</li>
+            <li><strong>Ring Color :</strong> Couleur du contour du stick analogique.</li>
+            <li><strong>BG Color :</strong> Couleur et transparence du boîtier de la manette.</li>
+            <li><strong>Multicolor :</strong> Effet arc-en-ciel RGB animé fluide disponible sur tous les éléments.</li>
+          </ul>
+        </div>
+
+        <!-- 6. Keybinds -->
+        <div class="option-card">
+          <div class="option-header">
+            <span class="option-icon">🕹️</span>
+            <h3>6. Keybinds (Raccourcis Manette)</h3>
+          </div>
+          <ul class="option-list">
+            <li><strong>Open Menu :</strong> Touche pour afficher le menu (défaut : <em>L + D-Pad Gauche</em>).</li>
+            <li><strong>Save Position :</strong> Touche rapide pour sauver la position (défaut : <em>D-Pad Gauche</em>).</li>
+            <li><strong>Load Position :</strong> Touche rapide de téléportation (défaut : <em>D-Pad Droite</em>).</li>
+            <li><strong>Restart Scene :</strong> Touche rapide pour relancer le niveau (défaut : <em>D-Pad Haut</em>).</li>
+            <li><strong>Heal Mario :</strong> Raccourci pour soigner Mario instantanément.</li>
+            <li><strong>Life Up :</strong> Raccourci pour donner le cœur 6 PV.</li>
+            <li><strong>Prev Scene :</strong> Raccourci pour revenir à la scène précédente.</li>
+            <li><strong>Warp Last CP :</strong> Raccourci pour se téléporter au dernier drapeau touché.</li>
+            <li><strong>Timer Start :</strong> Raccourci pour démarrer le chronomètre à la manette.</li>
+            <li><strong>Timer End :</strong> Raccourci pour stopper le chronomètre.</li>
+            <li><strong>Timer Reset :</strong> Raccourci pour réinitialiser le chronomètre.</li>
+          </ul>
+        </div>
+
+        <!-- 7. Info -->
+        <div class="option-card">
+          <div class="option-header">
+            <span class="option-icon">📊</span>
+            <h3>7. Info (Données en direct)</h3>
+          </div>
+          <ul class="option-list">
+            <li><strong>Info Window :</strong> Active ou désactive le panneau de données à l'écran.</li>
+            <li><strong>Player Info :</strong> Affiche les coordonnées exactes (X, Y, Z), la vitesse de déplacement et l'entité capturée par Cappy.</li>
+          </ul>
+        </div>
+
+        <!-- 8. Settings -->
+        <div class="option-card">
+          <div class="option-header">
+            <span class="option-icon">🛠️</span>
+            <h3>8. Settings (Configuration)</h3>
+          </div>
+          <ul class="option-list">
+            <li><strong>Menu Corner :</strong> Choisit l'angle de l'écran où s'ancre le menu vertical (Haut-Gauche, Haut-Droite, Bas-Gauche, Bas-Droite).</li>
+            <li><strong>Sauvegarde persistante :</strong> Vos choix restent automatiquement mémorisés d'une partie à l'autre.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-title-wrap">
+        <h2>Toutes les Fonctionnalités du Practice Mod 1.0</h2>
+        <p>Un ensemble complet de correctifs, d'outils d'entraînement et d'optimisations pensés pour les speedrunners les plus exigeants.</p>
+      </div>
+
+      <div class="feature-cards-grid">
+        <!-- Feature 1 -->
+        <div class="feature-card">
+          <div class="card-icon">🎥</div>
+          <h3>Caméra Instantanée sur Load Pos</h3>
+          <p>Annulation immédiate de l'interpolation de la caméra (<code>al::requestCancelCameraInterpole</code>) sur Mario et la scène avec boucle de 10 frames.</p>
+          <ul>
+            <li>Verrouillage instantané sur Mario à la première frame</li>
+            <li>Vitesse résiduelle remise à zéro (aucune inertie parasite)</li>
+            <li>Support complet des captures / transformations (Grenouille, Goomba, etc.)</li>
+          </ul>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="feature-card">
+          <div class="card-icon">🌈</div>
+          <h3>Input Display Libre & Multicolor</h3>
+          <p>Affichage dynamique de la manette entièrement personnalisable à l'écran.</p>
+          <ul>
+            <li><strong>Drag & Drop</strong> à la souris ou au tactile directement sur l'écran</li>
+            <li>Presets de 4 coins et réglage fin par pas de 25 pixels</li>
+            <li>Couleur <strong>Multicolor (RGB Rainbow)</strong> avec onde fluide animée</li>
+            <li>Support complet du mode 2 Joueurs (P1 & P2 indépendants)</li>
+          </ul>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="feature-card">
+          <div class="card-icon">🔄</div>
+          <h3>Reload at Pos / Instant Reload</h3>
+          <p>Recharge la scène complète tout en replaçant Mario exactement à ses coordonnées et rotation actuelles.</p>
+          <ul>
+            <li>Option « Reload at Pos » (Yes/No) dans Misc et Options</li>
+            <li>Bouton d'action directe « Restart at Pos »</li>
+            <li>Machine d'état robuste anti-désynchronisation (<code>mReloadState</code>)</li>
+            <li>Restauration automatique des PV et passage des cinématiques</li>
+          </ul>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="feature-card">
+          <div class="card-icon">🪙</div>
+          <h3>Le Vrai Luigi 8-bit du Jeu</h3>
+          <p>Dans le jeu officiel, certains buissons et touffes d'herbe ont 10 % de chance de cacher un Luigi 8-bit. L'option « Luigi Pixels » force ce tirage à 100 %.</p>
+          <ul>
+            <li>Animation, pièces et sons 100 % officiels : c'est le jeu lui-même qui fait apparaître Luigi</li>
+            <li>28 emplacements officiels répartis dans 8 royaumes</li>
+            <li>Rechargez la scène après avoir activé l'option <span class="badge-tag-highlight">en test</span></li>
+          </ul>
+        </div>
+
+        <!-- Feature: Skip Broodals -->
+        <div class="feature-card">
+          <div class="card-icon">🐰</div>
+          <h3>Skip Broodals</h3>
+          <p>Dès la fin de la cinématique d'intro, le boss est vaincu par son propre code de « dernier coup » : le jeu joue la cinématique de fin et fait apparaître la Multi-Lune normalement.</p>
+          <ul>
+            <li>Madame Broode (Pays des Chutes), Hariet (Pays des Sables), Rango (Pays du Lac)</li>
+            <li>Spewart (Pays des Bois et revanche au Pays des Gourmets)</li>
+            <li>Fonctionne aussi sur les revanches sans Multi-Lune <span class="badge-tag-highlight">Nouveau · en test</span></li>
+          </ul>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="feature-card">
+          <div class="card-icon">🔒</div>
+          <h3>Blocage des Entrées en Menu</h3>
+          <p>Lorsque le menu vertical est ouvert, toutes les touches de la manette et des sticks sont isolées du moteur de jeu.</p>
+          <ul>
+            <li>Mario reste parfaitement immobile lors de la navigation</li>
+            <li>Aucun saut, coup de caméra ou coup de Cappy accidentel</li>
+            <li>Protection contre les déclenchements de raccourcis dans le menu</li>
+          </ul>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="feature-card">
+          <div class="card-icon">🎩</div>
+          <h3>Sélecteur d'Outfits (42 Tenues)</h3>
+          <p>Changez instantanément d'apparence sans passer par la boutique Crazy Cap.</p>
+          <ul>
+            <li>Sélecteur « Outfit Body » (42 tenues complètes de SMO)</li>
+            <li>Sélecteur « Outfit Cap » (42 chapeaux différents)</li>
+            <li>Bouton « Apply Outfit » qui recharge Mario vêtu de son nouvel ensemble</li>
+          </ul>
+        </div>
+
+        <!-- Feature 7 -->
+        <div class="feature-card">
+          <div class="card-icon">⚡</div>
+          <h3>Speedrun Refreshes Intégrés</h3>
+          <p>Tous les commutateurs d'entraînement pour réinitialiser les éléments du monde :</p>
+          <ul>
+            <li><strong>Cutscene Refresh :</strong> réactive les cinématiques et dialogues PNJ (Capitaine Toad, Hint Toad, Jammin' Toad, Traveling Peach)</li>
+            <li><strong>Warp Text Refresh :</strong> réactive les explications de téléportation par checkpoint</li>
+            <li><strong>Doors, Moon Shards, Purple Coins & Gray Moons :</strong> respawn complet</li>
+          </ul>
+        </div>
+
+        <!-- Feature 8 -->
+        <div class="feature-card">
+          <div class="card-icon">🎮</div>
+          <h3>Menu Vertical Translucide Rodin 1.3</h3>
+          <p>L'ergonomie moderne et élégante du Practice Mod 1.3 adaptée aux fonctions natives 1.0.</p>
+          <ul>
+            <li>8 catégories organisées : Options, Stages, Misc, Timer, Input Display, Keybinds, Info, Settings</li>
+            <li>Catégorie Options sur 2 colonnes pour tout voir d'un coup</li>
+            <li>Police officielle Rodin blanche haute résolution</li>
+            <li>Raccourcis rapides D-Pad (Sauvegarde, Chargement, Kill Scene)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Section -->
+  <section class="comparison" id="comparison">
+    <div class="container">
+      <div class="section-title-wrap">
+        <h2>Comparatif des Versions</h2>
+        <p>Pourquoi le Practice Mod 1.0 (BTT Studio Edition) est le choix parfait pour les routes de speedrun Any% et 100%.</p>
+      </div>
+
+      <div class="table-card">
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th>Fonctionnalité</th>
+              <th>SMO Vanilla</th>
+              <th>Practice Mod 1.3</th>
+              <th>BTT Studio 1.0 (Cette version)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="feature-col">Version du jeu Super Mario Odyssey</td>
+              <td>1.0.0 à 1.3.0</td>
+              <td>SMO 1.3.0 uniquement</td>
+              <td><span class="badge-tag-highlight">SMO 1.0.0 (Idéal Speedrun)</span></td>
+            </tr>
+            <tr>
+              <td class="feature-col">Glitchs 1.0 (First Person Glitch, etc.)</td>
+              <td>Oui (en 1.0)</td>
+              <td>❌ Patché en 1.3</td>
+              <td><span class="badge-tag-highlight">✅ Disponibles à 100%</span></td>
+            </tr>
+            <tr>
+              <td class="feature-col">Interface Graphique (UI)</td>
+              <td>Aucune</td>
+              <td>Menu vertical translucide Rodin</td>
+              <td><span class="badge-tag-highlight">✅ Menu vertical translucide Rodin</span></td>
+            </tr>
+            <tr>
+              <td class="feature-col">Caméra instantanée sur Load Position</td>
+              <td>Non</td>
+              <td>Glissement léger</td>
+              <td><span class="badge-tag-highlight">✅ Instantané (0 frame lag)</span></td>
+            </tr>
+            <tr>
+              <td class="feature-col">Input Display Mobile (Drag & Drop + Presets)</td>
+              <td>Non</td>
+              <td>Position fixe</td>
+              <td><span class="badge-tag-highlight">✅ Drag & Drop souris + Presets coins</span></td>
+            </tr>
+            <tr>
+              <td class="feature-col">Couleur Multicolor RGB Wave</td>
+              <td>Non</td>
+              <td>Non</td>
+              <td><span class="badge-tag-highlight">✅ Dynamique HSV Chroma</span></td>
+            </tr>
+            <tr>
+              <td class="feature-col">Rechargement à la position (Reload at Pos)</td>
+              <td>Non</td>
+              <td>Non</td>
+              <td><span class="badge-tag-highlight">✅ Option & Bouton dédiés</span></td>
+            </tr>
+            <tr>
+              <td class="feature-col">Luigi 8-bit garanti dans les buissons</td>
+              <td>10 % de chance</td>
+              <td>Non</td>
+              <td><span class="badge-tag-highlight">✅ 100 % (vrai objet du jeu)</span></td>
+            </tr>
+            <tr>
+              <td class="feature-col">Skip Broodals (Multi-Lune directe)</td>
+              <td>Non</td>
+              <td>❌ Option présente mais inactive</td>
+              <td><span class="badge-tag-highlight">✅ Madame Broode, Hariet, Rango, Spewart</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Installation Guide -->
+  <section class="installation" id="installation">
+    <div class="container">
+      <div class="section-title-wrap">
+        <h2>Téléchargements & Installation</h2>
+        <p>Téléchargez le package adapté à votre configuration ou suivez le guide pas-à-pas ci-dessous.</p>
+      </div>
+
+      <!-- Direct Download Cards -->
+      <div class="download-cards-grid">
+        <div class="download-card">
+          <div class="dl-badge">PC / Émulateur</div>
+          <div class="dl-icon">💻</div>
+          <h3>Émulateur Yuzu</h3>
+          <p>Package prêt à l'emploi pour le dossier <code>load/0100000000010000/</code>.</p>
+          <div class="dl-meta">Version 1.2.0 • 4.6 Mo</div>
+          <a href="downloads/BTT-Studio-1.0-Yuzu-v1.2.0.zip" class="btn-download" download>
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            Télécharger (Yuzu)
+          </a>
+        </div>
+
+        <div class="download-card highlighted">
+          <div class="dl-badge rec">Recommandé Switch</div>
+          <div class="dl-icon">🕹️</div>
+          <h3>Simple Mod Manager</h3>
+          <p>Prêt à glisser-déposer directement dans <code>SD:/mods/</code>.</p>
+          <div class="dl-meta">Version 1.2.0 • 4.6 Mo</div>
+          <a href="downloads/BTT-Studio-1.0-SimpleModManager-v1.2.0.zip" class="btn-download primary" download>
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            Télécharger (SMM)
+          </a>
+        </div>
+
+        <div class="download-card">
+          <div class="dl-badge">CFW Manuel</div>
+          <div class="dl-icon">⚡</div>
+          <h3>Atmosphere Direct</h3>
+          <p>Arborescence <code>atmosphere/contents/</code> prête à copier à la racine SD.</p>
+          <div class="dl-meta">Version 1.2.0 • 4.6 Mo</div>
+          <a href="downloads/BTT-Studio-1.0-Atmosphere-v1.2.0.zip" class="btn-download" download>
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            Télécharger (Atmosphere)
+          </a>
+        </div>
+      </div>
+
+      <div class="tab-nav">
+        <button class="tab-btn active" data-tab="tab-yuzu">🎮 Installation Yuzu (PC)</button>
+        <button class="tab-btn" data-tab="tab-switch">🕹️ Installation Switch (Atmosphere / SMM)</button>
+      </div>
+
+      <!-- Tab Yuzu -->
+      <div class="tab-content active" id="tab-yuzu">
+        <div class="steps-list">
+          <div class="step-item">
+            <div class="step-number">1</div>
+            <div class="step-details">
+              <h4>Emplacement du dossier de mod</h4>
+              <p>Le binaire compilé <code>subsdk4</code> et son fichier <code>main.npdm</code> sont installés dans le répertoire de mods de Yuzu :</p>
+              <div class="code-box">
+                <span>C:\Users\FlowUP\AppData\Roaming\yuzu\load\0100000000010000\Practice mod 1.0\exefs\</span>
+                <button class="copy-btn" data-copy="C:\Users\FlowUP\AppData\Roaming\yuzu\load\0100000000010000\Practice mod 1.0\exefs\">Copier</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-number">2</div>
+            <div class="step-details">
+              <h4>Activation dans Yuzu</h4>
+              <p>Dans l'interface de Yuzu, faites un clic droit sur <strong>Super Mario Odyssey</strong> &rarr; <strong>Propriétés</strong> &rarr; cochez <strong>Practice mod 1.0</strong> (veillez à décocher la version 1.3 si vous ne souhaitez pas qu'elles interfèrent).</p>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-number">3</div>
+            <div class="step-details">
+              <h4>Lancez le jeu et profitez</h4>
+              <p>Une fois dans le jeu, appuyez sur <strong>L + Flèche Gauche</strong> pour ouvrir le menu BTT Studio !</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Switch -->
+      <div class="tab-content" id="tab-switch">
+        <div class="steps-list">
+          <div class="step-item">
+            <div class="step-number">1</div>
+            <div class="step-details">
+              <h4>Méthode Simple Mod Manager (Recommandée)</h4>
+              <p>Copiez simplement le dossier <code>Practice mod 1.0</code> présent dans votre dossier de téléchargements vers le répertoire <code>/mods/</code> de votre carte SD :</p>
+              <div class="code-box">
+                <span>SD:/mods/Practice mod 1.0/contents/0100000000010000/exefs/subsdk4</span>
+                <button class="copy-btn" data-copy="/mods/Practice mod 1.0/contents/0100000000010000/exefs/subsdk4">Copier</button>
+              </div>
+              <p style="margin-top:0.5rem;">Lancez Simple Mod Manager sur votre console et activez le mod.</p>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-number">2</div>
+            <div class="step-details">
+              <h4>Méthode Atmosphere Directe</h4>
+              <p>Placez le binaire directement dans l'arborescence Atmosphere :</p>
+              <div class="code-box">
+                <span>SD:/atmosphere/contents/0100000000010000/exefs/subsdk4</span>
+                <button class="copy-btn" data-copy="/atmosphere/contents/0100000000010000/exefs/subsdk4">Copier</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Keybinds Section -->
+  <section class="features" id="keybinds" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-title-wrap">
+        <h2>Raccourcis Manette & Contrôles Rapides</h2>
+        <p>Prenez le contrôle total de vos sessions d'entraînement avec des combinaisons simples et intuitives.</p>
+      </div>
+
+      <div class="keybind-grid">
+        <div class="keybind-card">
+          <span>Ouvrir / Fermer le menu</span>
+          <span class="key-tag">L + D-Pad Gauche</span>
+        </div>
+        <div class="keybind-card">
+          <span>Sauvegarder position (Save State)</span>
+          <span class="key-tag">D-Pad Gauche</span>
+        </div>
+        <div class="keybind-card">
+          <span>Recharger position (Load State)</span>
+          <span class="key-tag">D-Pad Droite</span>
+        </div>
+        <div class="keybind-card">
+          <span>Recharger la scène (Kill Scene)</span>
+          <span class="key-tag">D-Pad Haut  OU  ZL + ZR</span>
+        </div>
+        <div class="keybind-card">
+          <span>Scène précédente (Prev Stage)</span>
+          <span class="key-tag">D-Pad Bas</span>
+        </div>
+        <div class="keybind-card">
+          <span>Roue rapide d'actions</span>
+          <span class="key-tag">Maintenir R3 (Stick D)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p style="margin-bottom:0.75rem;">
+        BTT Studio Switch — Practice Mod 1.0 © 2026. Basé sur le code source de MrKatzenGaming et Practice Mod 1.3 (fruityloops1).
+      </p>
+      <p>
+        Super Mario Odyssey est une marque déposée de Nintendo. Ce mod est un projet d'ingénierie open-source destiné à l'apprentissage et au speedrun.
+      </p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

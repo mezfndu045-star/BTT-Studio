@@ -1,0 +1,32 @@
+name: 💡 Proposition de Fonctionnalité
+description: Proposer une nouvelle idée ou une amélioration pour BTT Studio
+title: "[FEATURE]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Vous avez une idée pour enrichir BTT Studio ? Partagez-la ci-dessous !
+  - type: textarea
+    id: problem
+    attributes:
+      label: Quel besoin cette fonctionnalité comble-t-elle ?
+      description: Expliquez le contexte ou le problème actuel.
+      placeholder: "Ex: Pour le grind des segments sur le Royaume du Lac..."
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solution ou fonctionnalité suggérée
+      description: Comment imaginez-vous cette fonctionnalité dans le mod ?
+      placeholder: "Ex: Ajouter un raccourci ou une option dans le menu vertical..."
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives envisagées
+      description: Avez-vous pensé à d'autres solutions ?
+    validations:
+      false

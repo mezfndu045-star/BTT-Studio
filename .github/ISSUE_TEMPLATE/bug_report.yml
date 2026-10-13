@@ -1,0 +1,58 @@
+name: 🐛 Bug Report
+description: Signaler un bug ou un dysfonctionnement dans BTT Studio
+title: "[BUG]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de prendre le temps de signaler un problème ! Assurez-vous d'avoir testé avec la dernière version de BTT Studio.
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Plateforme / Environnement
+      description: Sur quelle plateforme rencontrez-vous le bug ?
+      options:
+        - "Émulateur Yuzu (PC)"
+        - "Nintendo Switch (Atmosphere CFW)"
+        - "Nintendo Switch (Simple Mod Manager)"
+        - "Autre émulateur"
+    validations:
+      required: true
+  - type: dropdown
+    id: smo-version
+    attributes:
+      label: Version de Super Mario Odyssey
+      description: Quelle version du jeu utilisez-vous ?
+      options:
+        - "1.0.0 (Base)"
+        - "1.3.0"
+        - "Autre"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description du bug
+      description: Décrivez clairement ce qui s'est produit.
+      placeholder: "Ex: Lorsque j'appuie sur D-Pad Droite pour charger ma position..."
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Étapes pour reproduire
+      description: Quelles étapes suivre pour observer le bug ?
+      placeholder: |
+        1. Ouvrir le menu avec L + D-Pad Gauche
+        2. Aller dans l'onglet ...
+        3. Activer l'option ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportement attendu
+      description: Que deviez-vous observer normalement ?
+    validations:
+      required: false

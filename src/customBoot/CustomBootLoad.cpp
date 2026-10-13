@@ -1,0 +1,163 @@
+#include "customBoot/CustomBootLoad.hpp"
+
+#include "al/Library/Layout/LayoutActionFunction.h"
+#include "al/Library/Layout/LayoutActorUtil.h"
+#include "al/Library/Nerve/NerveUtil.h"
+
+#include "sead/gfx/seadColor.h"
+#include "sead/math/seadVectorFwd.h"
+
+#include "game/Sequence/HakoniwaSequence.h"
+
+#include "menu/Menu.h"
+
+#ifdef BTTDEBUG
+# include "sead/prim/seadSafeString.h"
+#endif
+
+namespace customboot {
+CustomBootLoad::CustomBootLoad(
+    WorldResourceLoader* resourceLoader, const al::LayoutInitInfo& initInfo, float autoCloseAfter
+) :
+    al::LayoutActor("SpeedbootLoad"), worldResourceLoader(resourceLoader), mAutoCloseAfter(autoCloseAfter) {
+    al::initLayoutActor(this, initInfo, "SpeedbootLoad", nullptr);
+    initNerve(&NrvCustomBootLoad.Appear, 0);
+    appear();
+
+    wipe = (al::WipeSimple*)malloc(sizeof(al::WipeSimple) + sizeof(u32) /*something in 1.3*/ + 4 /*Padding*/);
+    wipe = new (wipe) al::WipeSimple("スキップワイプ", "WipeSkip", initInfo, 0);
+}
+
+void CustomBootLoad::exeAppear() {
+    if (al::isFirstStep(this)) {
+        al::startAction(this, "Appear", nullptr);
+        btt::Menu::instance()->hideMenu();
+    }
+
+    if (al::isActionEnd(this, nullptr)) {
+        al::setNerve(this, &NrvCustomBootLoad.Wait);
+    }
+}
+
+void CustomBootLoad::exeWait() {
+    if (al::isActionEnd(this, nullptr)) {
+        al::setNerve(this, &NrvCustomBootLoad.Decrease);
+    }
+}
+
+void CustomBootLoad::exeDecrease() {
+    mTime += 1.f / 60.f;
+    al::setPaneString(this, "TxtTip", u"Hiiiiiiii :3", 0);
+    al::setPaneString(this, "TxtName", u"BTT-Studio", 0);
+    al::setPaneString(this, "TxtConnecting", u"\u00A9 2026, MrKatzenGaming", 0);
+
+    // if (al::isPadTriggerPlus(-1)) {
+    //     Logger::log("Plus button pressed. Opening keyboard for IP and Port input.\n");
+
+    //     if (Client* client = Client::get()) {
+    //         Client::getKeyboard()->setHeaderText(u"Set Server IP");
+    //         Client::getKeyboard()->setSubText(u"Enter IP Address below:");
+    //         Client::openKeyboardIP();
+
+    //         Client::getKeyboard()->setHeaderText(u"Set Server Port");
+    //         Client::getKeyboard()->setSubText(u"Enter Port below:");
+    //         Client::openKeyboardPort();
+
+    //         SaveDataAccessFunction::startSaveDataWrite(client->getHolder().mData);
+    //         client->restartConnection();
+
+    //         mHasConnected = true;
+    //         mConnectionDisplayTimer = 0.0f;
+
+    //         al::setPaneLocalAlpha(this, "ConnectingGlobe", 1.0f);
+    //         al::setPaneLocalAlpha(this, "ConnectingArrows", 1.0f);
+    //         al::setPaneVtxColor(this, "TxtConnecting", sead::Color4u8{255, 255, 255, 255});
+    //         al::setPaneString(this, "TxtConnecting", u"Restarted Connection!", 0);
+    //     }
+    // }
+
+    mProgression = mTime / mAutoCloseAfter;
+
+    sead::Color4u8 fixedColor = { 255, 0, 0, 255 };
+    mRotTime += 0.03f;
+    float rotation = cosf(mTime) * 5;
+
+#ifdef BTTDEBUG
+    // Debug stuff
+    sead::WFormatFixedSafeString<0x50> debugString(
+        u"Display Time: %.02f\nRot Time: %.02f\nSine Value: %.02f\nAutoClose: %.02f", mTime, mRotTime,
+        rotation, mAutoCloseAfter
+    );
+    al::setPaneString(this, "TxtDebug", debugString.cstr(), 0);
+    al::setPaneLocalTrans(this, "TxtDebug", sead::Vector2f(-590, 140));
+#endif
+
+    float arrowRotation = -mTime * 75.0f;
+    al::setPaneLocalRotate(this, "ConnectingArrows", { 0.0f, 0.0f, arrowRotation });
+
+    // --- Connection status display ---
+    // if (!mHasConnected) {
+    //     if (Logger::instance()->isConnected()) {
+    //         mHasConnected = true;
+    //         mConnectionDisplayTimer = 0.0f;
+    //         al::setPaneString(this, "TxtConnecting", u"Server Connected!", 0);
+    //     } else {
+    //         mDotTimer += 1.0f / 60.0f;
+    //         if (mDotTimer >= 0.5f) {
+    //             mConnectingDotState = (mConnectingDotState + 1) % 4;
+    //             mDotTimer = 0.0f;
+    //         }
+
+    //         const char16_t* dots[] = { u"Connecting to server", u"Connecting to server.", u"Connecting to
+    //         server..", u"Connecting to server..." }; al::setPaneString(this, "TxtConnecting",
+    //         dots[mConnectingDotState], 0);
+    //     }
+
+    // } else {
+    //     mConnectionDisplayTimer += 1.0f / 60.0f;
+    //     if (mConnectionDisplayTimer > 2.0f) {
+    //         float fade = sead::Mathf::clamp(1.0f - (mConnectionDisplayTimer - 2.0f) / 0.4f, 0.0f, 1.0f);
+    //         u8 alpha = static_cast<u8>(fade * 255);
+    //         SetVtxColor(this, "TxtConnecting", sead::Color4u8 { 255, 255, 255, alpha });
+    //         al::setPaneLocalAlpha(this, "ConnectingGlobe", alpha);
+    //         al::setPaneLocalAlpha(this, "ConnectingArrows", alpha);
+    //     }
+    // }
+
+    // --- Loading dots animation ---
+    mDotTimer += 1.0f / 60.0f;
+    if (mDotTimer >= 0.5f) {
+        mLoadingDotState = (mLoadingDotState + 1) % 4;
+        mDotTimer = 0.0f;
+    }
+
+    const char16_t* loadingDots[] = { u"Loading", u"Loading.", u"Loading..", u"Loading..." };
+    al::setPaneString(this, "TxtLoading", loadingDots[mLoadingDotState], 0);
+
+    // --- Progress visuals ---
+    // if (mProgression < 1.5f) {
+    al::setPaneLocalScale(this, "PicBar", { mProgression, 2.f });
+    al::setPaneLocalScale(this, "PicBarFill", { 30.f, 1.f });
+
+    al::setPaneLocalRotate(this, "PicMoon", { 0.f, 0.f, rotation });
+    al::setPaneLocalRotate(this, "Arrows", { 0.f, 0.f, arrowRotation });
+    al::setPaneLocalRotate(this, "PicBG", { 0.f, 0.f, mTime * 2 * -3.f });
+    // }
+
+    if (mProgression >= 1.f) {
+        wipe->tryStartClose(60);
+
+        if (wipe->isCloseEnd()) {
+            al::setNerve(this, &NrvCustomBootLoad.End);
+        }
+    }
+}
+
+void CustomBootLoad::exeEnd() {
+    if (al::isFirstStep(this)) {
+        btt::Menu::instance()->showMenu();
+        kill();
+        wipe->startOpen(30);
+    }
+}
+} // namespace customboot
