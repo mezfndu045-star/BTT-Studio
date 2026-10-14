@@ -16,6 +16,7 @@
 #include "al/Library/Nerve/NerveKeeper.h"
 #include "al/Library/Nerve/NerveUtil.h"
 #include "helpers/getHelper.h"
+#include "al/Project/Scene/SceneInitInfo.h"
 #include "al/Library/Scene/SceneUtil.h"
 #include "al/Library/Nerve/Nerve.h"
 #include <typeinfo>
@@ -213,11 +214,21 @@ HkTrampoline talkMessageFlagOnHook = [](TrampolineStatic(), const al::IUseSceneO
         sSceneTalkFlags[sSceneTalkFlagNum++] = index;
 };
 
+// Back in a kingdom's main stage from one of its sub-areas (e.g. Luncheon from Slots): its stage start cutscenes are
+// not played again (only on arriving in the kingdom or restarting the stage). Set in stageSceneInitHook.
+static bool sIsSubAreaReturn = false;
+static char sLastStage[64] = {};
+static s32 sLastWorld = -1;
+namespace btt {
+int getKingdomIndexOfStage(const char* stageName);  // stage_warp.cpp
+} // namespace btt
+
 // Same options: the scenario start camera (fly-over with the text of the story at the start of a kingdom / scenario,
 // e.g. Sand Kingdom, Night Metro) is only played once (GameDataHolder::isPlayAlreadyScenarioStartCamera)
 HkTrampoline scenarioStartCameraHook = [](TrampolineStatic(), const void* holder, int index) -> bool {
     auto* s = SettingsMgr::getSettings();
-    if (s && (s->mIsEnableRefreshWarpText || s->mIsEnableRefreshNpc || s->mIsEnableRefreshKingdomEnter)) return false;
+    if (!sIsSubAreaReturn && s && (s->mIsEnableRefreshWarpText || s->mIsEnableRefreshNpc || s->mIsEnableRefreshKingdomEnter))
+        return false;
     return orig(holder, index);
 };
 
@@ -234,7 +245,8 @@ static bool sIsCrashHomeOverride = false;
 HkTrampoline stageTalkDemoInitHook = [](TrampolineStatic(), al::LiveActor* demo, const al::ActorInitInfo& info) -> void {
     auto* settings = SettingsMgr::getSettings();
     sIsInStageEventDemoInit =
-        sIsCrashHomeOverride || (settings && (settings->mIsEnableRefreshNpc || settings->mIsEnableRefreshKingdomEnter));
+        sIsCrashHomeOverride ||
+        (!sIsSubAreaReturn && settings && (settings->mIsEnableRefreshNpc || settings->mIsEnableRefreshKingdomEnter));
     orig(demo, info);
     sIsInStageEventDemoInit = false;
     u8* p = reinterpret_cast<u8*>(demo);
@@ -249,7 +261,8 @@ HkTrampoline stageTalkDemoInitHook = [](TrampolineStatic(), al::LiveActor* demo,
 // StageTalkDemoNpcCap::tryStartDemo (called when the scene starts the stage start talk) checks the save object again
 HkTrampoline stageTalkTryStartHook = [](TrampolineStatic(), al::LiveActor* demo) -> bool {
     auto* s = SettingsMgr::getSettings();
-    sIsInStageEventDemoInit = sIsCrashHomeOverride || (s && (s->mIsEnableRefreshNpc || s->mIsEnableRefreshKingdomEnter));
+    sIsInStageEventDemoInit =
+        sIsCrashHomeOverride || (!sIsSubAreaReturn && s && (s->mIsEnableRefreshNpc || s->mIsEnableRefreshKingdomEnter));
     bool isStarted = orig(demo);
     sIsInStageEventDemoInit = false;
     if (btt::isDebugTrace()) btt::dbgLog("DBG: StageTalkDemoNpcCap::tryStartDemo %d", isStarted);
@@ -263,7 +276,7 @@ extern "C" int rs_getActiveQuestNum(const void* holder) asm("_ZN2rs17getActiveQu
 HkTrampoline isPlayScenarioCameraHook = [](TrampolineStatic(), const void* file, const u8* quest) -> bool {
     if (orig(file, quest)) return true;
     auto* s = SettingsMgr::getSettings();
-    if (!s || !(s->mIsEnableRefreshNpc || s->mIsEnableRefreshKingdomEnter) || !quest) return false;
+    if (sIsSubAreaReturn || !s || !(s->mIsEnableRefreshNpc || s->mIsEnableRefreshKingdomEnter) || !quest) return false;
     return *reinterpret_cast<const s32*>(quest + 8) == 0 && quest[0x18] && rs_getActiveQuestNum(quest) == 0;
 };
 
@@ -404,7 +417,7 @@ HkTrampoline endDemoAndChangeNerveHook = [](TrampolineStatic(), StageScene* scen
 // Refresh / Kingdom Enter Refresh, the save object reads "not watched" during their init.
 HkTrampoline stageEventDemoInitHook = [](TrampolineStatic(), al::LiveActor* demo, const al::ActorInitInfo& info) -> void {
     auto* s = SettingsMgr::getSettings();
-    sIsInStageEventDemoInit = s && (s->mIsEnableRefreshNpc || s->mIsEnableRefreshKingdomEnter);
+    sIsInStageEventDemoInit = !sIsSubAreaReturn && s && (s->mIsEnableRefreshNpc || s->mIsEnableRefreshKingdomEnter);
     orig(demo, info);
     sIsInStageEventDemoInit = false;
     if (btt::isDebugTrace())
@@ -425,11 +438,25 @@ HkTrampoline stageSceneInitHook = [](TrampolineStatic(), StageScene* stageScene,
     sSeedGrowLevelNum = 0;
     sSceneTalkFlagNum = 0;
     sIsInStageSceneInit = true;
+    {
+        // Main stage (…WorldHomeStage) loaded right after a sub-area or zone of the same kingdom (e.g. LavaBonus1Zone):
+        // back from a sub-area. The kingdom of the main stage (mainNames index = world id) is compared with the world
+        // the previous stage was loaded in (sLastWorld, read once it was initialized). Cutscene stages (Demo*) and
+        // other main stages are not sub-areas.
+        // The stage being loaded (the GameDataHolder still has the previous one at this point)
+        const char* stage = info.initStageName;
+        int kingdom = btt::getKingdomIndexOfStage(stage);
+        sIsSubAreaReturn = stage && strstr(stage, "WorldHomeStage") && sLastStage[0] && strcmp(stage, sLastStage) != 0 &&
+                           !strstr(sLastStage, "WorldHomeStage") && strncmp(sLastStage, "Demo", 4) != 0 &&
+                           kingdom >= 0 && kingdom == sLastWorld;
+        if (btt::isDebugTrace())
+            btt::dbgLog("DBG: sub-area return %d (stage %s kingdom %d, last %s world %d)", sIsSubAreaReturn,
+                        stage ? stage : "?", kingdom, sLastStage, sLastWorld);
+    }
     if (sIsCrashHomeOverride) {
-        // The scene is not initialized yet: the stage being loaded comes from the sequence's GameDataHolder. The crash
+        // The scene is not initialized yet: the stage being loaded comes from SceneInitInfo. The crash
         // story lasts through the cutscene stages (Demo*: DemoCrashHomeFallStage) and the Lost Kingdom (Clash*).
-        GameDataHolder* holder = helpers::tryGetGameDataHolder();
-        const char* stage = holder ? GameDataFunction::getCurrentStageName(GameDataHolderAccessor(holder)) : nullptr;
+        const char* stage = info.initStageName;
         bool isCrashStory = stage && (strncmp(stage, "Demo", 4) == 0 || strncmp(stage, "Clash", 5) == 0 ||
                                       (sIsCloudCrashArrival && strncmp(stage, "Cloud", 5) == 0));
         if (btt::isDebugTrace()) btt::dbgLog("DBG: crash story stage %s keep %d", stage ? stage : "?", isCrashStory);
@@ -438,6 +465,13 @@ HkTrampoline stageSceneInitHook = [](TrampolineStatic(), StageScene* stageScene,
     }
     orig(stageScene, info);
     sIsInStageSceneInit = false;
+    {
+        GameDataHolderAccessor accessor(stageScene);
+        const char* loaded = GameDataFunction::getCurrentStageName(accessor);
+        snprintf(sLastStage, sizeof(sLastStage), "%s", loaded ? loaded : "");
+        sLastWorld = accessor.mData && accessor.mData->getGameDataFile() ?
+                         accessor.mData->getGameDataFile()->getCurrentWorldId() : -1;
+    }
     if (sForcedScenario > 0) {
         const char* loaded = GameDataFunction::getCurrentStageName(GameDataHolderAccessor(stageScene));
         if (loaded && strcmp(loaded, sForcedScenarioStage) == 0) sForcedScenario = -1;

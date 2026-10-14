@@ -217,6 +217,7 @@ namespace {
         { "Reset Timer", "Remettre le chrono à zéro" },
         { "Preset Pos", "Position prédéfinie" },
         { "Reset Position", "Position par défaut" },
+        { "Size", "Taille" },
         { "Center", "Centre" },
         { "Top Left", "En haut à gauche" },
         { "Top Center", "En haut au centre" },

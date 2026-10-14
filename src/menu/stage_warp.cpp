@@ -397,6 +397,13 @@ static int getKingdomOfStage(const char* stageName) {
 // without Moon Rock (Mushroom Kingdom, Dark Side, Darker Side)
 static constexpr int cLastScenario[] = { 4, 4, 5, 5, 4, 4, 4, 8, 4, 4, 8, 4, 4, 3, 2, 2, 2 };
 
+namespace btt {
+// Kingdom (mainNames index) of a main stage or a sub-area, -1 if unknown
+int getKingdomIndexOfStage(const char* stageName) {
+    return getKingdomOfStage(stageName);
+}
+} // namespace btt
+
 int getLastScenarioOfStage(const char* stageName) {
     int kingdom = getKingdomOfStage(stageName);
     return kingdom >= 0 && kingdom < int(sizeof(cLastScenario) / sizeof(cLastScenario[0])) ? cLastScenario[kingdom] : 0;

@@ -146,6 +146,10 @@ public:
         u8 mWheelSize = 1;
         // Menu language (menu/Lang.h): 0 English, 1 French
         u8 mLanguage = 0;
+        // 1 once mInputDisplayStyle uses the v1.7.1 style list (103 Open Joystick Display styles removed)
+        u8 mInputDisplayStyleList = 0;
+        // Size of the input displays (1st and 2nd controller), in % (Input Display > Size)
+        int mInputDisplaySize = 100;
     } mSettings;
 
     // Settings* getSettings() { return &mSettings; }

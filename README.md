@@ -20,9 +20,16 @@ Le site officiel en ligne est disponible sur **GitHub Pages** ([https://mezfndu0
 
 ---
 
-## 🆕 Nouveautés v1.7.0
+## 🆕 Nouveautés v1.7.1
 
-- **Input Display** : 212 styles en plus, repris d'[Open Joystick Display](https://ojdproject.com).
+- **Input Display** : réglage *Size* (30 à 150 %) pour la taille des manettes (1re et 2e).
+- **Input Display** : 109 styles OJD gardés (manettes Switch, Xbox, PS4, GameCube, N64…) ; les anciennes consoles et leurs *Streamer* sont retirés. Le style choisi est gardé.
+- **Stages** : *Slots* (Luncheon) ajouté aux sous-zones, avec ses images.
+- **Cutscene Refresh** : la cinématique du début du royaume ne revient plus en sortant d'une sous-zone (Slots…), seulement en arrivant ou au *Restart Scene*.
+
+## Nouveautés v1.7.0
+
+- **Input Display** : styles en plus, repris d'[Open Joystick Display](https://ojdproject.com).
 - **Roue rapide** (*Keybinds > Wheel Key / Wheel Size / Wheel Slot*) : s'ouvre avec L3, R3, L ou R, 6, 8 ou 12 cases, n'importe quelle action des Options, Keybinds, Misc ou Timer. Le stick droit choisit, A valide, Mario peut bouger.
 - **Explications** à côté de chaque option et des réglages du Timer.
 - **Settings > Language** : tout le menu en français.
@@ -162,7 +169,8 @@ Le menu vertical translucide s'ouvre avec la combinaison **`L + D-Pad Gauche`**.
 ### 🎮 5. Input Display (Affichage Manette)
 - **Input Display** : Affiche ou masque la manette à l'écran.
 - **2P Mode** : Affiche aussi la 2e manette (Joueur 2 / Cappy).
-- **Style** : Apparence de la manette (Classic, Periscope, Minimal, et 212 styles OJD), avec le nom des boutons.
+- **Style** : Apparence de la manette (Classic, Periscope, Minimal, et 109 styles OJD), avec le nom des boutons.
+- **Size** : Taille de la manette, de 30 à 150 % (aussi pour la 2e manette).
 - **Preset Pos** : Place la manette au Centre ou dans les 4 coins d'un clic.
 - **Position X & Y** : Règle l'emplacement par pas de 25px (ou glisser-déposer à la souris).
 - **Reset Position** : Replace la manette au centre de l'écran.

@@ -78,6 +78,12 @@ Deux mods sont déployés dans `C:\Users\FlowUP\AppData\Roaming\yuzu\load\010000
 - **Correction** : les 8 `bl rs::isGotShine` du watcher (init +0x1d4a60/+0x1d4ba4, `createShineChips` +0x1d4c30 qui crée les fragments "vides"/gris si la lune est prise, `initAfterPlacement` +0x1d4df4/+0x1d4ff4/+0x1d50bc, `updateHints` +0x1d5174, `appear` +0x1d5314 → `ShineChipWatcherGotCheck1..8`) renvoient `false` quand l'option est active. 1re version (3 appels seulement) : fragments encore gris. Recharger la scène après avoir activé l'option.
 - **Compteur en haut de l'écran** : `StageSceneLayout` / `ShineChipLayoutParts` ne l'affichent pas si `rs::isCurrentShineChipWatcherTypeEmpty` (= lune du watcher déjà prise) → trampoline qui renvoie `false` avec l'option.
 
+### PUBLIÉ — v1.7.1 sur le compte GitHub mezfndu045-star (parent 058e5b0)
+- v1.7.1 : Input Display > Size (mInputDisplaySize, %, mise à l'échelle des sommets ImDrawList autour de la position, main.cpp), 103 styles OJD retirés (liste `tools/subareas/ojd_removed.txt`, migration de l'index du style via mInputDisplayStyleList), Slots (LavaBonus1Zone, entrée "town", images 384x216) dans les sous-zones de Luncheon, retour de sous-zone sans les refresh de début de stage (sIsSubAreaReturn : SceneInitInfo::initStageName, car le GameDataHolder a encore le stage précédent au début de StageScene::init ; royaume du stage précédent = world id lu après son init). Zips depuis les v1.7.0, scripts `mkzips171.py` / `edit_site171.py`.
+
+### PUBLIÉ — v1.7.0 sur le compte GitHub mezfndu045-star (commit 058e5b0, parent ae14864)
+- v1.7.0 : skins OJD, roue rapide, aides, langue, Moon Refresh (histoire, Broodals), refresh des arrivées, IL au scénario 1 (+ copie de progression par royaume), Cloud rejoué -> Lost, images Yaz0 + REF (romfs 20 -> 13 Mo). Zips `*-v1.7.0.zip` faits depuis les v1.6.0 (binaires, Skins/SubAreas du romfs, section 3h du guide), scripts `mkzips17.py` / `edit_site17.py` (scratchpad). Canal de test désactivé (cmake -DBTT_DEBUG_COMMANDS=ON pour le réactiver). Crédit OJD (BSD 4 clauses) dans README et pied du site. En ligne et vérifié le 14/10/2026.
+
 ### PUBLIÉ — v1.6.0 sur le compte GitHub mezfndu045-star (commit ae14864, parent bb7b9c4)
 - v1.6.0 : téléportation depuis une nouvelle sauvegarde (préchargement de Cascade libéré + unlockWorld), Misc et Input Display sur 2 colonnes, réglages P2 de position. Zips `*-v1.6.0.zip` faits depuis les v1.5.0 (binaires + section 3g du guide), scripts `mkzips16.py` / `edit_site16.py` (scratchpad).
 

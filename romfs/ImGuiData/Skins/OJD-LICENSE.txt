@@ -3,9 +3,6 @@ Input display styles OJD000 ... converted from the themes of Open Joystick Displ
 Copyright 2019 Anthony Mattera (KernelZechs), Open Joystick Display.
 
 Converted styles:
-OJD000  ojd-80s  Atari VCS (2600) Four Position
-OJD001  ojd-80s  Atari VCS (2600) Analog
-OJD002  ojd-80s  Sharp X68000 X1 Joycard
 OJD003  ojd-fight-sticks  Xbox ABXY Four Position
 OJD004  ojd-fight-sticks  Xbox ALBX Four Position
 OJD005  ojd-fight-sticks  Xbox AYBX Four Position
@@ -14,8 +11,6 @@ OJD007  ojd-fight-sticks  Xbox ALBX Analog
 OJD008  ojd-fight-sticks  Xbox AYBX Analog
 OJD009  ojd-fight-sticks  PlayStation XOST Four Position
 OJD010  ojd-fight-sticks  PlayStation XOST Analog
-OJD011  ojd-hitbox  Luberry Hit Box UNIST
-OJD012  ojd-hitbox  Luberry Smash Box Ultimate
 OJD013  ojd-microsoft-xbox  Xbox One (Gray)
 OJD014  ojd-microsoft-xbox  Xbox One (Teal)
 OJD015  ojd-microsoft-xbox  Xbox One (Pink)
@@ -37,38 +32,12 @@ OJD030  ojd-microsoft-xbox  Streamer (Pink Active)
 OJD031  ojd-microsoft-xbox  Streamer (Green Active)
 OJD032  ojd-microsoft-xbox  Streamer (Red Active)
 OJD033  ojd-microsoft-xbox  Streamer (Blue Active)
-OJD034  ojd-nec-pc-engine  PC-Engine
-OJD035  ojd-nec-pc-engine  TurboGrafx-16
-OJD036  ojd-nec-pc-engine  Streamer (White Active)
-OJD037  ojd-nec-pc-engine  Streamer (Purple Active)
-OJD038  ojd-nec-pc-engine  Streamer (Orange Active)
-OJD039  ojd-nec-pc-engine  Streamer (Pink Active)
-OJD040  ojd-nec-pc-engine  Streamer (Green Active)
-OJD041  ojd-nec-pc-engine  Streamer (Red Active)
-OJD042  ojd-nec-pc-engine  Streamer (Blue Active)
 OJD043  ojd-nintendo-64  Gray
 OJD044  ojd-nintendo-64  Blue
 OJD045  ojd-nintendo-64  Red
 OJD046  ojd-nintendo-64  Green
 OJD047  ojd-nintendo-64  Black
 OJD048  ojd-nintendo-64  Yellow
-OJD049  ojd-nintendo-64  Streamer (White Active)
-OJD050  ojd-nintendo-64  Streamer (Purple Active)
-OJD051  ojd-nintendo-64  Streamer (Orange Active)
-OJD052  ojd-nintendo-64  Streamer (Pink Active)
-OJD053  ojd-nintendo-64  Streamer (Green Active)
-OJD054  ojd-nintendo-64  Streamer (Red Active)
-OJD055  ojd-nintendo-64  Streamer (Blue Active)
-OJD056  ojd-nintendo-famicom  NES
-OJD057  ojd-nintendo-famicom  NES Dogbone
-OJD058  ojd-nintendo-famicom  Famicom
-OJD059  ojd-nintendo-famicom  Streamer (White Active)
-OJD060  ojd-nintendo-famicom  Streamer (Purple Active)
-OJD061  ojd-nintendo-famicom  Streamer (Orange Active)
-OJD062  ojd-nintendo-famicom  Streamer (Pink Active)
-OJD063  ojd-nintendo-famicom  Streamer (Green Active)
-OJD064  ojd-nintendo-famicom  Streamer (Red Active)
-OJD065  ojd-nintendo-famicom  Streamer (Blue Active)
 OJD066  ojd-nintendo-gamecube  Gamecube Purple
 OJD067  ojd-nintendo-gamecube  Gamecube Silver
 OJD068  ojd-nintendo-gamecube  Gamecube Orange
@@ -81,22 +50,6 @@ OJD074  ojd-nintendo-gamecube  Gamecube Orange (Flat)
 OJD075  ojd-nintendo-gamecube  Gamecube Pink (Flat)
 OJD076  ojd-nintendo-gamecube  Gamecube Bronze (Flat)
 OJD077  ojd-nintendo-gamecube  Gamecube Black (Flat)
-OJD078  ojd-nintendo-gamecube  Streamer (White Active)
-OJD079  ojd-nintendo-gamecube  Streamer (Purple Active)
-OJD080  ojd-nintendo-gamecube  Streamer (Orange Active)
-OJD081  ojd-nintendo-gamecube  Streamer (Pink Active)
-OJD082  ojd-nintendo-gamecube  Streamer (Green Active)
-OJD083  ojd-nintendo-gamecube  Streamer (Red Active)
-OJD084  ojd-nintendo-gamecube  Streamer (Blue Active)
-OJD085  ojd-nintendo-super-famicom  SNES
-OJD086  ojd-nintendo-super-famicom  Super Famicom
-OJD087  ojd-nintendo-super-famicom  Streamer (White Active)
-OJD088  ojd-nintendo-super-famicom  Streamer (Purple Active)
-OJD089  ojd-nintendo-super-famicom  Streamer (Orange Active)
-OJD090  ojd-nintendo-super-famicom  Streamer (Pink Active)
-OJD091  ojd-nintendo-super-famicom  Streamer (Green Active)
-OJD092  ojd-nintendo-super-famicom  Streamer (Red Active)
-OJD093  ojd-nintendo-super-famicom  Streamer (Blue Active)
 OJD094  ojd-nintendo-switch  Switch Pro Controller
 OJD095  ojd-nintendo-switch  Switch Pro Controller Zelda
 OJD096  ojd-nintendo-switch  Switch Pro Controller Mario
@@ -132,12 +85,6 @@ OJD125  ojd-nintendo-switch  Streamer Joycon (Pink Active)
 OJD126  ojd-nintendo-switch  Streamer Joycon (Green Active)
 OJD127  ojd-nintendo-switch  Streamer Joycon (Red Active)
 OJD128  ojd-nintendo-switch  Streamer Joycon (Blue Active)
-OJD129  ojd-racing-wheels  Logitech G29 (Gearbox Right)
-OJD130  ojd-racing-wheels  Logitech G29 (Gearbox Left)
-OJD131  ojd-racing-wheels  Logitech G29 (No Gearbox)
-OJD132  ojd-racing-wheels  Logitech G920 (Gearbox Right)
-OJD133  ojd-racing-wheels  Logitech G920 (Gearbox Left)
-OJD134  ojd-racing-wheels  Logitech G920 (No Gearbox)
 OJD135  ojd-scuf-ps4  Black
 OJD136  ojd-scuf-ps4  White
 OJD137  ojd-scuf-ps4  Blue
@@ -163,55 +110,5 @@ OJD156  ojd-scuf-ps4  Star Storm
 OJD157  ojd-scuf-ps4  Supernova
 OJD158  ojd-scuf-ps4  Tesla
 OJD159  ojd-scuf-ps4  Utopia
-OJD160  ojd-sega-dreamcast  Dreamcast Controller
-OJD161  ojd-sega-dreamcast  Black Controller
-OJD162  ojd-sega-dreamcast  Streamer (White Active)
-OJD163  ojd-sega-dreamcast  Streamer (Purple Active)
-OJD164  ojd-sega-dreamcast  Streamer (Orange Active)
-OJD165  ojd-sega-dreamcast  Streamer (Pink Active)
-OJD166  ojd-sega-dreamcast  Streamer (Green Active)
-OJD167  ojd-sega-dreamcast  Streamer (Red Active)
-OJD168  ojd-sega-dreamcast  Streamer (Blue Active)
-OJD169  ojd-sega-master-system  Standard Controller
-OJD170  ojd-sega-master-system  Streamer (White Active)
-OJD171  ojd-sega-master-system  Streamer (Purple Active)
-OJD172  ojd-sega-master-system  Streamer (Orange Active)
-OJD173  ojd-sega-master-system  Streamer (Pink Active)
-OJD174  ojd-sega-master-system  Streamer (Green Active)
-OJD175  ojd-sega-master-system  Streamer (Red Active)
-OJD176  ojd-sega-master-system  Streamer (Blue Active)
-OJD177  ojd-sega-mega-drive  Three Button
-OJD178  ojd-sega-mega-drive  Six Button
-OJD179  ojd-sega-mega-drive  Streamer (White Active)
-OJD180  ojd-sega-mega-drive  Streamer (Purple Active)
-OJD181  ojd-sega-mega-drive  Streamer (Orange Active)
-OJD182  ojd-sega-mega-drive  Streamer (Pink Active)
-OJD183  ojd-sega-mega-drive  Streamer (Green Active)
-OJD184  ojd-sega-mega-drive  Streamer (Red Active)
-OJD185  ojd-sega-mega-drive  Streamer (Blue Active)
-OJD186  ojd-sega-saturn  Analog Controller
-OJD187  ojd-sega-saturn  Analog Controller (Black)
-OJD188  ojd-sega-saturn  Streamer (White Active)
-OJD189  ojd-sega-saturn  Streamer (Purple Active)
-OJD190  ojd-sega-saturn  Streamer (Orange Active)
-OJD191  ojd-sega-saturn  Streamer (Pink Active)
-OJD192  ojd-sega-saturn  Streamer (Green Active)
-OJD193  ojd-sega-saturn  Streamer (Red Active)
-OJD194  ojd-sega-saturn  Streamer (Blue Active)
-OJD195  ojd-sega-saturn  Analog Controller (Kirby)
 OJD196  ojd-sony-playstation  Analog Black
 OJD197  ojd-sony-playstation  Digital Gray
-OJD198  ojd-sony-playstation  Streamer Analog (White Active)
-OJD199  ojd-sony-playstation  Streamer Analog (Purple Active)
-OJD200  ojd-sony-playstation  Streamer Analog (Orange Active)
-OJD201  ojd-sony-playstation  Streamer Analog (Pink Active)
-OJD202  ojd-sony-playstation  Streamer Analog (Green Active)
-OJD203  ojd-sony-playstation  Streamer Analog (Red Active)
-OJD204  ojd-sony-playstation  Streamer Analog (Blue Active)
-OJD205  ojd-sony-playstation  Streamer Digital (White Active)
-OJD206  ojd-sony-playstation  Streamer Digital (Purple Active)
-OJD207  ojd-sony-playstation  Streamer Digital (Orange Active)
-OJD208  ojd-sony-playstation  Streamer Digital (Pink Active)
-OJD209  ojd-sony-playstation  Streamer Digital (Green Active)
-OJD210  ojd-sony-playstation  Streamer Digital (Red Active)
-OJD211  ojd-sony-playstation  Streamer Digital (Blue Active)

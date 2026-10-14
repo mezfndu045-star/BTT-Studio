@@ -200,6 +200,8 @@ inline constexpr PhotoTourShot sPhotoTourShots[] = {
     { "LavaWorldExcavationExStage_in", "LavaWorldExcavationExStage", "MartinCubeEx" },
     { "LavaWorldExcavationExStage_out", "LavaWorldHomeStage", "MartinCubeEx" },
     { "LavaWorldShopStage_in", "LavaWorldShopStage", "shop" },
+    // Slots (zone, no picture): the door of Luncheon and the arrival inside use the id "town"
+    { "LavaBonus1Zone_in", "LavaBonus1Zone", "town" },
     { "LavaWorldShopStage_out", "LavaWorldHomeStage", "shop" },
     { "CapAppearLavaLiftExStage_in", "CapAppearLavaLiftExStage", "LavaLiftExdokan" },
     { "CapAppearLavaLiftExStage_out", "LavaWorldHomeStage", "LavaLiftExdokan" },

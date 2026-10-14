@@ -1,7 +1,0 @@
-bg bg 360 165
-btn a i0 287 10 73 118
-btn b i1 194 10 73 118
-btn down i2 77 120 10 35
-btn left i3 10 77 35 10
-btn right i4 120 77 35 10
-btn up i5 77 10 10 35

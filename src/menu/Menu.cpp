@@ -630,6 +630,20 @@ void Menu::initCategories() {
     mCategories[4].name = "Input Display";
     mCategories[4].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableInputDisplay, "Input Display"));
     mCategories[4].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableInput2P, "2P Mode"));
+    // Style chosen before v1.7.1 (212 Open Joystick Display styles, index 3 + OJD number): same style in the new list
+    if (set->getSettings()->mInputDisplayStyleList == 0) {
+        static constexpr u8 cRemovedOjd[] = { 0, 1, 2, 11, 12, 34, 35, 36, 37, 38, 39, 40, 41, 42, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 129, 130, 131, 132, 133, 134, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211 };
+        u8& style = set->getSettings()->mInputDisplayStyle;
+        if (style >= 3) {
+            int ojd = style - 3, shift = 0;
+            for (u8 removed : cRemovedOjd) {
+                if (removed == ojd) shift = -1000;
+                else if (removed < ojd) shift++;
+            }
+            style = shift < 0 ? 0 : u8(style - shift);
+        }
+        set->getSettings()->mInputDisplayStyleList = 1;
+    }
     if (set->getSettings()->mInputDisplayStyle >= IM_ARRAYSIZE(sInputDisplayStyleNames)) set->getSettings()->mInputDisplayStyle = 0;
     mCategories[4].components.push_back(new EnumMenuComponent<u8>(&set->getSettings()->mInputDisplayStyle, sInputDisplayStyleNames, IM_ARRAYSIZE(sInputDisplayStyleNames), "Style"));
     mCategories[4].components.push_back(new EnumMenuComponent<int>(&sDisplayPreset, sPresetNames, 5, "Preset Pos", 34, [](int preset) {
@@ -662,6 +676,9 @@ void Menu::initCategories() {
             sInputDisplayY = 450;
         }
     }));
+    if (set->getSettings()->mInputDisplaySize < 30 || set->getSettings()->mInputDisplaySize > 150)
+        set->getSettings()->mInputDisplaySize = 100;
+    mCategories[4].components.push_back(new IntMenuComponent<int>(&set->getSettings()->mInputDisplaySize, "Size", 30, 150, 10));
     // Right column: position of the 2nd controller (2P Mode), then the colors
     mCategories[4].columnSplit = (int)mCategories[4].components.size();
     static int sDisplayPresetP2 = 0;

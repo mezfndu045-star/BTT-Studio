@@ -91,8 +91,21 @@ HkTrampoline gameSystemInit = [](TrampolineStatic(), GameSystem* gameSystem) -> 
     // Input Displays
     btt::imgui::addDrawFunc([] {
         if (btt::Menu::instance() && btt::SettingsMgr::instance()->getSettings()->mIsEnableInputDisplay) {
-            btt::drawInputDisplay();
-            if (btt::SettingsMgr::instance()->getSettings()->mIsEnableInput2P) btt::drawInputDisplayP2();
+            // Input Display > Size: everything drawn for a controller is scaled around its position
+            auto* settings = btt::SettingsMgr::instance()->getSettings();
+            float scale = settings->mInputDisplaySize / 100.f;
+            ImDrawList* dl = ImGui::GetForegroundDrawList();
+            auto scaled = [&](const ImVec2& pivot, auto draw) {
+                int start = dl->VtxBuffer.Size;
+                draw();
+                if (scale == 1.f) return;
+                for (int i = start; i < dl->VtxBuffer.Size; i++) {
+                    ImVec2& p = dl->VtxBuffer[i].pos;
+                    p = ImVec2(pivot.x + (p.x - pivot.x) * scale, pivot.y + (p.y - pivot.y) * scale);
+                }
+            };
+            scaled(settings->mInputDisplayPos, [] { btt::drawInputDisplay(); });
+            if (settings->mIsEnableInput2P) scaled(settings->mInputDisplayPosP2, [] { btt::drawInputDisplayP2(); });
         }
     });
     // Timer
