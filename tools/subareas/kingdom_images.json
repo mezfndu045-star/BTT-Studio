@@ -1,0 +1,70 @@
+{
+ "CapWorldHomeStage": {
+  "page": "Cap Kingdom",
+  "url": "https://mario.wiki.gallery/images/thumb/c/c9/SMO_Art_-_Cap_Kingdom.jpg/384px-SMO_Art_-_Cap_Kingdom.jpg"
+ },
+ "WaterfallWorldHomeStage": {
+  "page": "Cascade Kingdom",
+  "url": "https://mario.wiki.gallery/images/thumb/a/aa/SMO_Art_-_Cascade_Kingdom.jpg/384px-SMO_Art_-_Cascade_Kingdom.jpg"
+ },
+ "SandWorldHomeStage": {
+  "page": "Sand Kingdom",
+  "url": "https://mario.wiki.gallery/images/thumb/a/ae/SMO_Art_-_Sand_Kingdom.jpg/384px-SMO_Art_-_Sand_Kingdom.jpg"
+ },
+ "ForestWorldHomeStage": {
+  "page": "Wooded Kingdom",
+  "url": "https://mario.wiki.gallery/images/thumb/f/fb/SMO_Art_-_Wooded_Kingdom.jpg/384px-SMO_Art_-_Wooded_Kingdom.jpg"
+ },
+ "LakeWorldHomeStage": {
+  "page": "Lake Kingdom",
+  "url": "https://mario.wiki.gallery/images/thumb/3/3e/SMO_Art_-_Lake_Kingdom.jpg/384px-SMO_Art_-_Lake_Kingdom.jpg"
+ },
+ "CloudWorldHomeStage": {
+  "page": "Cloud Kingdom",
+  "url": "https://mario.wiki.gallery/images/thumb/3/3e/Cloud_Kingdom.png/384px-Cloud_Kingdom.png"
+ },
+ "ClashWorldHomeStage": {
+  "page": "Lost Kingdom",
+  "url": "https://mario.wiki.gallery/images/thumb/3/3f/SMO_Shot_-_Lost_Kingdom.jpg/384px-SMO_Shot_-_Lost_Kingdom.jpg"
+ },
+ "CityWorldHomeStage": {
+  "page": "Metro Kingdom",
+  "url": "https://mario.wiki.gallery/images/thumb/b/ba/SMO_Art_-_Metro_Kingdom.jpg/384px-SMO_Art_-_Metro_Kingdom.jpg"
+ },
+ "SnowWorldHomeStage": {
+  "page": "Snow Kingdom",
+  "url": "https://mario.wiki.gallery/images/thumb/3/31/SMO_Art_-_Snow_Kingdom.png/384px-SMO_Art_-_Snow_Kingdom.png"
+ },
+ "SeaWorldHomeStage": {
+  "page": "Seaside Kingdom",
+  "url": "https://mario.wiki.gallery/images/thumb/c/cf/SMO_Seaside_Kingdom.jpg/384px-SMO_Seaside_Kingdom.jpg"
+ },
+ "LavaWorldHomeStage": {
+  "page": "Luncheon Kingdom",
+  "url": "https://mario.wiki.gallery/images/thumb/d/d3/SMO_Art_-_Luncheon_Kingdom.jpg/384px-SMO_Art_-_Luncheon_Kingdom.jpg"
+ },
+ "BossRaidWorldHomeStage": {
+  "page": "Ruined Kingdom",
+  "url": "https://mario.wiki.gallery/images/thumb/a/a5/SMO_RUIN.jpg/384px-SMO_RUIN.jpg"
+ },
+ "SkyWorldHomeStage": {
+  "page": "Bowser's Kingdom",
+  "url": "https://mario.wiki.gallery/images/thumb/f/f9/SMO_Bowser_Kingdom.png/384px-SMO_Bowser_Kingdom.png"
+ },
+ "MoonWorldHomeStage": {
+  "page": "Moon Kingdom",
+  "url": "https://mario.wiki.gallery/images/thumb/8/82/SMO_Shot_-_Moon_Kingdom.jpg/384px-SMO_Shot_-_Moon_Kingdom.jpg"
+ },
+ "PeachWorldHomeStage": {
+  "page": "Mushroom Kingdom",
+  "url": "https://mario.wiki.gallery/images/thumb/7/76/NSMBUMushroomKingdom.png/384px-NSMBUMushroomKingdom.png"
+ },
+ "Special1WorldHomeStage": {
+  "page": "Dark Side",
+  "url": "https://mario.wiki.gallery/images/thumb/1/11/RabbitRidgeTowerSMO.jpg/384px-RabbitRidgeTowerSMO.jpg"
+ },
+ "Special2WorldHomeStage": {
+  "page": "Darker Side",
+  "url": "https://mario.wiki.gallery/images/thumb/d/d9/SMOLongJourney%27sEnd.jpg/384px-SMOLongJourney%27sEnd.jpg"
+ }
+}

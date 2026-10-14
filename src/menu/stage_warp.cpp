@@ -4,6 +4,7 @@
 
 #include "game/MapObj/ChangeStageInfo.h"
 #include "game/Sequence/HakoniwaSequence.h"
+#include "game/System/GameDataFunction.h"
 #include "game/System/GameDataHolder.h"
 
 #include <cstddef>
@@ -12,6 +13,7 @@
 #include "helpers/getHelper.h"
 #include "imgui.h"
 #include "imgui_internal.h"
+#include "menu/SubAreaList.h"
 
 struct KingdomEnglishNameSub {
     const char* mInternal;
@@ -376,22 +378,122 @@ void drawStageWarpWindow() {
     }
 }
 
-void warpToStage(const char* stageName, int scenarioNo) {
-    HakoniwaSequence* gameSeq = helpers::tryGetHakoniwaSequence();
-    if (!gameSeq || !gameSeq->mGameDataHolderAccessor.mData || !stageName) return;
-    int sc = scenarioNo == 0 ? -1 : scenarioNo;
+// Kingdom (index in mainNames) a home stage or a sub area belongs to, -1 if unknown
+static int getKingdomOfStage(const char* stageName) {
+    if (!stageName) return -1;
+    constexpr int cKingdomNum = sizeof(mainNames) / sizeof(mainNames[0]);
+    for (int i = 0; i < cKingdomNum; i++)
+        if (al::isEqualString(mainNames[i].mInternal, stageName)) return i;
+    for (int i = 0; i < cKingdomNum && i < int(sizeof(btt::sKingdomSubAreas) / sizeof(btt::sKingdomSubAreas[0])); i++)
+        for (int j = 0; j < btt::sKingdomSubAreas[i].count; j++)
+            if (al::isEqualString(btt::sKingdomSubAreas[i].areas[j].stage, stageName)) return i;
+    return -1;
+}
+
+// Per mainNames entry, from SystemData/WorldList.szs: MoonRockScenario, or AfterEndingScenario for the kingdoms
+// without Moon Rock (Mushroom Kingdom, Dark Side, Darker Side)
+static constexpr int cLastScenario[] = { 4, 4, 5, 5, 4, 4, 4, 8, 4, 4, 8, 4, 4, 3, 2, 2, 2 };
+
+int getLastScenarioOfStage(const char* stageName) {
+    int kingdom = getKingdomOfStage(stageName);
+    return kingdom >= 0 && kingdom < int(sizeof(cLastScenario) / sizeof(cLastScenario[0])) ? cLastScenario[kingdom] : 0;
+}
+
+static void changeStage(HakoniwaSequence* gameSeq, const char* label, const char* stageName, int scenario) {
     ChangeStageInfo stageInfo(
-        gameSeq->mGameDataHolderAccessor.mData, "start", stageName, false, sc,
+        gameSeq->mGameDataHolderAccessor.mData, label, stageName, false, scenario,
         ChangeStageInfo::SubScenarioType::NO_SUB_SCENARIO
     );
     gameSeq->mGameDataHolderAccessor.mData->changeNextStage(&stageInfo, 0);
+}
+
+// Scenario the save is at in a kingdom (scenario -1 would keep the current kingdom's one, which is wrong elsewhere)
+static int getSaveScenarioOf(HakoniwaSequence* gameSeq, int kingdomIdx) {
+    StageScene* scene = helpers::tryGetStageScene(gameSeq);
+    if (!scene || kingdomIdx < 0) return -1;
+#if BTT_V130
+    // 1.3 inlines tryFindWorldIdByMainStageName: the world index follows mainNames, except Seaside (8) and Snow (9)
+    if (kingdomIdx >= int(sizeof(mainNames) / sizeof(mainNames[0]))) return -1;
+    s32 worldId = kingdomIdx == 8 ? 9 : kingdomIdx == 9 ? 8 : kingdomIdx;
+#else
+    s32 worldId = GameDataFunction::tryFindWorldIdByMainStageName((const al::Scene*)scene, mainNames[kingdomIdx].mInternal);
+#endif
+    if (worldId < 0) return -1;
+    s32 scenario = GameDataFunction::getWorldScenarioNo(gameSeq->mGameDataHolderAccessor, worldId);
+    return scenario > 0 ? scenario : -1;
+}
+
+static char sPendingStage[64] = {};
+static char sPendingLabel[64] = {};
+static int sPendingGeneration = 0;
+static int sPendingFrames = 0;
+
+static const void* sLastScene = nullptr;
+static bool sIsLastSceneAlive = false;
+static int sSceneGeneration = 0;
+
+int getStageSceneGeneration() {
+    return sSceneGeneration;
+}
+
+void warpToStageSafe(const char* stageName, const char* label, int scenarioNo) {
+    HakoniwaSequence* gameSeq = helpers::tryGetHakoniwaSequence();
+    if (!gameSeq || !gameSeq->mGameDataHolderAccessor.mData || !stageName) return;
+    int sc = scenarioNo == 0 ? -1 : scenarioNo;
+    int target = getKingdomOfStage(stageName);
+    int current = getKingdomOfStage(GameDataFunction::getCurrentStageName(gameSeq->mGameDataHolderAccessor));
+    bool isHome = target >= 0 && al::isEqualString(mainNames[target].mInternal, stageName);
+    if (target >= 0 && !isHome && target != current) {
+        // Load the kingdom first, the sub area is entered once its home stage is up (updateStageWarp)
+        snprintf(sPendingStage, sizeof(sPendingStage), "%s", stageName);
+        snprintf(sPendingLabel, sizeof(sPendingLabel), "%s", label ? label : "start");
+        sPendingGeneration = sSceneGeneration;
+        sPendingFrames = 0;
+        if (sc == -1) sc = getSaveScenarioOf(gameSeq, target);
+        changeStage(gameSeq, "start", mainNames[target].mInternal, sc);
+        return;
+    }
+    sPendingStage[0] = '\0';
+    // A kingdom warped to from elsewhere opens at the save's scenario
+    if (sc == -1 && isHome && target != current) sc = getSaveScenarioOf(gameSeq, target);
+    // A sub area of the kingdom Mario is in keeps the kingdom's scenario (forcing one there could send the game to
+    // another stage, e.g. the Secret Flower Field)
+    if (!isHome && target >= 0 && target == current) sc = -1;
+    changeStage(gameSeq, label ? label : "start", stageName, sc);
+}
+
+void updateStageWarp() {
+    HakoniwaSequence* gameSeq = helpers::tryGetHakoniwaSequence();
+    StageScene* scene = helpers::tryGetStageScene(gameSeq);
+    bool isAlive = scene && scene->mIsAlive;
+    if (isAlive && (!sIsLastSceneAlive || scene != sLastScene)) sSceneGeneration++;
+    sLastScene = scene;
+    sIsLastSceneAlive = isAlive;
+
+    if (!sPendingStage[0]) return;
+    if (!gameSeq || !isAlive || sSceneGeneration == sPendingGeneration) {
+        sPendingFrames = 0;
+        return;
+    }
+    // Give the kingdom half a second before leaving it again
+    if (++sPendingFrames < 30) return;
+    changeStage(gameSeq, sPendingLabel, sPendingStage, -1);
+    sPendingStage[0] = '\0';
+}
+
+bool isStageWarpPending() {
+    return sPendingStage[0] != '\0';
+}
+
+void warpToStage(const char* stageName, int scenarioNo) {
+    warpToStageSafe(stageName, "start", scenarioNo);
 }
 
 void warpToKingdom(int kingdomIdx, int scenarioNo) {
     HakoniwaSequence* gameSeq = helpers::tryGetHakoniwaSequence();
     if (!gameSeq || !gameSeq->mGameDataHolderAccessor.mData) return;
     if (kingdomIdx < 0 || kingdomIdx >= (int)(sizeof(mainNames) / sizeof(mainNames[0]))) return;
-    int sc = scenarioNo == 0 ? -1 : scenarioNo;
+    int sc = scenarioNo == 0 ? getSaveScenarioOf(gameSeq, kingdomIdx) : scenarioNo;
     ChangeStageInfo stageInfo(
         gameSeq->mGameDataHolderAccessor.mData, "start", mainNames[kingdomIdx].mInternal, false, sc,
         ChangeStageInfo::SubScenarioType::NO_SUB_SCENARIO

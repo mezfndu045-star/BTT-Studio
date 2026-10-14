@@ -19,11 +19,131 @@
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "menu/stage_warp.h"
+#include "menu/InputDisplayStyles.h"
+#include "menu/Keyboard.h"
+#include "menu/MoonList.h"
+#include "menu/MoonNames.h"
+#include "menu/PhotoTour.h"
 #include "menu/SubAreaImages.h"
 #include "menu/SubAreaList.h"
 #include "src/settings/SettingsMgr.h"
 
 namespace btt {
+
+// Misc > Moon: Left/Right picks a moon of the kingdom chosen above, A opens the keyboard to rename it
+class MoonRenameMenuComponent : public MenuComponent {
+    const int* mKingdom;
+    int mIndex = 0;
+    int mLastKingdom = -1;
+    int mFontSize = 34;
+
+    const KingdomMoons& kingdom() const { return sKingdomMoons[*mKingdom]; }
+
+    const char* shownName(bool* isCustom) const {
+        const KingdomMoons& k = kingdom();
+        if (k.count <= 0) return "(no moon)";
+        const MoonEntry& m = k.moons[mIndex < k.count ? mIndex : 0];
+        const char* custom = getCustomMoonName(m.stage, m.objId);
+        if (isCustom) *isCustom = custom != nullptr;
+        return custom ? custom : m.name;
+    }
+
+    void clampIndex() {
+        if (*mKingdom != mLastKingdom) {
+            mLastKingdom = *mKingdom;
+            mIndex = 0;
+        }
+        if (mIndex >= kingdom().count) mIndex = 0;
+    }
+
+public:
+    explicit MoonRenameMenuComponent(const int* kingdomIndex) : mKingdom(kingdomIndex) {}
+
+    bool canHaveFocus() const override { return true; }
+
+    ImVec2 getSize() const override {
+        char buf[200];
+        snprintf(buf, sizeof(buf), "Moon %d/%d: %s", mIndex + 1, kingdom().count, shownName(nullptr));
+        ImFont* font = ImGui::GetFont();
+        ImVec2 ts = font ? font->CalcTextSizeA(mFontSize, FLT_MAX, 0.f, buf) : ImVec2(300, (float)mFontSize);
+        return ImVec2(ts.x + 24.0f, ts.y + 12.0f);
+    }
+
+    void draw(const ImVec2& at) override {
+        clampIndex();
+        bool isCustom = false;
+        const char* name = shownName(&isCustom);
+        char title[48];
+        snprintf(title, sizeof(title), "Moon %d/%d: ", mIndex + 1, kingdom().count);
+        ImFont* font = ImGui::GetFont();
+        if (!font) return;
+        ImVec2 ts = font->CalcTextSizeA(mFontSize, FLT_MAX, 0.f, title);
+        ImGui::GetForegroundDrawList()->AddText(font, (float)mFontSize, ImVec2(at.x + 12, at.y + 6), IM_COL32(255, 255, 255, 255), title);
+        ImU32 col = mIsFocused ? IM_COL32(255, 215, 0, 255) : isCustom ? IM_COL32(120, 255, 120, 255) : IM_COL32(200, 230, 255, 255);
+        ImGui::GetForegroundDrawList()->AddText(font, (float)mFontSize, ImVec2(at.x + 12 + ts.x, at.y + 6), col, name);
+    }
+
+    void onLeft() override {
+        clampIndex();
+        int n = kingdom().count;
+        if (n > 0) mIndex = (mIndex + n - 1) % n;
+    }
+    void onRight() override {
+        clampIndex();
+        int n = kingdom().count;
+        if (n > 0) mIndex = (mIndex + 1) % n;
+    }
+
+    // A after choosing: type the new name
+    void onConfirm() override {
+        clampIndex();
+        if (kingdom().count <= 0) return;
+        const MoonEntry& m = kingdom().moons[mIndex];
+        const char* stage = m.stage;
+        const char* objId = m.objId;
+        openKeyboard("Moon name", shownName(nullptr), [stage, objId](const char* name) {
+            setMoonName(stage, objId, name);
+            if (Menu::instance()) Menu::instance()->setPopupText("Moon renamed (reload the scene)");
+        });
+    }
+
+    void resetSelected() {
+        clampIndex();
+        if (kingdom().count <= 0) return;
+        setMoonName(kingdom().moons[mIndex].stage, kingdom().moons[mIndex].objId, "");
+    }
+};
+
+// Picture of a stage (romfs ImGuiData/SubAreas/<stage>.astc) with its name under it, drawn right of the menu
+static void drawStagePreview(const ImVec2& at, const char* stage, const char* name) {
+    constexpr float cWidth = 384.0f, cHeight = 216.0f, cPad = 6.0f;
+    ImDrawList* drawList = ImGui::GetForegroundDrawList();
+    ImVec2 tl(at.x, std::min(at.y, 900.0f - cHeight - 2 * cPad - 40.0f));
+    ImVec2 br(tl.x + cWidth + 2 * cPad, tl.y + cHeight + 2 * cPad + 40.0f);
+    drawList->AddRectFilled(tl, br, IM_COL32(0, 0, 0, 190), 12.0f);
+    ImVec2 imgTl(tl.x + cPad, tl.y + cPad);
+    ImTextureID image = getSubAreaImage(stage);
+    if (image)
+        drawList->AddImage(image, imgTl, ImVec2(imgTl.x + cWidth, imgTl.y + cHeight));
+    else
+        drawList->AddText(ImGui::GetFont(), 28.0f, ImVec2(imgTl.x + 12.0f, imgTl.y + cHeight / 2 - 14.0f),
+                          IM_COL32(200, 200, 200, 255), "No picture");
+    drawList->AddText(ImGui::GetFont(), 28.0f, ImVec2(imgTl.x + 4.0f, imgTl.y + cHeight + 6.0f), IM_COL32(255, 255, 255, 255),
+                      name);
+}
+
+// Stages > Kingdom: the selected kingdom's picture is shown next to the menu
+class KingdomMenuComponent : public EnumMenuComponent<int> {
+    const char* const* mNames;
+    const char* const* mStages;
+    const int* mIndex;
+
+public:
+    KingdomMenuComponent(int* index, const char* const* names, const char* const* stages, int count)
+        : EnumMenuComponent<int>(index, names, count, "Kingdom"), mNames(names), mStages(stages), mIndex(index) {}
+
+    void drawPreview(const ImVec2& at) override { drawStagePreview(at, mStages[*mIndex], mNames[*mIndex]); }
+};
 
 // One line per kingdom in Stages: Left/Right picks a sub area (its picture is shown next to the menu), A warps there
 class SubAreaMenuComponent : public EnumMenuComponent<int> {
@@ -38,21 +158,40 @@ public:
 
     void onConfirm() override { warpToStage(mKingdom.areas[mIndex].stage, mScenario ? *mScenario : 0); }
 
+    // Outside (the pipe / door leading there) and inside (where Mario starts), taken in game; else one picture
     void drawPreview(const ImVec2& at) override {
-        constexpr float cWidth = 384.0f, cHeight = 216.0f, cPad = 6.0f;
+        const char* stage = mKingdom.areas[mIndex].stage;
+        char outName[80], inName[80];
+        snprintf(outName, sizeof(outName), "%s_out", stage);
+        snprintf(inName, sizeof(inName), "%s_in", stage);
+        ImTextureID outImage = getSubAreaImage(outName);
+        ImTextureID inImage = getSubAreaImage(inName);
+        if (!outImage && !inImage) {
+            drawStagePreview(at, stage, mKingdom.names[mIndex]);
+            return;
+        }
+
+        constexpr float cWidth = 384.0f, cHeight = 216.0f, cPad = 6.0f, cText = 34.0f;
+        const float boxH = cPad + cText + 2 * (cHeight + cText) + cPad;
         ImDrawList* drawList = ImGui::GetForegroundDrawList();
-        ImVec2 tl(at.x, std::min(at.y, 900.0f - cHeight - 2 * cPad - 40.0f));
-        ImVec2 br(tl.x + cWidth + 2 * cPad, tl.y + cHeight + 2 * cPad + 40.0f);
-        drawList->AddRectFilled(tl, br, IM_COL32(0, 0, 0, 190), 12.0f);
-        ImVec2 imgTl(tl.x + cPad, tl.y + cPad);
-        ImTextureID image = getSubAreaImage(mKingdom.areas[mIndex].stage);
-        if (image)
-            drawList->AddImage(image, imgTl, ImVec2(imgTl.x + cWidth, imgTl.y + cHeight));
-        else
-            drawList->AddText(ImGui::GetFont(), 28.0f, ImVec2(imgTl.x + 12.0f, imgTl.y + cHeight / 2 - 14.0f),
-                              IM_COL32(200, 200, 200, 255), "No picture");
-        drawList->AddText(ImGui::GetFont(), 28.0f, ImVec2(imgTl.x + 4.0f, imgTl.y + cHeight + 6.0f),
-                          IM_COL32(255, 255, 255, 255), mKingdom.names[mIndex]);
+        ImVec2 tl(at.x, std::max(4.0f, std::min(at.y, 900.0f - boxH - 4.0f)));
+        drawList->AddRectFilled(tl, ImVec2(tl.x + cWidth + 2 * cPad, tl.y + boxH), IM_COL32(0, 0, 0, 190), 12.0f);
+        ImFont* font = ImGui::GetFont();
+        float y = tl.y + cPad;
+        drawList->AddText(font, 30.0f, ImVec2(tl.x + cPad + 4.0f, y), IM_COL32(255, 255, 255, 255), mKingdom.names[mIndex]);
+        y += cText;
+        const struct { ImTextureID image; const char* label; } pictures[2] = { { outImage, "Entrance" }, { inImage, "Inside" } };
+        for (const auto& pic : pictures) {
+            ImVec2 imgTl(tl.x + cPad, y);
+            if (pic.image)
+                drawList->AddImage(pic.image, imgTl, ImVec2(imgTl.x + cWidth, imgTl.y + cHeight));
+            else
+                drawList->AddText(font, 26.0f, ImVec2(imgTl.x + 12.0f, imgTl.y + cHeight / 2 - 13.0f),
+                                  IM_COL32(200, 200, 200, 255), "No picture");
+            drawList->AddText(font, 26.0f, ImVec2(imgTl.x + 4.0f, imgTl.y + cHeight + 4.0f), IM_COL32(255, 215, 0, 255),
+                              pic.label);
+            y += cHeight + cText;
+        }
     }
 };
 
@@ -112,7 +251,14 @@ void Menu::initCategories() {
         "Bowser's Kingdom", "Moon Kingdom", "Mushroom Kingdom", "Dark Side", "Darker Side"
     };
     mCategories[1].name = "Stages";
-    mCategories[1].components.push_back(new EnumMenuComponent<int>(&sSelectedStageIdx, sStageNames, 17, "Kingdom"));
+    // Same order as stage_warp.cpp mainNames (warpToKingdom), used for the kingdom pictures
+    static const char* sKingdomStages[17] = {
+        "CapWorldHomeStage", "WaterfallWorldHomeStage", "SandWorldHomeStage", "ForestWorldHomeStage",
+        "LakeWorldHomeStage", "CloudWorldHomeStage", "ClashWorldHomeStage", "CityWorldHomeStage",
+        "SnowWorldHomeStage", "SeaWorldHomeStage", "LavaWorldHomeStage", "BossRaidWorldHomeStage",
+        "SkyWorldHomeStage", "MoonWorldHomeStage", "PeachWorldHomeStage", "Special1WorldHomeStage", "Special2WorldHomeStage"
+    };
+    mCategories[1].components.push_back(new KingdomMenuComponent(&sSelectedStageIdx, sStageNames, sKingdomStages, 17));
     mCategories[1].components.push_back(new IntMenuComponent<int>(&sSelectedScenario, "Scenario", 0, 15));
     mCategories[1].components.push_back(new ButtonMenuComponent("Warp to Stage", []() {
         warpToKingdom(sSelectedStageIdx, sSelectedScenario);
@@ -175,6 +321,17 @@ void Menu::initCategories() {
         if (stageScene) GameDataHolderAccessor(stageScene)->returnPrevStage();
     }));
     mCategories[2].components.push_back(new EnumMenuComponent<u8>(&set->getSettings()->mWigglerPattern, WigglerPatterns, 23, "Wiggler Pattern"));
+    // One custom name for every moon, typed on the on-screen keyboard
+    mCategories[2].components.push_back(new ButtonMenuComponent("Rename All Moons", [this]() {
+        openKeyboard("Name of every moon", getAllMoonsName(), [this](const char* name) {
+            setAllMoonsName(name);
+            setPopupText(name[0] ? "Every moon renamed" : "Moon names reset");
+        });
+    }));
+    mCategories[2].components.push_back(new ButtonMenuComponent("Reset All Moon Names", [this]() {
+        resetAllMoonNames();
+        setPopupText("All moon names reset");
+    }));
 
     // 3: Timer
     mCategories[3].name = "Timer";
@@ -252,6 +409,8 @@ void Menu::initCategories() {
     mCategories[4].name = "Input Display";
     mCategories[4].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableInputDisplay, "Input Display"));
     mCategories[4].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableInput2P, "2P Mode"));
+    if (set->getSettings()->mInputDisplayStyle >= IM_ARRAYSIZE(sInputDisplayStyleNames)) set->getSettings()->mInputDisplayStyle = 0;
+    mCategories[4].components.push_back(new EnumMenuComponent<u8>(&set->getSettings()->mInputDisplayStyle, sInputDisplayStyleNames, IM_ARRAYSIZE(sInputDisplayStyleNames), "Style"));
     mCategories[4].components.push_back(new EnumMenuComponent<int>(&sDisplayPreset, sPresetNames, 5, "Preset Pos", 34, [](int preset) {
         SettingsMgr* s = SettingsMgr::instance();
         if (!s || !s->getSettings()) return;
@@ -365,6 +524,7 @@ void Menu::draw() {
     if (mIsExpandedCurrentCategory) {
         drawExpandedCategory();
     }
+    drawKeyboard();
 }
 
 void Menu::drawExpandedCategory() {
@@ -505,6 +665,11 @@ static bool isPressMenuKey() {
 }
 
 void Menu::updateMenuInput() {
+    // The on-screen keyboard takes every input while it is open
+    if (isKeyboardOpen()) {
+        updateKeyboardInput();
+        return;
+    }
     if (isPressMenuKey()) {
         if (mIsEnabledMenu) hideMenu();
         else showMenu();
@@ -608,6 +773,9 @@ void Menu::handleAlways() {
     updateMenuInput();
 
     handleHotkeys();
+
+    updateStageWarp();
+    updatePhotoTour();
 
     if (mCancelCameraInterpoleFrames > 0) {
         mCancelCameraInterpoleFrames--;

@@ -1,0 +1,33 @@
+bg bg 640 213
+btn a i0 414 114 37 37
+btn b i0 376 152 37 37
+btn x i0 376 76 37 37
+btn y i0 338 114 37 37
+btn plus i1 342 28 26 26
+btn minus i2 273 28 26 26
+btn zl i3 151 5 84 47
+btn zr i3 405 5 84 47
+btn l i4 15 5 109 47
+btn r i4 516 5 109 47
+btn up i5 234 77 33 39
+btn down i6 234 149 33 39
+btn left i7 194 116 39 33
+btn right i8 267 116 39 33
+btn ls i9 39 66 133 133
+btn rs i9 468 66 133 133
+stick L i10 63 90 85 85 35 35
+stick R i10 492 90 85 85 35 35
+label A 432 132 17
+label B 394 170 17
+label X 394 94 17
+label Y 356 132 17
+label + 355 41 12
+label - 286 41 12
+label ZL 193 28 26
+label ZR 447 28 26
+label L 70 28 26
+label R 570 28 26
+label ^ 250 96 15
+label v 250 168 15
+label < 214 132 18
+label > 286 132 18

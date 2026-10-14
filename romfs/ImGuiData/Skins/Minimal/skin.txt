@@ -1,0 +1,38 @@
+bg bg 560 360
+btnt l i0 16 8 97 41
+label L 64 28 24
+btnt zl i1 124 8 97 41
+label L2 172 28 24
+btnt zr i2 310 8 97 41
+label R2 358 28 24
+btnt r i3 420 8 109 41
+label R 474 28 24
+stick L i4 38 88 76 76 22 22
+stick R i5 318 196 84 84 24 24
+btnt minus i6 168 76 25 25
+label - 180 88 18
+btnt capture i7 204 128 23 23
+btnt plus i8 334 76 25 25
+label + 346 88 18
+btnt home i9 298 128 25 25
+label ^ 310 140 14
+btnt x i10 419 63 43 43
+label X 440 84 20
+btnt y i11 371 107 43 43
+label Y 392 128 20
+btnt a i12 465 111 43 43
+label A 486 132 20
+btnt b i13 415 155 43 43
+label B 436 176 20
+btnt up i14 140 190 33 31
+label ^ 156 206 14
+btnt down i15 140 252 33 31
+label v 156 268 14
+btnt left i16 110 220 31 33
+label < 126 236 14
+btnt right i17 172 220 31 33
+label > 188 236 14
+btnt ls i18 112 300 99 41
+label L3 162 320 24
+btnt rs i19 296 300 105 41
+label R3 348 320 24

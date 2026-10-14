@@ -186,6 +186,9 @@ void TimerHooks::installTimerHooks() {
     shineWaitRequestDemoHook.installAtSym<"_ZN5Shine18exeWaitRequestDemoEv">();
     shineGetDirectWithDemoHook.installAtSym<"_ZN5Shine17getDirectWithDemoEv">();
     wipeSimpleCtorC1Hook.installAtSym<"_ZN2al10WipeSimpleC1EPKcS2_RKNS_14LayoutInitInfoES2_">();
+#if !BTT_V130
+    // 1.3 has no separate base object constructor (it was never called in 1.0 either)
     wipeSimpleCtorC2Hook.installAtSym<"_ZN2al10WipeSimpleC2EPKcS2_RKNS_14LayoutInitInfoES2_">();
+#endif
     wipeSetNerveHook.installAtSym<"_ZN2al8setNerveEPNS_9IUseNerveEPKNS_5NerveE">();
 }

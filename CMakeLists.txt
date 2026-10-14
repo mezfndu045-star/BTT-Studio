@@ -30,3 +30,8 @@ usesail(${PROJECT_NAME})
 if(DEBUG)
     target_compile_definitions(${PROJECT_NAME} PRIVATE BTTDEBUG)
 endif()
+
+# Practice mod BTT 1.3: build for Super Mario Odyssey 1.3.0, without the options not ported to 1.3 yet
+if(BTT_V130)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE BTT_V130=1)
+endif()

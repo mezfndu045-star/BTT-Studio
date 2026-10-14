@@ -1,3 +1,4 @@
+#include "menu/MoonNames.h"
 #include "hk/gfx/ImGuiBackendNvn.h"
 #include "hk/hook/Trampoline.h"
 
@@ -65,6 +66,7 @@ HkTrampoline gameSystemInit = [](TrampolineStatic(), GameSystem* gameSystem) -> 
     logger->log(Logger::LogType::LogInfo, "SaveFileHelper initialized");
 
     save->loadSettings(heap);
+    btt::loadMoonNames();
     save->loadTeleport(menu->tpStates, hk::util::arraySize(menu->tpStates), heap);
     save->mSaveThread->start();
     logger->log(Logger::LogType::LogInfo, "SaveFileHelper setup done");
@@ -181,6 +183,7 @@ extern "C" void hkMain() {
     hakoniwaSequenceUpdate.installAtSym<"_ZN16HakoniwaSequence6updateEv">();
 
     btt::SettingsHooks::installSettingsHooks();
+    btt::installMoonNameHooks();
     btt::TimerHooks::installTimerHooks();
 
     // customboot::prepareCustomBootHook.installAtSym<"_ZN10BootLayoutC1ERKN2al14LayoutInitInfoE">();

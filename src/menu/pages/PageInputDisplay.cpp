@@ -1,3 +1,4 @@
+#include "menu/InputDisplayStyles.h"
 #include "imgui.h"
 #include "menu/InputDisplay.h"
 #include "menu/Menu.h"
@@ -19,6 +20,9 @@ void Menu::drawPageInputDisplay() {
         ImGui::Indent();
         ImGui::Checkbox("Toggle", &set->getSettings()->mIsEnableInputDisplay);
         ImGui::Checkbox("2P Mode", &set->getSettings()->mIsEnableInput2P);
+        int style = set->getSettings()->mInputDisplayStyle;
+        if (ImGui::Combo("Style", &style, sInputDisplayStyleNames, IM_ARRAYSIZE(sInputDisplayStyleNames)))
+            set->getSettings()->mInputDisplayStyle = (u8)style;
 
         ImGui::PushItemWidth(200);
 

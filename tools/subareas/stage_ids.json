@@ -1,0 +1,982 @@
+{
+ "AnimalChaseExStage": [
+  "EX_AnimalChase"
+ ],
+ "BikeSteelExStage": [
+  "bike",
+  "bikereturn"
+ ],
+ "BikeSteelNoCapExStage": [
+  "BikeSteelNoCapEx",
+  "BikeSteelNoCapEx_Exit"
+ ],
+ "BossRaidWorldHomeStage": [
+  "BossRaidWorldEx01_Eixt",
+  "BossRaidWorldMoonEx02_Enter",
+  "BossRaidWorldMoonEx02_Exit",
+  "MoonRock"
+ ],
+ "BullRunExStage": [
+  "BossRaidWorldMoonEx02_Enter",
+  "BossRaidWorldMoonEx02_Exit"
+ ],
+ "ByugoPuzzleExStage": [
+  "ByugoPuzzle"
+ ],
+ "CapAppearExStage": [
+  "CapAppearExEnt",
+  "CapAppearExExit"
+ ],
+ "CapAppearLavaLiftExStage": [
+  "LavaLiftEx",
+  "LavaLiftExdokan"
+ ],
+ "CapRotatePackunExStage": [
+  "kaitendokan"
+ ],
+ "CapWorldHomeStage": [
+  "CapWorldRacemanStart",
+  "Ex",
+  "FrogSearchExStageEnt",
+  "Ghost0",
+  "Ghost1",
+  "Ghost2",
+  "Ghost3Lv1",
+  "Ghost3Lv2",
+  "Goal",
+  "MoonRock",
+  "PoisonWaveExEnt",
+  "PushBlockExStageEnt",
+  "PushBlockExStageEntDokan",
+  "rollinggoal",
+  "rollingstart",
+  "start"
+ ],
+ "CapWorldTowerStage": [
+  "Ex",
+  "Goal"
+ ],
+ "CityPeopleRoadStage": [
+  "gunsyu",
+  "gunsyudokan"
+ ],
+ "CityWorldHomeStage": [
+  "Bonus",
+  "CityWorldRacemanStart",
+  "Come",
+  "Ghost0",
+  "Ghost1",
+  "Ghost2",
+  "Ghost3Lv1",
+  "Ghost3Lv2",
+  "Go",
+  "MoonRock",
+  "SessionMayorComplete",
+  "SessionMember",
+  "back_from_ceremony",
+  "bike",
+  "bike02",
+  "bike02return",
+  "bikereturn",
+  "bou",
+  "boureturn",
+  "car",
+  "densen",
+  "densendokan",
+  "donsuke",
+  "gragra",
+  "gragrareturn",
+  "gunsyu",
+  "gunsyudokan",
+  "kaitendokan",
+  "main_enter",
+  "main_exit",
+  "onpu",
+  "session_end",
+  "session_restart",
+  "shop_coin",
+  "shop_corect",
+  "start",
+  "taxi",
+  "tenjo",
+  "theater",
+  "under001enter"
+ ],
+ "CityWorldFactoryStage": [
+  "under001enter"
+ ],
+ "CityWorldMainTowerStage": [
+  "main_enter",
+  "main_exit"
+ ],
+ "CityWorldSandSlotStage": [
+  "Bonus"
+ ],
+ "CityWorldShop01Stage": [
+  "shop_coin",
+  "shop_corect"
+ ],
+ "ClashWorldHomeStage": [
+  "ClashStart1",
+  "ClashWorldMoonEX2",
+  "Ghost0",
+  "Ghost1",
+  "Ghost2",
+  "Ghost3Lv1",
+  "Ghost3Lv2",
+  "Kinopio",
+  "MoonRock",
+  "imomu_01",
+  "imomu_02"
+ ],
+ "ClashWorldShopStage": [
+  "Kinopio",
+  "kinopio"
+ ],
+ "CloudExStage": [
+  "SeaWorldEX2",
+  "SeaWorldEX2Return"
+ ],
+ "CloudWorldHomeStage": [
+  "Fukuwarai",
+  "MoonRock",
+  "cube"
+ ],
+ "Cube2DExStage": [
+  "cube"
+ ],
+ "DonsukeExStage": [
+  "donsuke"
+ ],
+ "DotHardExStage": [
+  "PeachWorldEx2a"
+ ],
+ "DotTowerExStage": [
+  "BossRaidWorldEx01_Eixt"
+ ],
+ "ElectricWireExStage": [
+  "densen",
+  "densendokan"
+ ],
+ "FastenerExStage": [
+  "FastenerEx"
+ ],
+ "FogMountainExStage": [
+  "EX_Mist"
+ ],
+ "ForestWorldBonusStage": [
+  "bonus",
+  "bonus2"
+ ],
+ "ForestWorldBossStage": [
+  "Boss_Respawn",
+  "boss001",
+  "boss002"
+ ],
+ "ForestWorldCloudBonusExStage": [
+  "EXCloud"
+ ],
+ "ForestWorldHomeStage": [
+  "Boss_Respawn",
+  "Come",
+  "EXCloud",
+  "EX_AnimalChase",
+  "EX_Mist",
+  "EX_RailCollision",
+  "EX_RailCollision_Exit",
+  "EX_Tankuro",
+  "EX_Tankuro_Exit",
+  "EX_Water",
+  "EX_Water_Exit",
+  "Ghost0",
+  "Ghost1",
+  "Ghost2",
+  "Ghost3Lv1",
+  "Ghost3Lv2",
+  "Go",
+  "Jyukai001",
+  "Jyukai001v",
+  "Jyukai002",
+  "Jyukai003",
+  "Jyukai003v",
+  "Jyukai004",
+  "KillerRoad",
+  "MoonRock",
+  "PoisonEx",
+  "PoisonEx_Exit",
+  "RaceStart",
+  "StartPoint",
+  "Tower001",
+  "Tower002",
+  "bonus",
+  "bonus2",
+  "boss001",
+  "boss002"
+ ],
+ "ForestWorldTowerStage": [
+  "Tower001",
+  "Tower002"
+ ],
+ "ForestWorldWaterExStage": [
+  "EX_Water",
+  "EX_Water_Exit"
+ ],
+ "ForestWorldWoodsCostumeStage": [
+  "Explorer_Bonus"
+ ],
+ "ForestWorldWoodsStage": [
+  "Explorer_Bonus",
+  "Jyukai001",
+  "Jyukai001v",
+  "Jyukai002",
+  "Jyukai003",
+  "Jyukai003v",
+  "Jyukai004",
+  "TreasureTree"
+ ],
+ "ForestWorldWoodsTreasureStage": [
+  "TreasureTree"
+ ],
+ "ForkExStage": [
+  "ForkEX"
+ ],
+ "FrogPoisonExStage": [
+  "LakeWorldMoonEX1a",
+  "LakeWorldMoonEX1b"
+ ],
+ "FrogSearchExStage": [
+  "FrogSearchExStageEnt"
+ ],
+ "FukuwaraiKuriboStage": [
+  "Fukuwarai"
+ ],
+ "FukuwaraiMarioStage": [
+  "Fukuwarai2"
+ ],
+ "GabuzouClockExStage": [
+  "GabuzouClockEx",
+  "GabuzouClockExdokan"
+ ],
+ "Galaxy2DExStage": [
+  "dot00",
+  "dot01"
+ ],
+ "GotogotonExStage": [
+  "Goton"
+ ],
+ "HomeShipInsideStage": [
+  "HomeBackDoor",
+  "HomeEntrance"
+ ],
+ "IceWalkerExStage": [
+  "FigureWalker"
+ ],
+ "IceWaterBlockExStage": [
+  "EX_IceWater",
+  "EX_IceWater_Exit"
+ ],
+ "IceWaterDashExStage": [
+  "EX_IceWaterDash",
+  "EX_IceWaterDash_Exit"
+ ],
+ "ImomuPoisonExStage": [
+  "imomu_01",
+  "imomu_02"
+ ],
+ "JangoExStage": [
+  "ClashWorldMoonEX2"
+ ],
+ "JizoSwitchExStage": [
+  "jizo01",
+  "jizo02"
+ ],
+ "KaronWingTowerStage": [
+  "Patakaron02"
+ ],
+ "KillerRailCollisionExStage": [
+  "EX_RailCol2",
+  "EX_RailCol2_Exit"
+ ],
+ "KillerRoadExStage": [
+  "KillerRoad"
+ ],
+ "KillerRoadNoCapExStage": [
+  "KillerRoadNoCapEx"
+ ],
+ "LakeWorldHomeStage": [
+  "CapTrampolineA",
+  "CapTrampolineB",
+  "Come",
+  "FastenerEx",
+  "Ghost0",
+  "Ghost1",
+  "Ghost2",
+  "Ghost3Lv1",
+  "Ghost3Lv2",
+  "Go",
+  "Goton",
+  "LakeWorldMoonEX1a",
+  "LakeWorldMoonEX1b",
+  "LakeWorldRacemanStart",
+  "LakeWorldShop",
+  "MoonRock",
+  "StartPoint"
+ ],
+ "LakeWorldShopStage": [
+  "LakeWorldShop"
+ ],
+ "LavaBonus1Zone": [
+  "town"
+ ],
+ "LavaWorldBubbleLaneExStage": [
+  "PechoBubbleEx",
+  "PechoBubbleExDokan"
+ ],
+ "LavaWorldClockExStage": [
+  "BBQEx",
+  "BBQExDokan"
+ ],
+ "LavaWorldCostumeStage": [
+  "CostumeEventWorldLava",
+  "CostumeOut"
+ ],
+ "LavaWorldExcavationExStage": [
+  "MartinCubeEx"
+ ],
+ "LavaWorldFenceLiftExStage": [
+  "FenceLiftEx",
+  "FenceLiftExdokan"
+ ],
+ "LavaWorldHomeStage": [
+  "BBQEx",
+  "BBQExDokan",
+  "Come",
+  "CostumeEventWorldLava",
+  "CostumeOut",
+  "FenceLiftEx",
+  "FenceLiftExdokan",
+  "ForkEX",
+  "GabuzouClockEx",
+  "GabuzouClockExdokan",
+  "Ghost0",
+  "Ghost1",
+  "Ghost2",
+  "Ghost3Lv1",
+  "Ghost3Lv2",
+  "Go",
+  "KeyMoveEx",
+  "KeyMoveExDokan",
+  "LavaLiftEx",
+  "LavaLiftExdokan",
+  "LavaStart",
+  "MartinCubeEx",
+  "MoonRock",
+  "PechoBubbleEx",
+  "PechoBubbleExDokan",
+  "TreasureEventWorldLava",
+  "shop",
+  "start",
+  "town"
+ ],
+ "LavaWorldShopStage": [
+  "shop"
+ ],
+ "LavaWorldTreasureStage": [
+  "TreasureEventWorldLava"
+ ],
+ "LavaWorldUpDownExStage": [
+  "KeyMoveEx",
+  "KeyMoveExDokan"
+ ],
+ "LavaWorldUpDownYoshiExStage": [
+  "LavaWorldUpDownYoshiEx",
+  "LavaWorldUpDownYoshiEx_Exit"
+ ],
+ "Lift2DExStage": [
+  "Lift2D",
+  "Lift2DExit"
+ ],
+ "MeganeLiftExStage": [
+  "meganelift01",
+  "meganelift02"
+ ],
+ "MoonAthleticExStage": [
+  "moon",
+  "moon_exit"
+ ],
+ "MoonWorldBasementStage": [
+  "ClashStart1"
+ ],
+ "MoonWorldCaptureParadeStage": [
+  "bbb",
+  "ccc",
+  "vvv"
+ ],
+ "MoonWorldHomeStage": [
+  "Ghost0",
+  "Ghost1",
+  "Ghost2",
+  "Ghost3Lv1",
+  "Ghost3Lv2",
+  "MoonRock",
+  "MoonWorldRacemanStart",
+  "aaa",
+  "bbb",
+  "ccc",
+  "ddd",
+  "dot00",
+  "dot01",
+  "fff",
+  "ggg",
+  "kkk",
+  "moon",
+  "moon_exit",
+  "ppp",
+  "vvv"
+ ],
+ "MoonWorldKoopa1Stage": [
+  "aaa",
+  "kkk"
+ ],
+ "MoonWorldKoopa2Stage": [
+  "ppp"
+ ],
+ "MoonWorldShopRoom": [
+  "ddd"
+ ],
+ "MoonWorldSphinxRoom": [
+  "ggg"
+ ],
+ "MoonWorldWeddingRoom2Stage": [
+  "kkk"
+ ],
+ "MoonWorldWeddingRoomStage": [
+  "aaa",
+  "fff"
+ ],
+ "Note2D3DRoomExStage": [
+  "onpu"
+ ],
+ "PackunPoisonExStage": [
+  "PoisonEx",
+  "PoisonEx_Exit"
+ ],
+ "PackunPoisonNoCapExStage": [
+  "PackunPoisonNoCapEx",
+  "PackunPoisonNoCapEx_Exit"
+ ],
+ "PeachWorldCastleStage": [
+  "PeachCastleGate"
+ ],
+ "PeachWorldCostumeStage": [
+  "CostumeEventWorldPeach"
+ ],
+ "PeachWorldHomeStage": [
+  "BossForestA",
+  "BossKnuckleA",
+  "BossMagmaA",
+  "BossRaidA",
+  "BossRaidB",
+  "Come",
+  "CostumeEventWorldPeach",
+  "Fukuwarai2",
+  "Ghost0",
+  "Ghost1",
+  "Ghost2",
+  "Ghost3Lv1",
+  "Ghost3Lv2",
+  "GiantWanderBossA",
+  "GiantWanderBossB",
+  "Go",
+  "MofumofuA",
+  "PeachCastleGate",
+  "PeachWorldEx1a",
+  "PeachWorldEx2a",
+  "PeachWorldRacemanStart",
+  "PeachWorldShopA",
+  "StartPoint"
+ ],
+ "PeachWorldPictureBossForestStage": [
+  "BossForestA",
+  "PictureBossForest"
+ ],
+ "PeachWorldPictureBossKnuckleStage": [
+  "BossKnuckleA",
+  "PictureBossKnuckle"
+ ],
+ "PeachWorldPictureBossMagmaStage": [
+  "BossMagmaA",
+  "PictureBossMagma"
+ ],
+ "PeachWorldPictureBossRaidStage": [
+  "BossRaidA",
+  "BossRaidB",
+  "PictureBossRaid"
+ ],
+ "PeachWorldPictureGiantWanderBossStage": [
+  "GiantWanderBossA",
+  "GiantWanderBossB",
+  "PictureGiantWanderBoss"
+ ],
+ "PeachWorldPictureMofumofuStage": [
+  "MofumofuA",
+  "PictureMofumofu"
+ ],
+ "PeachWorldShopStage": [
+  "PeachWorldShopA"
+ ],
+ "PoisonWaveExStage": [
+  "PoisonWaveExEnt",
+  "PoisonWaveExExit"
+ ],
+ "PoleGrabCeilExStage": [
+  "tenjo"
+ ],
+ "PoleKillerExStage": [
+  "bou",
+  "boureturn"
+ ],
+ "PushBlockExStage": [
+  "PushBlockExStageEnt",
+  "PushBlockExStageEntDokan"
+ ],
+ "RadioControlExStage": [
+  "car"
+ ],
+ "RailCollisionExStage": [
+  "EX_RailCollision",
+  "EX_RailCollision_Exit"
+ ],
+ "ReflectBombExStage": [
+  "SeaWorldMoonEX1a",
+  "SeaWorldMoonEX1b"
+ ],
+ "RevengeBossKnuckleStage": [
+  "PictureBossKnuckle"
+ ],
+ "RevengeBossMagmaStage": [
+  "PictureBossMagma",
+  "start"
+ ],
+ "RevengeBossRaidStage": [
+  "PictureBossRaid"
+ ],
+ "RevengeForestBossStage": [
+  "PictureBossForest"
+ ],
+ "RevengeGiantWanderBossStage": [
+  "PictureGiantWanderBoss"
+ ],
+ "RevengeMofumofuStage": [
+  "PictureMofumofu"
+ ],
+ "RocketFlowerExStage": [
+  "rocket"
+ ],
+ "RollingExStage": [
+  "rollinggoal",
+  "rollingstart"
+ ],
+ "SandWorldCostumeStage": [
+  "abc"
+ ],
+ "SandWorldHomeStage": [
+  "Come",
+  "EX_2DHosui",
+  "EX_2DHosui_Exit",
+  "Ghost0",
+  "Ghost1",
+  "Ghost2",
+  "Ghost3Lv1",
+  "Ghost3Lv2",
+  "Go",
+  "MoonRock",
+  "Out",
+  "SandWorldRacemanStart",
+  "Under01",
+  "aaa",
+  "abc",
+  "anki2",
+  "arijigoku",
+  "arijigoku1",
+  "arijigoku2",
+  "bar1",
+  "bar2",
+  "biru",
+  "doukutu1",
+  "doukutu2",
+  "hide",
+  "icestart",
+  "meganelift01",
+  "meganelift02",
+  "pyramid01",
+  "pyramid02",
+  "pyramid03",
+  "pyramid04",
+  "rocket",
+  "run00",
+  "shindo",
+  "start",
+  "start2",
+  "town",
+  "wall"
+ ],
+ "SandWorldKillerExStage": [
+  "doukutu1",
+  "doukutu2"
+ ],
+ "SandWorldMeganeExStage": [
+  "anki2",
+  "megane",
+  "wall"
+ ],
+ "SandWorldPressExStage": [
+  "arijigoku",
+  "arijigoku1",
+  "arijigoku2"
+ ],
+ "SandWorldPyramid000Stage": [
+  "pyramid01",
+  "pyramid02"
+ ],
+ "SandWorldPyramid001Stage": [
+  "pyramid03",
+  "pyramid04"
+ ],
+ "SandWorldRotateExStage": [
+  "aa",
+  "biru",
+  "birureturn"
+ ],
+ "SandWorldSecretStage": [
+  "hide"
+ ],
+ "SandWorldShopStage": [
+  "bar1",
+  "bar2"
+ ],
+ "SandWorldSlotStage": [
+  "town"
+ ],
+ "SandWorldSphinxExStage": [
+  "aaa",
+  "run00",
+  "run00return"
+ ],
+ "SandWorldUnderground000Stage": [
+  "Under01",
+  "Yadokari00",
+  "icestart"
+ ],
+ "SandWorldUnderground001Stage": [
+  "Out",
+  "Yadokari00",
+  "start"
+ ],
+ "SandWorldVibrationStage": [
+  "shindo"
+ ],
+ "SeaWorldHomeStage": [
+  "Come",
+  "CostumeEventSeaWorld",
+  "Ghost0",
+  "Ghost1",
+  "Ghost2",
+  "Ghost3Lv1",
+  "Ghost3Lv2",
+  "GiantWanderBoss",
+  "Go",
+  "MoonRock",
+  "PukupukuCaveGoal",
+  "PukupukuCaveStart",
+  "RoomEventWorldSea",
+  "SeaWorldEX1a",
+  "SeaWorldEX1b",
+  "SeaWorldEX2",
+  "SeaWorldEX3a",
+  "SeaWorldEX3b",
+  "SeaWorldMoonEX1a",
+  "SeaWorldMoonEX1b",
+  "SeaWorldMoonEX2",
+  "SeaWorldRacemanStart",
+  "StartPoint",
+  "TreasureEventWorldSea",
+  "shindo_Lv2"
+ ],
+ "SeaWorldCostumeStage": [
+  "CostumeEventSeaWorld"
+ ],
+ "SeaWorldSecretStage": [
+  "TreasureEventWorldSea"
+ ],
+ "SeaWorldSneakingManStage": [
+  "RoomEventWorldSea"
+ ],
+ "SeaWorldUtsuboCaveStage": [
+  "PukupukuCaveGoal",
+  "PukupukuCaveStart"
+ ],
+ "SeaWorldVibrationStage": [
+  "shindo_Lv2"
+ ],
+ "SenobiTowerExStage": [
+  "SeaWorldEX3a",
+  "SeaWorldEX3b"
+ ],
+ "SenobiTowerYoshiExStage": [
+  "SenobiTowerYoshiEx",
+  "SenobiTowerYoshiEx_Exit"
+ ],
+ "ShootingCityExStage": [
+  "taxi",
+  "taxireturn"
+ ],
+ "ShootingCityYoshiExStage": [
+  "ShootingCityYoshiEx",
+  "ShootingCityYoshiEx_Exit"
+ ],
+ "ShootingElevatorExStage": [
+  "EX_Tankuro",
+  "EX_Tankuro_Exit"
+ ],
+ "SkyWorldHomeStage": [
+  "Come",
+  "Ghost0",
+  "Ghost1",
+  "Ghost2",
+  "Ghost3Lv1",
+  "Ghost3Lv2",
+  "Go",
+  "MoonRock",
+  "Patakaron02",
+  "SkyStart1",
+  "byoubu",
+  "jizo01",
+  "jizo02",
+  "shop",
+  "shop_dress",
+  "sora001",
+  "tukkun000_enter",
+  "tukkun000_exit",
+  "tukkun001_enter",
+  "tukkun001_exit"
+ ],
+ "SkyWorldCloudBonusExStage": [
+  "sora001"
+ ],
+ "SkyWorldCostumeStage": [
+  "byoubu"
+ ],
+ "SkyWorldShopStage": [
+  "shop"
+ ],
+ "SkyWorldTreasureStage": [
+  "shop_dress"
+ ],
+ "SnowWorldCloudBonusExStage": [
+  "EX_SkyBonus"
+ ],
+ "SnowWorldCostumeStage": [
+  "SnowCostumeEx"
+ ],
+ "SnowWorldHomeStage": [
+  "ByugoPuzzle",
+  "Come",
+  "EX_IceWater",
+  "EX_IceWaterDash",
+  "EX_IceWaterDash_Exit",
+  "EX_IceWater_Exit",
+  "EX_RailCol2",
+  "EX_RailCol2_Exit",
+  "EX_SkyBonus",
+  "FigureWalker",
+  "Ghost0",
+  "Ghost1",
+  "Ghost2",
+  "Ghost3Lv1",
+  "Ghost3Lv2",
+  "Go",
+  "MoonRace",
+  "MoonRock",
+  "RaceStart",
+  "SnowUGEnt",
+  "SnowUGExit"
+ ],
+ "SnowWorldLobby000Stage": [
+  "RaceEntrance",
+  "RaceTrackExit",
+  "SnowManRace",
+  "SnowManRaceStart"
+ ],
+ "SnowWorldLobby001Stage": [
+  "SnowManRaceWin"
+ ],
+ "SnowWorldLobbyExStage": [
+  "MoonRace",
+  "RaceEntrance",
+  "SnowManRace",
+  "SnowManRaceStart"
+ ],
+ "SnowWorldRace000Stage": [
+  "SnowManRace",
+  "SnowManRaceStart",
+  "SnowManRaceWin"
+ ],
+ "SnowWorldRace001Stage": [
+  "Gotai",
+  "SnowManRace"
+ ],
+ "SnowWorldRaceExStage": [
+  "SnowManRace"
+ ],
+ "SnowWorldRaceHardExStage": [
+  "SnowManRace"
+ ],
+ "SnowWorldRaceTutorialStage": [
+  "Gotai",
+  "SnowManRaceStart"
+ ],
+ "SnowWorldShopStage": [
+  "ShopDoor"
+ ],
+ "SnowWorldTownStage": [
+  "RaceEntrance",
+  "RaceTrackExit",
+  "ShopDoor",
+  "SnowCostumeEx",
+  "SnowUGEnt"
+ ],
+ "Special1WorldHomeStage": [
+  "BikeSteelNoCapEx",
+  "BikeSteelNoCapEx_Exit",
+  "BombTailRoomGoal",
+  "BombTailRoomStart",
+  "CapThrowerRoomGoal",
+  "CapThrowerRoomStart",
+  "FireBlowerRoomGoal",
+  "FireBlowerRoomStart",
+  "GK_Respawn",
+  "KillerRoadNoCapEx",
+  "LavaWorldUpDownYoshiEx",
+  "LavaWorldUpDownYoshiEx_Exit",
+  "PackunPoisonNoCapEx",
+  "PackunPoisonNoCapEx_Exit",
+  "SenobiTowerYoshiEx",
+  "SenobiTowerYoshiEx_Exit",
+  "ShootingCityYoshiEx",
+  "ShootingCityYoshiEx_Exit",
+  "StackerRoomGoal",
+  "StackerRoomStart",
+  "StartPos"
+ ],
+ "Special1WorldTowerBombTailStage": [
+  "BombTailRoomGoal",
+  "BombTailRoomStart"
+ ],
+ "Special1WorldTowerCapThrowerStage": [
+  "CapThrowerRoomGoal",
+  "CapThrowerRoomStart"
+ ],
+ "Special1WorldTowerFireBlowerStage": [
+  "FireBlowerRoomGoal",
+  "FireBlowerRoomStart"
+ ],
+ "Special1WorldTowerStackerStage": [
+  "StackerRoomGoal",
+  "StackerRoomStart"
+ ],
+ "Special2WorldCloudStage": [
+  "restart",
+  "room2_goal",
+  "room2_start"
+ ],
+ "Special2WorldHomeStage": [
+  "CP_Entrance",
+  "CP_Start",
+  "MoonGoal",
+  "start"
+ ],
+ "Special2WorldKoopaStage": [
+  "restart",
+  "room3_goal"
+ ],
+ "Special2WorldLavaStage": [
+  "CP_Entrance",
+  "MoonGoal",
+  "restart",
+  "room2_goal",
+  "room2_start",
+  "room3_goal",
+  "room3_start"
+ ],
+ "SwingSteelExStage": [
+  "gragra",
+  "gragrareturn"
+ ],
+ "Theater2DExStage": [
+  "theater"
+ ],
+ "TogezoRotateExStage": [
+  "SeaWorldMoonEX2"
+ ],
+ "TrampolineWallCatchExStage": [
+  "CapTrampolineA",
+  "CapTrampolineB"
+ ],
+ "TrexBikeExStage": [
+  "bike02",
+  "bike02return"
+ ],
+ "TrexPoppunExStage": [
+  "RexPoppunEx"
+ ],
+ "TsukkunClimbExStage": [
+  "tukkun001_enter",
+  "tukkun001_exit"
+ ],
+ "TsukkunRotateExStage": [
+  "tukkun000_enter",
+  "tukkun000_exit"
+ ],
+ "WanwanClashExStage": [
+  "WanwanExGoal",
+  "WanwanExStart"
+ ],
+ "WaterfallWorldHomeStage": [
+  "CapAppearExEnt",
+  "CapAppearExExit",
+  "Come",
+  "Ghost0",
+  "Ghost1",
+  "Ghost2",
+  "Ghost3Lv1",
+  "Ghost3Lv2",
+  "Go",
+  "Lift2D",
+  "Lift2DExit",
+  "MoonRock",
+  "PlainStart",
+  "RexPoppunEx",
+  "WanwanExGoal",
+  "WanwanExStart",
+  "WaterfallWorldRacemanStart",
+  "WindBlowExGoal",
+  "WindBlowExStart",
+  "start"
+ ],
+ "WaterTubeExStage": [
+  "EX_2DHosui",
+  "EX_2DHosui_Exit"
+ ],
+ "WaterValleyExStage": [
+  "SeaWorldEX1a",
+  "SeaWorldEX1b"
+ ],
+ "WindBlowExStage": [
+  "WindBlowExGoal",
+  "WindBlowExStart"
+ ],
+ "YoshiCloudExStage": [
+  "PeachWorldEx1a"
+ ]
+}

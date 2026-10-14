@@ -20,6 +20,16 @@ Le site officiel en ligne est disponible sur **GitHub Pages** ([https://mezfndu0
 
 ---
 
+## 🆕 Nouveautés v1.5.0
+
+- **Version pour SMO 1.3.0** : le Practice Mod BTT existe maintenant aussi pour un jeu en version 1.3.0, avec les mêmes options (zips `BTT-Studio-1.3-*`).
+- **Stages** : chaque royaume a son image, chaque sous-zone a deux images (l'entrée vue de l'extérieur et l'intérieur). Avec Scenario à 0, on arrive dans le dernier scénario du royaume.
+- **Noms des lunes** : *Rename All Moons* (Misc) donne un nom à toutes les lunes avec un clavier à l'écran, *Reset All Moon Names* remet les vrais noms.
+- **Input Display** : réglage *Style* (Classic, Periscope, Minimal) avec le nom des boutons.
+- **Skip Cloud** : Bowser (Pays des Nuages) est vaincu dès la fin de sa cinématique d'entrée.
+
+---
+
 ## 🚀 Nouveautés de la Version 1.0
 
 ### 🌈 1. Input Display Déplaçable & Couleur Multicolor
@@ -76,7 +86,7 @@ Le menu vertical translucide s'ouvre avec la combinaison **`L + D-Pad Gauche`**.
 - **Always Checkpoints** : Valide les checkpoints dès qu'on s'en approche.
 - **Disable Autosave** : Coupe la sauvegarde auto pour garder sa partie propre.
 - **Disable TP Puppet** : Supprime l'animation d'attente de Mario pendant un warp (crash au chargement de position pendant une prise de lune corrigé).
-- **Skip Cloud** : Passe les transitions nuageuses entre les zones.
+- **Skip Cloud** : Au Pays des Nuages, Bowser est vaincu dès la fin de sa cinématique d'entrée.
 - **All Checkpoints** : Débloque tous les drapeaux de téléportation du niveau.
 - **Luigi Pixels** : Le vrai Luigi 8-bit sort à chaque fois des buissons concernés (10 % de chance normalement).
 - **Spawn All Hint Art** : Fait apparaître tous les indices artistiques d'Hint Toad.
@@ -93,10 +103,10 @@ Le menu vertical translucide s'ouvre avec la combinaison **`L + D-Pad Gauche`**.
 - **Reload Scene at Pos** : Recharge tout le niveau en restant exactement à sa position.
 
 ### 🗺️ 2. Stages (Téléportation)
-- **Kingdom** : Sélection du pays parmi les 17 royaumes (Bonneton jusqu'à Côté Très Sombre).
+- **Kingdom** : Sélection du pays parmi les 17 royaumes (Bonneton jusqu'à Côté Très Sombre), avec une image du royaume.
 - **Scenario** : Sélection du chapitre d'histoire (0 à 15).
 - **Warp to Stage** : Bouton pour se téléporter immédiatement au monde et scénario choisis.
-- **Cap Sub Area … Darker Side Sub Area** : Toutes les sous-zones de chaque royaume (156), avec une image de la zone à côté du menu. A = choisir, Gauche/Droite = zone, A = téléporter, B = annuler.
+- **Cap Sub Area … Darker Side Sub Area** : Toutes les sous-zones de chaque royaume (156), avec deux images à côté du menu (l'entrée vue de l'extérieur et l'intérieur). A = choisir, Gauche/Droite = zone, A = téléporter, B = annuler. Scenario à 0 = dernier scénario du royaume.
 
 ### 🎒 3. Misc (Actions & Utilitaires)
 - **Outfit Body** : Sélection de la tenue parmi 42 costumes officiels.
@@ -116,6 +126,8 @@ Le menu vertical translucide s'ouvre avec la combinaison **`L + D-Pad Gauche`**.
 - **Reload Scene** : Force un rechargement propre de la scène.
 - **Previous Scene** : Téléporte dans la zone ou le niveau précédent.
 - **Wiggler Pattern** : Choix du pattern de déplacement du boss Méca-Wiggler (23 choix).
+- **Rename All Moons** : Donne un nom (clavier à l'écran) à toutes les lunes.
+- **Reset All Moon Names** : Les lunes reprennent leur vrai nom.
 
 ### ⏱️ 4. Timer (Chronomètre)
 - **Segment Timer** : Affiche le chronomètre de speedrun à l'écran.
@@ -129,6 +141,7 @@ Le menu vertical translucide s'ouvre avec la combinaison **`L + D-Pad Gauche`**.
 ### 🎮 5. Input Display (Affichage Manette)
 - **Input Display** : Affiche ou masque la manette à l'écran.
 - **2P Mode** : Affiche aussi la 2e manette (Joueur 2 / Cappy).
+- **Style** : Apparence de la manette (Classic, Periscope, Minimal), avec le nom des boutons.
 - **Preset Pos** : Place la manette au Centre ou dans les 4 coins d'un clic.
 - **Position X & Y** : Règle l'emplacement par pas de 25px (ou glisser-déposer à la souris).
 - **Reset Position** : Replace la manette au centre de l'écran.
@@ -201,6 +214,9 @@ Copiez directement dans :
 SD:/atmosphere/contents/0100000000010000/exefs/subsdk4
 SD:/atmosphere/contents/0100000000010000/exefs/main.npdm
 ```
+
+### Version pour SMO 1.3.0
+Mêmes emplacements, avec le dossier **Practice mod BTT 1.3** (Yuzu / Simple Mod Manager) ou `atmosphere/contents/0100000000010000` (Atmosphere), depuis les zips `BTT-Studio-1.3-*`. N'activez qu'un seul Practice Mod à la fois.
 
 ---
 

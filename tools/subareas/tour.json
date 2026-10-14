@@ -1,0 +1,1497 @@
+[
+ {
+  "shot": "PoisonWaveExStage_in",
+  "stage": "PoisonWaveExStage",
+  "label": "PoisonWaveExEnt"
+ },
+ {
+  "shot": "PoisonWaveExStage_out",
+  "stage": "CapWorldHomeStage",
+  "label": "PoisonWaveExEnt"
+ },
+ {
+  "shot": "PushBlockExStage_in",
+  "stage": "PushBlockExStage",
+  "label": "PushBlockExStageEnt"
+ },
+ {
+  "shot": "PushBlockExStage_out",
+  "stage": "CapWorldHomeStage",
+  "label": "PushBlockExStageEntDokan"
+ },
+ {
+  "shot": "FrogSearchExStage_in",
+  "stage": "FrogSearchExStage",
+  "label": "FrogSearchExStageEnt"
+ },
+ {
+  "shot": "FrogSearchExStage_out",
+  "stage": "CapWorldHomeStage",
+  "label": "FrogSearchExStageEnt"
+ },
+ {
+  "shot": "CapWorldTowerStage_in",
+  "stage": "CapWorldTowerStage",
+  "label": "Goal"
+ },
+ {
+  "shot": "CapWorldTowerStage_out",
+  "stage": "CapWorldHomeStage",
+  "label": "Goal"
+ },
+ {
+  "shot": "RollingExStage_in",
+  "stage": "RollingExStage",
+  "label": "rollingstart"
+ },
+ {
+  "shot": "RollingExStage_out",
+  "stage": "CapWorldHomeStage",
+  "label": "rollinggoal"
+ },
+ {
+  "shot": "CapAppearExStage_in",
+  "stage": "CapAppearExStage",
+  "label": "CapAppearExEnt"
+ },
+ {
+  "shot": "CapAppearExStage_out",
+  "stage": "WaterfallWorldHomeStage",
+  "label": "CapAppearExEnt"
+ },
+ {
+  "shot": "WanwanClashExStage_in",
+  "stage": "WanwanClashExStage",
+  "label": "WanwanExStart"
+ },
+ {
+  "shot": "WanwanClashExStage_out",
+  "stage": "WaterfallWorldHomeStage",
+  "label": "WanwanExGoal"
+ },
+ {
+  "shot": "Lift2DExStage_in",
+  "stage": "Lift2DExStage",
+  "label": "Lift2D"
+ },
+ {
+  "shot": "Lift2DExStage_out",
+  "stage": "WaterfallWorldHomeStage",
+  "label": "Lift2DExit"
+ },
+ {
+  "shot": "WindBlowExStage_in",
+  "stage": "WindBlowExStage",
+  "label": "WindBlowExStart"
+ },
+ {
+  "shot": "WindBlowExStage_out",
+  "stage": "WaterfallWorldHomeStage",
+  "label": "WindBlowExGoal"
+ },
+ {
+  "shot": "TrexPoppunExStage_in",
+  "stage": "TrexPoppunExStage",
+  "label": "RexPoppunEx"
+ },
+ {
+  "shot": "TrexPoppunExStage_out",
+  "stage": "WaterfallWorldHomeStage",
+  "label": "RexPoppunEx"
+ },
+ {
+  "shot": "SandWorldMeganeExStage_in",
+  "stage": "SandWorldMeganeExStage",
+  "label": "wall"
+ },
+ {
+  "shot": "SandWorldMeganeExStage_out",
+  "stage": "SandWorldHomeStage",
+  "label": "anki2"
+ },
+ {
+  "shot": "SandWorldSphinxExStage_in",
+  "stage": "SandWorldSphinxExStage",
+  "label": "run00"
+ },
+ {
+  "shot": "SandWorldSphinxExStage_out",
+  "stage": "SandWorldHomeStage",
+  "label": "run00"
+ },
+ {
+  "shot": "SandWorldUnderground000Stage_in",
+  "stage": "SandWorldUnderground000Stage",
+  "label": "Under01"
+ },
+ {
+  "shot": "SandWorldUnderground000Stage_out",
+  "stage": "SandWorldHomeStage",
+  "label": "Under01"
+ },
+ {
+  "shot": "SandWorldKillerExStage_in",
+  "stage": "SandWorldKillerExStage",
+  "label": "doukutu2"
+ },
+ {
+  "shot": "SandWorldKillerExStage_out",
+  "stage": "SandWorldHomeStage",
+  "label": "doukutu2"
+ },
+ {
+  "shot": "SandWorldShopStage_in",
+  "stage": "SandWorldShopStage",
+  "label": "bar1"
+ },
+ {
+  "shot": "SandWorldShopStage_out",
+  "stage": "SandWorldHomeStage",
+  "label": "bar2"
+ },
+ {
+  "shot": "SandWorldPressExStage_in",
+  "stage": "SandWorldPressExStage",
+  "label": "arijigoku1"
+ },
+ {
+  "shot": "SandWorldPressExStage_out",
+  "stage": "SandWorldHomeStage",
+  "label": "arijigoku1"
+ },
+ {
+  "shot": "SandWorldPyramid000Stage_in",
+  "stage": "SandWorldPyramid000Stage",
+  "label": "pyramid02"
+ },
+ {
+  "shot": "SandWorldPyramid000Stage_out",
+  "stage": "SandWorldHomeStage",
+  "label": "pyramid02"
+ },
+ {
+  "shot": "SandWorldPyramid001Stage_in",
+  "stage": "SandWorldPyramid001Stage",
+  "label": "pyramid03"
+ },
+ {
+  "shot": "SandWorldPyramid001Stage_out",
+  "stage": "SandWorldHomeStage",
+  "label": "pyramid03"
+ },
+ {
+  "shot": "SandWorldCostumeStage_in",
+  "stage": "SandWorldCostumeStage",
+  "label": "abc"
+ },
+ {
+  "shot": "SandWorldCostumeStage_out",
+  "stage": "SandWorldHomeStage",
+  "label": "abc"
+ },
+ {
+  "shot": "SandWorldUnderground001Stage_in",
+  "stage": "SandWorldUnderground001Stage",
+  "label": "Out"
+ },
+ {
+  "shot": "SandWorldUnderground001Stage_out",
+  "stage": "SandWorldHomeStage",
+  "label": "Out"
+ },
+ {
+  "shot": "SandWorldRotateExStage_in",
+  "stage": "SandWorldRotateExStage",
+  "label": "biru"
+ },
+ {
+  "shot": "SandWorldRotateExStage_out",
+  "stage": "SandWorldHomeStage",
+  "label": "biru"
+ },
+ {
+  "shot": "SandWorldSlotStage_in",
+  "stage": "SandWorldSlotStage",
+  "label": "town"
+ },
+ {
+  "shot": "SandWorldSlotStage_out",
+  "stage": "SandWorldHomeStage",
+  "label": "town"
+ },
+ {
+  "shot": "SandWorldSecretStage_in",
+  "stage": "SandWorldSecretStage",
+  "label": "hide"
+ },
+ {
+  "shot": "SandWorldSecretStage_out",
+  "stage": "SandWorldHomeStage",
+  "label": "hide"
+ },
+ {
+  "shot": "MeganeLiftExStage_in",
+  "stage": "MeganeLiftExStage",
+  "label": "meganelift02"
+ },
+ {
+  "shot": "MeganeLiftExStage_out",
+  "stage": "SandWorldHomeStage",
+  "label": "meganelift02"
+ },
+ {
+  "shot": "RocketFlowerExStage_in",
+  "stage": "RocketFlowerExStage",
+  "label": "rocket"
+ },
+ {
+  "shot": "RocketFlowerExStage_out",
+  "stage": "SandWorldHomeStage",
+  "label": "rocket"
+ },
+ {
+  "shot": "WaterTubeExStage_in",
+  "stage": "WaterTubeExStage",
+  "label": "EX_2DHosui_Exit"
+ },
+ {
+  "shot": "WaterTubeExStage_out",
+  "stage": "SandWorldHomeStage",
+  "label": "EX_2DHosui_Exit"
+ },
+ {
+  "shot": "SandWorldVibrationStage_in",
+  "stage": "SandWorldVibrationStage",
+  "label": "shindo"
+ },
+ {
+  "shot": "SandWorldVibrationStage_out",
+  "stage": "SandWorldHomeStage",
+  "label": "shindo"
+ },
+ {
+  "shot": "ForestWorldTowerStage_in",
+  "stage": "ForestWorldTowerStage",
+  "label": "Tower002"
+ },
+ {
+  "shot": "ForestWorldTowerStage_out",
+  "stage": "ForestWorldHomeStage",
+  "label": "Tower001"
+ },
+ {
+  "shot": "ForestWorldWaterExStage_in",
+  "stage": "ForestWorldWaterExStage",
+  "label": "EX_Water"
+ },
+ {
+  "shot": "ForestWorldWaterExStage_out",
+  "stage": "ForestWorldHomeStage",
+  "label": "EX_Water"
+ },
+ {
+  "shot": "ForestWorldCloudBonusExStage_in",
+  "stage": "ForestWorldCloudBonusExStage",
+  "label": "EXCloud"
+ },
+ {
+  "shot": "ForestWorldCloudBonusExStage_out",
+  "stage": "ForestWorldHomeStage",
+  "label": "EXCloud"
+ },
+ {
+  "shot": "ShootingElevatorExStage_in",
+  "stage": "ShootingElevatorExStage",
+  "label": "EX_Tankuro_Exit"
+ },
+ {
+  "shot": "ShootingElevatorExStage_out",
+  "stage": "ForestWorldHomeStage",
+  "label": "EX_Tankuro_Exit"
+ },
+ {
+  "shot": "FogMountainExStage_in",
+  "stage": "FogMountainExStage",
+  "label": "EX_Mist"
+ },
+ {
+  "shot": "FogMountainExStage_out",
+  "stage": "ForestWorldHomeStage",
+  "label": "EX_Mist"
+ },
+ {
+  "shot": "ForestWorldBossStage_in",
+  "stage": "ForestWorldBossStage",
+  "label": "boss002"
+ },
+ {
+  "shot": "ForestWorldBossStage_out",
+  "stage": "ForestWorldHomeStage",
+  "label": "boss002"
+ },
+ {
+  "shot": "RailCollisionExStage_in",
+  "stage": "RailCollisionExStage",
+  "label": "EX_RailCollision_Exit"
+ },
+ {
+  "shot": "RailCollisionExStage_out",
+  "stage": "ForestWorldHomeStage",
+  "label": "EX_RailCollision_Exit"
+ },
+ {
+  "shot": "AnimalChaseExStage_in",
+  "stage": "AnimalChaseExStage",
+  "label": "EX_AnimalChase"
+ },
+ {
+  "shot": "AnimalChaseExStage_out",
+  "stage": "ForestWorldHomeStage",
+  "label": "EX_AnimalChase"
+ },
+ {
+  "shot": "ForestWorldWoodsStage_in",
+  "stage": "ForestWorldWoodsStage",
+  "label": "Jyukai003"
+ },
+ {
+  "shot": "ForestWorldWoodsStage_out",
+  "stage": "ForestWorldHomeStage",
+  "label": "Jyukai003v"
+ },
+ {
+  "shot": "ForestWorldWoodsTreasureStage_in",
+  "stage": "ForestWorldWoodsTreasureStage",
+  "label": "TreasureTree"
+ },
+ {
+  "shot": "ForestWorldWoodsTreasureStage_out",
+  "stage": "ForestWorldWoodsStage",
+  "label": "TreasureTree"
+ },
+ {
+  "shot": "PackunPoisonExStage_in",
+  "stage": "PackunPoisonExStage",
+  "label": "PoisonEx_Exit"
+ },
+ {
+  "shot": "PackunPoisonExStage_out",
+  "stage": "ForestWorldHomeStage",
+  "label": "PoisonEx_Exit"
+ },
+ {
+  "shot": "ForestWorldBonusStage_in",
+  "stage": "ForestWorldBonusStage",
+  "label": "bonus2"
+ },
+ {
+  "shot": "ForestWorldBonusStage_out",
+  "stage": "ForestWorldHomeStage",
+  "label": "bonus2"
+ },
+ {
+  "shot": "ForestWorldWoodsCostumeStage_in",
+  "stage": "ForestWorldWoodsCostumeStage",
+  "label": "Explorer_Bonus"
+ },
+ {
+  "shot": "ForestWorldWoodsCostumeStage_out",
+  "stage": "ForestWorldWoodsStage",
+  "label": "Explorer_Bonus"
+ },
+ {
+  "shot": "KillerRoadExStage_in",
+  "stage": "KillerRoadExStage",
+  "label": "KillerRoad"
+ },
+ {
+  "shot": "KillerRoadExStage_out",
+  "stage": "ForestWorldHomeStage",
+  "label": "KillerRoad"
+ },
+ {
+  "shot": "LakeWorldShopStage_in",
+  "stage": "LakeWorldShopStage",
+  "label": "LakeWorldShop"
+ },
+ {
+  "shot": "LakeWorldShopStage_out",
+  "stage": "LakeWorldHomeStage",
+  "label": "LakeWorldShop"
+ },
+ {
+  "shot": "FrogPoisonExStage_in",
+  "stage": "FrogPoisonExStage",
+  "label": "LakeWorldMoonEX1b"
+ },
+ {
+  "shot": "FrogPoisonExStage_out",
+  "stage": "LakeWorldHomeStage",
+  "label": "LakeWorldMoonEX1b"
+ },
+ {
+  "shot": "TrampolineWallCatchExStage_in",
+  "stage": "TrampolineWallCatchExStage",
+  "label": "CapTrampolineB"
+ },
+ {
+  "shot": "TrampolineWallCatchExStage_out",
+  "stage": "LakeWorldHomeStage",
+  "label": "CapTrampolineB"
+ },
+ {
+  "shot": "GotogotonExStage_in",
+  "stage": "GotogotonExStage",
+  "label": "Goton"
+ },
+ {
+  "shot": "GotogotonExStage_out",
+  "stage": "LakeWorldHomeStage",
+  "label": "Goton"
+ },
+ {
+  "shot": "FastenerExStage_in",
+  "stage": "FastenerExStage",
+  "label": "FastenerEx"
+ },
+ {
+  "shot": "FastenerExStage_out",
+  "stage": "LakeWorldHomeStage",
+  "label": "FastenerEx"
+ },
+ {
+  "shot": "Cube2DExStage_in",
+  "stage": "Cube2DExStage",
+  "label": "cube"
+ },
+ {
+  "shot": "Cube2DExStage_out",
+  "stage": "CloudWorldHomeStage",
+  "label": "cube"
+ },
+ {
+  "shot": "FukuwaraiKuriboStage_in",
+  "stage": "FukuwaraiKuriboStage",
+  "label": "Fukuwarai"
+ },
+ {
+  "shot": "FukuwaraiKuriboStage_out",
+  "stage": "CloudWorldHomeStage",
+  "label": "Fukuwarai"
+ },
+ {
+  "shot": "ClashWorldShopStage_in",
+  "stage": "ClashWorldShopStage",
+  "label": "Kinopio"
+ },
+ {
+  "shot": "ClashWorldShopStage_out",
+  "stage": "ClashWorldHomeStage",
+  "label": "Kinopio"
+ },
+ {
+  "shot": "ImomuPoisonExStage_in",
+  "stage": "ImomuPoisonExStage",
+  "label": "imomu_02"
+ },
+ {
+  "shot": "ImomuPoisonExStage_out",
+  "stage": "ClashWorldHomeStage",
+  "label": "imomu_02"
+ },
+ {
+  "shot": "JangoExStage_in",
+  "stage": "JangoExStage",
+  "label": "ClashWorldMoonEX2"
+ },
+ {
+  "shot": "JangoExStage_out",
+  "stage": "ClashWorldHomeStage",
+  "label": "ClashWorldMoonEX2"
+ },
+ {
+  "shot": "CityWorldShop01Stage_in",
+  "stage": "CityWorldShop01Stage",
+  "label": "shop_coin"
+ },
+ {
+  "shot": "CityWorldShop01Stage_out",
+  "stage": "CityWorldHomeStage",
+  "label": "shop_corect"
+ },
+ {
+  "shot": "Note2D3DRoomExStage_in",
+  "stage": "Note2D3DRoomExStage",
+  "label": "onpu"
+ },
+ {
+  "shot": "Note2D3DRoomExStage_out",
+  "stage": "CityWorldHomeStage",
+  "label": "onpu"
+ },
+ {
+  "shot": "CityWorldFactoryStage_in",
+  "stage": "CityWorldFactoryStage",
+  "label": "under001enter"
+ },
+ {
+  "shot": "CityWorldFactoryStage_out",
+  "stage": "CityWorldHomeStage",
+  "label": "under001enter"
+ },
+ {
+  "shot": "CityWorldMainTowerStage_in",
+  "stage": "CityWorldMainTowerStage",
+  "label": "main_exit"
+ },
+ {
+  "shot": "CityWorldMainTowerStage_out",
+  "stage": "CityWorldHomeStage",
+  "label": "main_enter"
+ },
+ {
+  "shot": "PoleKillerExStage_in",
+  "stage": "PoleKillerExStage",
+  "label": "bou"
+ },
+ {
+  "shot": "PoleKillerExStage_out",
+  "stage": "CityWorldHomeStage",
+  "label": "boureturn"
+ },
+ {
+  "shot": "BikeSteelExStage_in",
+  "stage": "BikeSteelExStage",
+  "label": "bikereturn"
+ },
+ {
+  "shot": "BikeSteelExStage_out",
+  "stage": "CityWorldHomeStage",
+  "label": "bike"
+ },
+ {
+  "shot": "CapRotatePackunExStage_in",
+  "stage": "CapRotatePackunExStage",
+  "label": "kaitendokan"
+ },
+ {
+  "shot": "CapRotatePackunExStage_out",
+  "stage": "CityWorldHomeStage",
+  "label": "kaitendokan"
+ },
+ {
+  "shot": "ElectricWireExStage_in",
+  "stage": "ElectricWireExStage",
+  "label": "densen"
+ },
+ {
+  "shot": "ElectricWireExStage_out",
+  "stage": "CityWorldHomeStage",
+  "label": "densendokan"
+ },
+ {
+  "shot": "CityWorldSandSlotStage_in",
+  "stage": "CityWorldSandSlotStage",
+  "label": "Bonus"
+ },
+ {
+  "shot": "CityWorldSandSlotStage_out",
+  "stage": "CityWorldHomeStage",
+  "label": "Bonus"
+ },
+ {
+  "shot": "RadioControlExStage_in",
+  "stage": "RadioControlExStage",
+  "label": "car"
+ },
+ {
+  "shot": "RadioControlExStage_out",
+  "stage": "CityWorldHomeStage",
+  "label": "car"
+ },
+ {
+  "shot": "ShootingCityExStage_in",
+  "stage": "ShootingCityExStage",
+  "label": "taxi"
+ },
+ {
+  "shot": "ShootingCityExStage_out",
+  "stage": "CityWorldHomeStage",
+  "label": "taxi"
+ },
+ {
+  "shot": "SwingSteelExStage_in",
+  "stage": "SwingSteelExStage",
+  "label": "gragrareturn"
+ },
+ {
+  "shot": "SwingSteelExStage_out",
+  "stage": "CityWorldHomeStage",
+  "label": "gragrareturn"
+ },
+ {
+  "shot": "PoleGrabCeilExStage_in",
+  "stage": "PoleGrabCeilExStage",
+  "label": "tenjo"
+ },
+ {
+  "shot": "PoleGrabCeilExStage_out",
+  "stage": "CityWorldHomeStage",
+  "label": "tenjo"
+ },
+ {
+  "shot": "Theater2DExStage_in",
+  "stage": "Theater2DExStage",
+  "label": "theater"
+ },
+ {
+  "shot": "Theater2DExStage_out",
+  "stage": "CityWorldHomeStage",
+  "label": "theater"
+ },
+ {
+  "shot": "DonsukeExStage_in",
+  "stage": "DonsukeExStage",
+  "label": "donsuke"
+ },
+ {
+  "shot": "DonsukeExStage_out",
+  "stage": "CityWorldHomeStage",
+  "label": "donsuke"
+ },
+ {
+  "shot": "CityPeopleRoadStage_in",
+  "stage": "CityPeopleRoadStage",
+  "label": "gunsyudokan"
+ },
+ {
+  "shot": "CityPeopleRoadStage_out",
+  "stage": "CityWorldHomeStage",
+  "label": "gunsyudokan"
+ },
+ {
+  "shot": "TrexBikeExStage_in",
+  "stage": "TrexBikeExStage",
+  "label": "bike02"
+ },
+ {
+  "shot": "TrexBikeExStage_out",
+  "stage": "CityWorldHomeStage",
+  "label": "bike02return"
+ },
+ {
+  "shot": "SeaWorldCostumeStage_in",
+  "stage": "SeaWorldCostumeStage",
+  "label": "CostumeEventSeaWorld"
+ },
+ {
+  "shot": "SeaWorldCostumeStage_out",
+  "stage": "SeaWorldHomeStage",
+  "label": "CostumeEventSeaWorld"
+ },
+ {
+  "shot": "WaterValleyExStage_in",
+  "stage": "WaterValleyExStage",
+  "label": "SeaWorldEX1b"
+ },
+ {
+  "shot": "WaterValleyExStage_out",
+  "stage": "SeaWorldHomeStage",
+  "label": "SeaWorldEX1b"
+ },
+ {
+  "shot": "SeaWorldSecretStage_in",
+  "stage": "SeaWorldSecretStage",
+  "label": "TreasureEventWorldSea"
+ },
+ {
+  "shot": "SeaWorldSecretStage_out",
+  "stage": "SeaWorldHomeStage",
+  "label": "TreasureEventWorldSea"
+ },
+ {
+  "shot": "CloudExStage_in",
+  "stage": "CloudExStage",
+  "label": "SeaWorldEX2"
+ },
+ {
+  "shot": "CloudExStage_out",
+  "stage": "SeaWorldHomeStage",
+  "label": "SeaWorldEX2"
+ },
+ {
+  "shot": "SenobiTowerExStage_in",
+  "stage": "SenobiTowerExStage",
+  "label": "SeaWorldEX3b"
+ },
+ {
+  "shot": "SenobiTowerExStage_out",
+  "stage": "SeaWorldHomeStage",
+  "label": "SeaWorldEX3b"
+ },
+ {
+  "shot": "ReflectBombExStage_in",
+  "stage": "ReflectBombExStage",
+  "label": "SeaWorldMoonEX1b"
+ },
+ {
+  "shot": "ReflectBombExStage_out",
+  "stage": "SeaWorldHomeStage",
+  "label": "SeaWorldMoonEX1a"
+ },
+ {
+  "shot": "TogezoRotateExStage_in",
+  "stage": "TogezoRotateExStage",
+  "label": "SeaWorldMoonEX2"
+ },
+ {
+  "shot": "TogezoRotateExStage_out",
+  "stage": "SeaWorldHomeStage",
+  "label": "SeaWorldMoonEX2"
+ },
+ {
+  "shot": "SeaWorldSneakingManStage_in",
+  "stage": "SeaWorldSneakingManStage",
+  "label": "RoomEventWorldSea"
+ },
+ {
+  "shot": "SeaWorldSneakingManStage_out",
+  "stage": "SeaWorldHomeStage",
+  "label": "RoomEventWorldSea"
+ },
+ {
+  "shot": "SeaWorldVibrationStage_in",
+  "stage": "SeaWorldVibrationStage",
+  "label": "shindo_Lv2"
+ },
+ {
+  "shot": "SeaWorldVibrationStage_out",
+  "stage": "SeaWorldHomeStage",
+  "label": "shindo_Lv2"
+ },
+ {
+  "shot": "IceWaterBlockExStage_in",
+  "stage": "IceWaterBlockExStage",
+  "label": "EX_IceWater_Exit"
+ },
+ {
+  "shot": "IceWaterBlockExStage_out",
+  "stage": "SnowWorldHomeStage",
+  "label": "EX_IceWater_Exit"
+ },
+ {
+  "shot": "SnowWorldTownStage_in",
+  "stage": "SnowWorldTownStage",
+  "label": "SnowUGExit"
+ },
+ {
+  "shot": "SnowWorldTownStage_out",
+  "stage": "SnowWorldHomeStage",
+  "label": "SnowUGExit"
+ },
+ {
+  "shot": "ByugoPuzzleExStage_in",
+  "stage": "ByugoPuzzleExStage",
+  "label": "ByugoPuzzle"
+ },
+ {
+  "shot": "ByugoPuzzleExStage_out",
+  "stage": "SnowWorldHomeStage",
+  "label": "ByugoPuzzle"
+ },
+ {
+  "shot": "IceWaterDashExStage_in",
+  "stage": "IceWaterDashExStage",
+  "label": "EX_IceWaterDash"
+ },
+ {
+  "shot": "IceWaterDashExStage_out",
+  "stage": "SnowWorldHomeStage",
+  "label": "EX_IceWaterDash_Exit"
+ },
+ {
+  "shot": "KillerRailCollisionExStage_in",
+  "stage": "KillerRailCollisionExStage",
+  "label": "EX_RailCol2"
+ },
+ {
+  "shot": "KillerRailCollisionExStage_out",
+  "stage": "SnowWorldHomeStage",
+  "label": "EX_RailCol2_Exit"
+ },
+ {
+  "shot": "SnowWorldCloudBonusExStage_in",
+  "stage": "SnowWorldCloudBonusExStage",
+  "label": "EX_SkyBonus"
+ },
+ {
+  "shot": "SnowWorldCloudBonusExStage_out",
+  "stage": "SnowWorldHomeStage",
+  "label": "EX_SkyBonus"
+ },
+ {
+  "shot": "SnowWorldLobby000Stage_in",
+  "stage": "SnowWorldLobby000Stage",
+  "label": "RaceEntrance"
+ },
+ {
+  "shot": "SnowWorldLobby000Stage_out",
+  "stage": "SnowWorldTownStage",
+  "label": "RaceTrackExit"
+ },
+ {
+  "shot": "SnowWorldLobby001Stage_in",
+  "stage": "SnowWorldLobby001Stage",
+  "label": "start"
+ },
+ {
+  "shot": "SnowWorldShopStage_in",
+  "stage": "SnowWorldShopStage",
+  "label": "ShopDoor"
+ },
+ {
+  "shot": "SnowWorldShopStage_out",
+  "stage": "SnowWorldTownStage",
+  "label": "ShopDoor"
+ },
+ {
+  "shot": "IceWalkerExStage_in",
+  "stage": "IceWalkerExStage",
+  "label": "FigureWalker"
+ },
+ {
+  "shot": "IceWalkerExStage_out",
+  "stage": "SnowWorldHomeStage",
+  "label": "FigureWalker"
+ },
+ {
+  "shot": "SnowWorldLobbyExStage_in",
+  "stage": "SnowWorldLobbyExStage",
+  "label": "MoonRace"
+ },
+ {
+  "shot": "SnowWorldLobbyExStage_out",
+  "stage": "SnowWorldHomeStage",
+  "label": "MoonRace"
+ },
+ {
+  "shot": "SnowWorldCostumeStage_in",
+  "stage": "SnowWorldCostumeStage",
+  "label": "SnowCostumeEx"
+ },
+ {
+  "shot": "SnowWorldCostumeStage_out",
+  "stage": "SnowWorldTownStage",
+  "label": "SnowCostumeEx"
+ },
+ {
+  "shot": "LavaWorldUpDownExStage_in",
+  "stage": "LavaWorldUpDownExStage",
+  "label": "KeyMoveExDokan"
+ },
+ {
+  "shot": "LavaWorldUpDownExStage_out",
+  "stage": "LavaWorldHomeStage",
+  "label": "KeyMoveExDokan"
+ },
+ {
+  "shot": "LavaWorldBubbleLaneExStage_in",
+  "stage": "LavaWorldBubbleLaneExStage",
+  "label": "PechoBubbleExDokan"
+ },
+ {
+  "shot": "LavaWorldBubbleLaneExStage_out",
+  "stage": "LavaWorldHomeStage",
+  "label": "PechoBubbleExDokan"
+ },
+ {
+  "shot": "LavaWorldFenceLiftExStage_in",
+  "stage": "LavaWorldFenceLiftExStage",
+  "label": "FenceLiftExdokan"
+ },
+ {
+  "shot": "LavaWorldFenceLiftExStage_out",
+  "stage": "LavaWorldHomeStage",
+  "label": "FenceLiftEx"
+ },
+ {
+  "shot": "LavaWorldClockExStage_in",
+  "stage": "LavaWorldClockExStage",
+  "label": "BBQExDokan"
+ },
+ {
+  "shot": "LavaWorldClockExStage_out",
+  "stage": "LavaWorldHomeStage",
+  "label": "BBQExDokan"
+ },
+ {
+  "shot": "LavaWorldExcavationExStage_in",
+  "stage": "LavaWorldExcavationExStage",
+  "label": "MartinCubeEx"
+ },
+ {
+  "shot": "LavaWorldExcavationExStage_out",
+  "stage": "LavaWorldHomeStage",
+  "label": "MartinCubeEx"
+ },
+ {
+  "shot": "LavaWorldShopStage_in",
+  "stage": "LavaWorldShopStage",
+  "label": "shop"
+ },
+ {
+  "shot": "LavaWorldShopStage_out",
+  "stage": "LavaWorldHomeStage",
+  "label": "shop"
+ },
+ {
+  "shot": "CapAppearLavaLiftExStage_in",
+  "stage": "CapAppearLavaLiftExStage",
+  "label": "LavaLiftExdokan"
+ },
+ {
+  "shot": "CapAppearLavaLiftExStage_out",
+  "stage": "LavaWorldHomeStage",
+  "label": "LavaLiftExdokan"
+ },
+ {
+  "shot": "ForkExStage_in",
+  "stage": "ForkExStage",
+  "label": "ForkEX"
+ },
+ {
+  "shot": "ForkExStage_out",
+  "stage": "LavaWorldHomeStage",
+  "label": "ForkEX"
+ },
+ {
+  "shot": "GabuzouClockExStage_in",
+  "stage": "GabuzouClockExStage",
+  "label": "GabuzouClockExdokan"
+ },
+ {
+  "shot": "GabuzouClockExStage_out",
+  "stage": "LavaWorldHomeStage",
+  "label": "GabuzouClockEx"
+ },
+ {
+  "shot": "LavaWorldTreasureStage_in",
+  "stage": "LavaWorldTreasureStage",
+  "label": "TreasureEventWorldLava"
+ },
+ {
+  "shot": "LavaWorldTreasureStage_out",
+  "stage": "LavaWorldHomeStage",
+  "label": "TreasureEventWorldLava"
+ },
+ {
+  "shot": "LavaWorldCostumeStage_in",
+  "stage": "LavaWorldCostumeStage",
+  "label": "CostumeEventWorldLava"
+ },
+ {
+  "shot": "LavaWorldCostumeStage_out",
+  "stage": "LavaWorldHomeStage",
+  "label": "CostumeOut"
+ },
+ {
+  "shot": "BullRunExStage_in",
+  "stage": "BullRunExStage",
+  "label": "BossRaidWorldMoonEx02_Exit"
+ },
+ {
+  "shot": "BullRunExStage_out",
+  "stage": "BossRaidWorldHomeStage",
+  "label": "BossRaidWorldMoonEx02_Exit"
+ },
+ {
+  "shot": "DotTowerExStage_in",
+  "stage": "DotTowerExStage",
+  "label": "BossRaidWorldEx01_Eixt"
+ },
+ {
+  "shot": "DotTowerExStage_out",
+  "stage": "BossRaidWorldHomeStage",
+  "label": "BossRaidWorldEx01_Eixt"
+ },
+ {
+  "shot": "SkyWorldShopStage_in",
+  "stage": "SkyWorldShopStage",
+  "label": "shop"
+ },
+ {
+  "shot": "SkyWorldShopStage_out",
+  "stage": "SkyWorldHomeStage",
+  "label": "shop"
+ },
+ {
+  "shot": "SkyWorldCostumeStage_in",
+  "stage": "SkyWorldCostumeStage",
+  "label": "byoubu"
+ },
+ {
+  "shot": "SkyWorldCostumeStage_out",
+  "stage": "SkyWorldHomeStage",
+  "label": "byoubu"
+ },
+ {
+  "shot": "TsukkunClimbExStage_in",
+  "stage": "TsukkunClimbExStage",
+  "label": "tukkun001_exit"
+ },
+ {
+  "shot": "TsukkunClimbExStage_out",
+  "stage": "SkyWorldHomeStage",
+  "label": "tukkun001_exit"
+ },
+ {
+  "shot": "TsukkunRotateExStage_in",
+  "stage": "TsukkunRotateExStage",
+  "label": "tukkun000_exit"
+ },
+ {
+  "shot": "TsukkunRotateExStage_out",
+  "stage": "SkyWorldHomeStage",
+  "label": "tukkun000_exit"
+ },
+ {
+  "shot": "JizoSwitchExStage_in",
+  "stage": "JizoSwitchExStage",
+  "label": "jizo02"
+ },
+ {
+  "shot": "JizoSwitchExStage_out",
+  "stage": "SkyWorldHomeStage",
+  "label": "jizo02"
+ },
+ {
+  "shot": "SkyWorldCloudBonusExStage_in",
+  "stage": "SkyWorldCloudBonusExStage",
+  "label": "sora001"
+ },
+ {
+  "shot": "SkyWorldCloudBonusExStage_out",
+  "stage": "SkyWorldHomeStage",
+  "label": "sora001"
+ },
+ {
+  "shot": "KaronWingTowerStage_in",
+  "stage": "KaronWingTowerStage",
+  "label": "Patakaron02"
+ },
+ {
+  "shot": "KaronWingTowerStage_out",
+  "stage": "SkyWorldHomeStage",
+  "label": "Patakaron02"
+ },
+ {
+  "shot": "SkyWorldTreasureStage_in",
+  "stage": "SkyWorldTreasureStage",
+  "label": "shop_dress"
+ },
+ {
+  "shot": "SkyWorldTreasureStage_out",
+  "stage": "SkyWorldHomeStage",
+  "label": "shop_dress"
+ },
+ {
+  "shot": "MoonWorldWeddingRoomStage_in",
+  "stage": "MoonWorldWeddingRoomStage",
+  "label": "fff"
+ },
+ {
+  "shot": "MoonWorldWeddingRoomStage_out",
+  "stage": "MoonWorldHomeStage",
+  "label": "aaa"
+ },
+ {
+  "shot": "MoonWorldShopRoom_in",
+  "stage": "MoonWorldShopRoom",
+  "label": "ddd"
+ },
+ {
+  "shot": "MoonWorldShopRoom_out",
+  "stage": "MoonWorldHomeStage",
+  "label": "ddd"
+ },
+ {
+  "shot": "MoonWorldSphinxRoom_in",
+  "stage": "MoonWorldSphinxRoom",
+  "label": "ggg"
+ },
+ {
+  "shot": "MoonWorldSphinxRoom_out",
+  "stage": "MoonWorldHomeStage",
+  "label": "ggg"
+ },
+ {
+  "shot": "MoonWorldCaptureParadeStage_in",
+  "stage": "MoonWorldCaptureParadeStage",
+  "label": "ccc"
+ },
+ {
+  "shot": "MoonWorldCaptureParadeStage_out",
+  "stage": "MoonWorldHomeStage",
+  "label": "vvv"
+ },
+ {
+  "shot": "MoonAthleticExStage_in",
+  "stage": "MoonAthleticExStage",
+  "label": "moon_exit"
+ },
+ {
+  "shot": "MoonAthleticExStage_out",
+  "stage": "MoonWorldHomeStage",
+  "label": "moon_exit"
+ },
+ {
+  "shot": "Galaxy2DExStage_in",
+  "stage": "Galaxy2DExStage",
+  "label": "dot01"
+ },
+ {
+  "shot": "Galaxy2DExStage_out",
+  "stage": "MoonWorldHomeStage",
+  "label": "dot00"
+ },
+ {
+  "shot": "MoonWorldBasementStage_in",
+  "stage": "MoonWorldBasementStage",
+  "label": "None"
+ },
+ {
+  "shot": "MoonWorldKoopa1Stage_in",
+  "stage": "MoonWorldKoopa1Stage",
+  "label": "None"
+ },
+ {
+  "shot": "MoonWorldKoopa2Stage_in",
+  "stage": "MoonWorldKoopa2Stage",
+  "label": "ppp"
+ },
+ {
+  "shot": "MoonWorldKoopa2Stage_out",
+  "stage": "MoonWorldHomeStage",
+  "label": "ppp"
+ },
+ {
+  "shot": "MoonWorldWeddingRoom2Stage_in",
+  "stage": "MoonWorldWeddingRoom2Stage",
+  "label": "kkk"
+ },
+ {
+  "shot": "MoonWorldWeddingRoom2Stage_out",
+  "stage": "MoonWorldHomeStage",
+  "label": "kkk"
+ },
+ {
+  "shot": "PeachWorldCastleStage_in",
+  "stage": "PeachWorldCastleStage",
+  "label": "PeachCastleGate"
+ },
+ {
+  "shot": "PeachWorldCastleStage_out",
+  "stage": "PeachWorldHomeStage",
+  "label": "PeachCastleGate"
+ },
+ {
+  "shot": "PeachWorldPictureBossMagmaStage_in",
+  "stage": "PeachWorldPictureBossMagmaStage",
+  "label": "BossMagmaA"
+ },
+ {
+  "shot": "PeachWorldPictureBossMagmaStage_out",
+  "stage": "PeachWorldHomeStage",
+  "label": "BossMagmaA"
+ },
+ {
+  "shot": "PeachWorldPictureMofumofuStage_in",
+  "stage": "PeachWorldPictureMofumofuStage",
+  "label": "MofumofuA"
+ },
+ {
+  "shot": "PeachWorldPictureMofumofuStage_out",
+  "stage": "PeachWorldHomeStage",
+  "label": "MofumofuA"
+ },
+ {
+  "shot": "PeachWorldPictureBossRaidStage_in",
+  "stage": "PeachWorldPictureBossRaidStage",
+  "label": "BossRaidB"
+ },
+ {
+  "shot": "PeachWorldPictureBossRaidStage_out",
+  "stage": "PeachWorldHomeStage",
+  "label": "BossRaidA"
+ },
+ {
+  "shot": "PeachWorldPictureBossForestStage_in",
+  "stage": "PeachWorldPictureBossForestStage",
+  "label": "BossForestA"
+ },
+ {
+  "shot": "PeachWorldPictureBossForestStage_out",
+  "stage": "PeachWorldHomeStage",
+  "label": "BossForestA"
+ },
+ {
+  "shot": "PeachWorldPictureBossKnuckleStage_in",
+  "stage": "PeachWorldPictureBossKnuckleStage",
+  "label": "BossKnuckleA"
+ },
+ {
+  "shot": "PeachWorldPictureBossKnuckleStage_out",
+  "stage": "PeachWorldHomeStage",
+  "label": "BossKnuckleA"
+ },
+ {
+  "shot": "PeachWorldPictureGiantWanderBossStage_in",
+  "stage": "PeachWorldPictureGiantWanderBossStage",
+  "label": "GiantWanderBossB"
+ },
+ {
+  "shot": "PeachWorldPictureGiantWanderBossStage_out",
+  "stage": "PeachWorldHomeStage",
+  "label": "GiantWanderBossA"
+ },
+ {
+  "shot": "PeachWorldShopStage_in",
+  "stage": "PeachWorldShopStage",
+  "label": "PeachWorldShopA"
+ },
+ {
+  "shot": "PeachWorldShopStage_out",
+  "stage": "PeachWorldHomeStage",
+  "label": "PeachWorldShopA"
+ },
+ {
+  "shot": "PeachWorldCostumeStage_in",
+  "stage": "PeachWorldCostumeStage",
+  "label": "CostumeEventWorldPeach"
+ },
+ {
+  "shot": "PeachWorldCostumeStage_out",
+  "stage": "PeachWorldHomeStage",
+  "label": "CostumeEventWorldPeach"
+ },
+ {
+  "shot": "YoshiCloudExStage_in",
+  "stage": "YoshiCloudExStage",
+  "label": "PeachWorldEx1a"
+ },
+ {
+  "shot": "YoshiCloudExStage_out",
+  "stage": "PeachWorldHomeStage",
+  "label": "PeachWorldEx1a"
+ },
+ {
+  "shot": "FukuwaraiMarioStage_in",
+  "stage": "FukuwaraiMarioStage",
+  "label": "Fukuwarai2"
+ },
+ {
+  "shot": "FukuwaraiMarioStage_out",
+  "stage": "PeachWorldHomeStage",
+  "label": "Fukuwarai2"
+ },
+ {
+  "shot": "DotHardExStage_in",
+  "stage": "DotHardExStage",
+  "label": "PeachWorldEx2a"
+ },
+ {
+  "shot": "DotHardExStage_out",
+  "stage": "PeachWorldHomeStage",
+  "label": "PeachWorldEx2a"
+ },
+ {
+  "shot": "RevengeMofumofuStage_in",
+  "stage": "RevengeMofumofuStage",
+  "label": "PictureMofumofu"
+ },
+ {
+  "shot": "RevengeMofumofuStage_out",
+  "stage": "PeachWorldPictureMofumofuStage",
+  "label": "PictureMofumofu"
+ },
+ {
+  "shot": "RevengeBossMagmaStage_in",
+  "stage": "RevengeBossMagmaStage",
+  "label": "PictureBossMagma"
+ },
+ {
+  "shot": "RevengeBossMagmaStage_out",
+  "stage": "PeachWorldPictureBossMagmaStage",
+  "label": "PictureBossMagma"
+ },
+ {
+  "shot": "RevengeForestBossStage_in",
+  "stage": "RevengeForestBossStage",
+  "label": "PictureBossForest"
+ },
+ {
+  "shot": "RevengeForestBossStage_out",
+  "stage": "PeachWorldPictureBossForestStage",
+  "label": "PictureBossForest"
+ },
+ {
+  "shot": "RevengeBossRaidStage_in",
+  "stage": "RevengeBossRaidStage",
+  "label": "PictureBossRaid"
+ },
+ {
+  "shot": "RevengeBossRaidStage_out",
+  "stage": "PeachWorldPictureBossRaidStage",
+  "label": "PictureBossRaid"
+ },
+ {
+  "shot": "RevengeBossKnuckleStage_in",
+  "stage": "RevengeBossKnuckleStage",
+  "label": "PictureBossKnuckle"
+ },
+ {
+  "shot": "RevengeBossKnuckleStage_out",
+  "stage": "PeachWorldPictureBossKnuckleStage",
+  "label": "PictureBossKnuckle"
+ },
+ {
+  "shot": "RevengeGiantWanderBossStage_in",
+  "stage": "RevengeGiantWanderBossStage",
+  "label": "PictureGiantWanderBoss"
+ },
+ {
+  "shot": "RevengeGiantWanderBossStage_out",
+  "stage": "PeachWorldPictureGiantWanderBossStage",
+  "label": "PictureGiantWanderBoss"
+ },
+ {
+  "shot": "PackunPoisonNoCapExStage_in",
+  "stage": "PackunPoisonNoCapExStage",
+  "label": "PackunPoisonNoCapEx_Exit"
+ },
+ {
+  "shot": "PackunPoisonNoCapExStage_out",
+  "stage": "Special1WorldHomeStage",
+  "label": "PackunPoisonNoCapEx"
+ },
+ {
+  "shot": "KillerRoadNoCapExStage_in",
+  "stage": "KillerRoadNoCapExStage",
+  "label": "KillerRoadNoCapEx"
+ },
+ {
+  "shot": "KillerRoadNoCapExStage_out",
+  "stage": "Special1WorldHomeStage",
+  "label": "KillerRoadNoCapEx"
+ },
+ {
+  "shot": "BikeSteelNoCapExStage_in",
+  "stage": "BikeSteelNoCapExStage",
+  "label": "BikeSteelNoCapEx_Exit"
+ },
+ {
+  "shot": "BikeSteelNoCapExStage_out",
+  "stage": "Special1WorldHomeStage",
+  "label": "BikeSteelNoCapEx_Exit"
+ },
+ {
+  "shot": "SenobiTowerYoshiExStage_in",
+  "stage": "SenobiTowerYoshiExStage",
+  "label": "SenobiTowerYoshiEx_Exit"
+ },
+ {
+  "shot": "SenobiTowerYoshiExStage_out",
+  "stage": "Special1WorldHomeStage",
+  "label": "SenobiTowerYoshiEx_Exit"
+ },
+ {
+  "shot": "ShootingCityYoshiExStage_in",
+  "stage": "ShootingCityYoshiExStage",
+  "label": "ShootingCityYoshiEx_Exit"
+ },
+ {
+  "shot": "ShootingCityYoshiExStage_out",
+  "stage": "Special1WorldHomeStage",
+  "label": "ShootingCityYoshiEx"
+ },
+ {
+  "shot": "LavaWorldUpDownYoshiExStage_in",
+  "stage": "LavaWorldUpDownYoshiExStage",
+  "label": "LavaWorldUpDownYoshiEx_Exit"
+ },
+ {
+  "shot": "LavaWorldUpDownYoshiExStage_out",
+  "stage": "Special1WorldHomeStage",
+  "label": "LavaWorldUpDownYoshiEx_Exit"
+ },
+ {
+  "shot": "Special1WorldTowerStackerStage_in",
+  "stage": "Special1WorldTowerStackerStage",
+  "label": "StackerRoomGoal"
+ },
+ {
+  "shot": "Special1WorldTowerStackerStage_out",
+  "stage": "Special1WorldHomeStage",
+  "label": "StackerRoomStart"
+ },
+ {
+  "shot": "Special1WorldTowerBombTailStage_in",
+  "stage": "Special1WorldTowerBombTailStage",
+  "label": "BombTailRoomGoal"
+ },
+ {
+  "shot": "Special1WorldTowerBombTailStage_out",
+  "stage": "Special1WorldHomeStage",
+  "label": "BombTailRoomStart"
+ },
+ {
+  "shot": "Special1WorldTowerFireBlowerStage_in",
+  "stage": "Special1WorldTowerFireBlowerStage",
+  "label": "FireBlowerRoomGoal"
+ },
+ {
+  "shot": "Special1WorldTowerFireBlowerStage_out",
+  "stage": "Special1WorldHomeStage",
+  "label": "FireBlowerRoomStart"
+ },
+ {
+  "shot": "Special1WorldTowerCapThrowerStage_in",
+  "stage": "Special1WorldTowerCapThrowerStage",
+  "label": "CapThrowerRoomGoal"
+ },
+ {
+  "shot": "Special1WorldTowerCapThrowerStage_out",
+  "stage": "Special1WorldHomeStage",
+  "label": "CapThrowerRoomGoal"
+ },
+ {
+  "shot": "Special2WorldKoopaStage_in",
+  "stage": "Special2WorldKoopaStage",
+  "label": "room3_start"
+ },
+ {
+  "shot": "Special2WorldKoopaStage_out",
+  "stage": "Special2WorldLavaStage",
+  "label": "room3_goal"
+ },
+ {
+  "shot": "Special2WorldLavaStage_in",
+  "stage": "Special2WorldLavaStage",
+  "label": "MoonGoal"
+ },
+ {
+  "shot": "Special2WorldLavaStage_out",
+  "stage": "Special2WorldHomeStage",
+  "label": "MoonGoal"
+ },
+ {
+  "shot": "Special2WorldCloudStage_in",
+  "stage": "Special2WorldCloudStage",
+  "label": "room2_start"
+ },
+ {
+  "shot": "Special2WorldCloudStage_out",
+  "stage": "Special2WorldLavaStage",
+  "label": "room2_start"
+ }
+]

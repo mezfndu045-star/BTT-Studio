@@ -1,3 +1,4 @@
+#include "menu/PhotoTour.h"
 #include "BttImGui.h"
 
 #include "hk/diag/diag.h"
@@ -107,8 +108,11 @@ void draw(agl::DrawContext* drawContext) {
     updateInput();
 
     ImGui::NewFrame();
-    for (auto drawFunc : drawQueue) {
-        drawFunc();
+    // Nothing of the mod on screen while the photo tour takes the sub area pictures
+    if (!btt::isPhotoTourRunning()) {
+        for (auto drawFunc : drawQueue) {
+            drawFunc();
+        }
     }
     ImGui::Render();
 

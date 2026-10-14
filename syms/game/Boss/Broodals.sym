@@ -6,6 +6,7 @@ _ZN10FireBlower7controlEv
 _ZN10FireBlower11damageOrDieEv
 _ZN10CapThrower7controlEv
 _ZN6Breeda7controlEv
+_ZN8KoopaLv18movementEv
 _ZN8Mofumofu4initERKN2al13ActorInitInfoE
 _ZN10StageScene4initERKN2al13SceneInitInfoE
 _ZN2rs14getPlayerActorEPKN2al5SceneE
@@ -13,3 +14,18 @@ _ZN2rs12isActiveDemoEPKN2al5SceneE
 _ZN5Shine12appearCommonEv
 _ZN5Shine23endBossDemoAndStartFallEf
 _ZN2al18invalidateClippingEPNS_9LiveActorE
+
+@smo:130
+
+_ZN10StageScene4initERKN2al13SceneInitInfoE = 0x0046e7a0
+_ZN8BombTail7controlEv = 0x000094b0
+_ZN10FireBlower7controlEv = 0x0004ebb0
+_ZN10CapThrower7controlEv = 0x000485b0
+_ZN6Breeda7controlEv = 0x00040580
+_ZN2al19killForceBeforeDemoEPNS_9LiveActorE = 0x005dfe30
+_ZN18BombTailBombHolder4killEv = 0x0000fe40
+_ZN2rs12isActiveDemoEPKN2al5SceneE = 0x004f4be0
+_ZN2al18invalidateClippingEPNS_9LiveActorE = 0x0065ad20
+_ZN8Mofumofu4initERKN2al13ActorInitInfoE = 0x00098ac0
+_ZN5Shine23endBossDemoAndStartFallEf = 0x001b60a0
+_ZN8KoopaLv18movementEv = 0x0008b5c0

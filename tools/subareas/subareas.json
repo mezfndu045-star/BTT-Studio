@@ -733,11 +733,6 @@
     ]
    },
    {
-    "stage": "SnowWorldRace000Stage",
-    "category": "MainRouteStage",
-    "moons": []
-   },
-   {
     "stage": "IceWalkerExStage",
     "category": "MiniGame",
     "moons": [
@@ -754,32 +749,12 @@
     ]
    },
    {
-    "stage": "SnowWorldRaceExStage",
-    "category": "MoonExStage",
-    "moons": []
-   },
-   {
     "stage": "SnowWorldCostumeStage",
     "category": "ExStage",
     "moons": [
      "Moon Shards in the Cold Room",
      "Slip Behind the Ice"
     ]
-   },
-   {
-    "stage": "SnowWorldRaceTutorialStage",
-    "category": "MainRouteStage",
-    "moons": []
-   },
-   {
-    "stage": "SnowWorldRace001Stage",
-    "category": "ExStage",
-    "moons": []
-   },
-   {
-    "stage": "SnowWorldRaceHardExStage",
-    "category": "MoonExStage",
-    "moons": []
    }
   ]
  },

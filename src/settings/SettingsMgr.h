@@ -138,6 +138,8 @@ public:
         u8 mTimerStartCount = 1;
         u8 mTimerEndCount = 1;
         SETTING(SeedGrowing);
+        // InputDisplayStyle (menu/InputDisplayStyles.h)
+        u8 mInputDisplayStyle = 0;
     } mSettings;
 
     // Settings* getSettings() { return &mSettings; }

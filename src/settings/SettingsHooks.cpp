@@ -30,7 +30,9 @@
 
 #include "helpers/InputHelper.h"
 #include "logger.h"
+#include "game/Item/ShineInfo.h"
 #include "menu/Menu.h"
+#include "menu/MoonNames.h"
 #include "menu/Timer.h"
 #include "settings/DemoHooks.hpp"
 #include "src/settings/SettingsMgr.h"
@@ -50,6 +52,8 @@ HkTrampoline GreyShineRefreshHook = [](TrampolineStatic(), GameDataHolderWriter 
 
 HkTrampoline ShineRefreshHook = [](TrampolineStatic(), GameDataHolderWriter writer,
                                    const ShineInfo* shineInfo) -> void {
+    // Remembered for Misc > Rename Last Moon
+    if (shineInfo) btt::onMoonGot(shineInfo->getStageName(), shineInfo->getObjId());
     ptr addr = sail::lookupSymbolFromDb<>("MoonRefreshText");
     ptr offset = addr - ro::getMainModule()->range().start();
     const char* text = Menu::instance()->getMoonRefreshText();
@@ -65,8 +69,29 @@ bool luigiRareRoll(f32 percent) {
 
 // Skip Broodals: once a Broodal fight's start cutscene ends, finish the boss through its own
 // last-hit code so the game plays the defeat cutscene and spawns the Multi Moon as usual.
+#if BTT_V130
+// 1.3 inlines BombTail::damageAndSetNerve and FireBlower::damageOrDie everywhere: their last hit is redone here
+extern "C" void al_killForceBeforeDemo(void* actor) asm("_ZN2al19killForceBeforeDemoEPNS_9LiveActorE");
+extern "C" void BombTailBombHolder_kill(void* holder) asm("_ZN18BombTailBombHolder4killEv");
+static const al::Nerve* getNerveFromDb(const char* name);
+
+static void BombTail_damageAndSetNerve(al::LiveActor* boss) {
+    u8* p = reinterpret_cast<u8*>(boss);
+    *reinterpret_cast<s32*>(p + 0x108) = 0;
+    s32 partNum = *reinterpret_cast<s32*>(p + 0x168);
+    void** parts = *reinterpret_cast<void***>(p + 0x170);
+    for (s32 i = 0; i < partNum; i++) al_killForceBeforeDemo(parts[i]);
+    BombTailBombHolder_kill(*reinterpret_cast<void**>(p + 0x188));
+    al::setNerve(boss, getNerveFromDb("BombTailNrvBattleEndDemo"));
+}
+static void FireBlower_damageOrDie(al::LiveActor* boss) {
+    *reinterpret_cast<s32*>(reinterpret_cast<u8*>(boss) + 0x108) = 0;
+    al::setNerve(boss, getNerveFromDb("FireBlowerNrvBattleEndDemo"));
+}
+#else
 extern "C" void BombTail_damageAndSetNerve(al::LiveActor* boss) asm("_ZN8BombTail17damageAndSetNerveEv");
 extern "C" void FireBlower_damageOrDie(al::LiveActor* boss) asm("_ZN10FireBlower11damageOrDieEv");
+#endif
 
 static const al::Nerve* getNerveFromDb(const char* name) {
     return reinterpret_cast<const al::Nerve*>(hk::sail::lookupSymbolFromDb<>(name));
@@ -110,7 +135,22 @@ HkTrampoline fireBlowerControlHook = [](TrampolineStatic(), al::LiveActor* boss)
 // getting it plays the regular Multi Moon sequence that leads to Day Metro. A plain popup is not enough for a
 // boss Multi Moon: it fell through the ground and the get sequence froze.
 // Returns true when the moon cannot appear (already appeared or got)
+#if BTT_V130
+// 1.3 inlines Shine::appearCommon: same check (true when the moon must not appear again). Shine nerves from
+// ShineNrvTable: +0 Wait, +0x30..+0x48 the nerves where the moon is already out (with no link at +0x2e0)
+extern "C" bool al_isAlive(const void* actor) asm("_ZN2al7isAliveEPKNS_9LiveActorE");
+static bool Shine_appearCommon(void* shine) {
+    const u8* nerves = reinterpret_cast<const u8*>(hk::sail::lookupSymbolFromDb<>("ShineNrvTable"));
+    al::LiveActor* actor = reinterpret_cast<al::LiveActor*>(shine);
+    bool isOut = false;
+    for (s32 off = 0x30; off <= 0x48 && !isOut; off += 8)
+        isOut = al::isNerve(actor, reinterpret_cast<const al::Nerve*>(nerves + off));
+    if (isOut && !*reinterpret_cast<void**>(reinterpret_cast<u8*>(shine) + 0x2e0)) return true;
+    return al_isAlive(shine) && al::isNerve(actor, reinterpret_cast<const al::Nerve*>(nerves));
+}
+#else
 extern "C" bool Shine_appearCommon(void* shine) asm("_ZN5Shine12appearCommonEv");
+#endif
 extern "C" void Shine_endBossDemoAndStartFall(void* shine, f32 height) asm("_ZN5Shine23endBossDemoAndStartFallEf");
 constexpr static f32 cBossShineFallHeight = 500.0f;
 namespace rs {
@@ -245,17 +285,28 @@ HkTrampoline unlockWorldNumForWorldMapHook = [](TrampolineStatic(), const void* 
     return getOdysseyForcedNextWorldId() >= 0 && num >= 17 ? 16 : num;
 };
 
-// StageSceneStateWorldMap: unlocked kingdom count at +0x104, cursor index at +0x108, kingdom ids at +0x110
+// StageSceneStateWorldMap: selected kingdom at +0xfc, unlocked kingdom count at +0x104, cursor index at +0x108,
+// kingdom ids at +0x110, revealed kingdom count at +0x118 (1.3: every field 8 bytes lower)
+#if BTT_V130
+constexpr static s32 cWorldMapOffsetShift = -8;
+#else
+constexpr static s32 cWorldMapOffsetShift = 0;
+#endif
+constexpr static s32 cWorldMapSelectedWorldOffset = 0xfc + cWorldMapOffsetShift;
+constexpr static s32 cWorldMapUnlockNumOffset = 0x104 + cWorldMapOffsetShift;
+constexpr static s32 cWorldMapCursorOffset = 0x108 + cWorldMapOffsetShift;
+constexpr static s32 cWorldMapWorldIdsOffset = 0x110 + cWorldMapOffsetShift;
+constexpr static s32 cWorldMapRevealNumOffset = 0x118 + cWorldMapOffsetShift;
 HkTrampoline worldMapAppearHook = [](TrampolineStatic(), void* worldMapState) -> void {
     s32 nextWorldId = getOdysseyForcedNextWorldId();
     if (nextWorldId >= 0) sIsOdysseyWorldMapForced = true;
     orig(worldMapState);
     if (nextWorldId < 0) return;
     u8* state = reinterpret_cast<u8*>(worldMapState);
-    s32 count = *reinterpret_cast<s32*>(state + 0x104);
-    s32* worldIds = *reinterpret_cast<s32**>(state + 0x110);
+    s32 count = *reinterpret_cast<s32*>(state + cWorldMapUnlockNumOffset);
+    s32* worldIds = *reinterpret_cast<s32**>(state + cWorldMapWorldIdsOffset);
     for (s32 i = 0; worldIds && i < count; i++)
-        if (worldIds[i] == nextWorldId) *reinterpret_cast<s32*>(state + 0x108) = i;
+        if (worldIds[i] == nextWorldId) *reinterpret_cast<s32*>(state + cWorldMapCursorOffset) = i;
 };
 
 // The story quests of a kingdom (and so its scenario start camera) follow the kingdom main scenario stored in
@@ -320,12 +371,13 @@ HkTrampoline worldMapKillHook = [](TrampolineStatic(), void* worldMapState) -> v
         sIsOdysseyWorldMapForced = false;
         // The revealed kingdom list (+0x118 count) only holds the destination: unlock nothing else
         if (!sIsOdysseyRedirectNeedsUnlock || sOdysseyRedirectWorldId < 0)
-            *reinterpret_cast<s32*>(reinterpret_cast<u8*>(worldMapState) + 0x118) = 0;
+            *reinterpret_cast<s32*>(reinterpret_cast<u8*>(worldMapState) + cWorldMapRevealNumOffset) = 0;
         sIsOdysseyRedirectNeedsUnlock = false;
     }
     if (sOdysseyRedirectWorldId >= 0) {
-        *reinterpret_cast<s32*>(reinterpret_cast<u8*>(worldMapState) + 0xfc) = sOdysseyRedirectWorldId;
-        *reinterpret_cast<s32*>(reinterpret_cast<u8*>(worldMapState) + 0x118) = 0;
+        *reinterpret_cast<s32*>(reinterpret_cast<u8*>(worldMapState) + cWorldMapSelectedWorldOffset) =
+            sOdysseyRedirectWorldId;
+        *reinterpret_cast<s32*>(reinterpret_cast<u8*>(worldMapState) + cWorldMapRevealNumOffset) = 0;
         sOdysseyRedirectWorldId = -1;
     }
     sIsOdysseyIgnoreStoryTrip = isForcedTrip;
@@ -479,28 +531,19 @@ HkTrampoline checkpointFlagHook = [](TrampolineStatic(), CheckpointFlag* checkpo
     if (!s || !s->mIsEnableNoCheckpointTouch || s->mIsEnableRefreshWarpText) orig(checkpointFlag);
 };
 
-HkTrampoline cloudSkipHook = [](TrampolineStatic(), StageScene* stageScene) -> bool {
-    Menu::instance()->noGetPlayer = true;
-    static int functionCalls = 0;
-    if (!SettingsMgr::instance()->getSettings()->mIsEnableSkipCloud) {
-        functionCalls = 0;
-        Menu::instance()->noGetPlayer = false;
-        return orig(stageScene);
-    }
-    // When debugging, returning true right away will skip Lost and go straight to (Day!) Metro with a broken
-    // Odyssey back in Wooded. Since isDefeatKoopaLv1 is called multiple times, we can return false the first
-    // time, then return true the second time, which seems to correctly skip the Bowser fight. This is a very
-    // hacky way of skipping the Bowser fight, so if there is some way to deduce from other game variables
-    // which function call we're in, that would be ideal. It would eliminate the need to introduce our own
-    // variable to keep track of the number of isDefeatKoopaLv1 calls.
-    functionCalls++;
-    if (functionCalls == 2) {
-        functionCalls = 0;
-        return true;
-    }
-    Menu::instance()->noGetPlayer = false;
-
-    return false;
+// Skip Cloud: in a Cloud stage, Bowser (KoopaLv1) is beaten as soon as his battle start cutscene (DemoStart, his first
+// nerve) ends: no hit left (KoopaLv1 +0x120 -> KoopaNumberCounter, +4 hits left, 3 at the start) and the nerve the
+// last punch leads to (DeadAndDemoEnd: defeat, then the battle end cutscene).
+HkTrampoline koopaLv1MovementHook = [](TrampolineStatic(), al::LiveActor* koopa) -> void {
+    orig(koopa);
+    if (!SettingsMgr::instance()->getSettings()->mIsEnableSkipCloud) return;
+    u8* counter = *reinterpret_cast<u8**>(reinterpret_cast<u8*>(koopa) + 0x120);
+    if (!counter || *reinterpret_cast<s32*>(counter + 4) != 3) return;
+    if (al::isNerve(koopa, getNerveFromDb("KoopaLv1NrvDemoStart"))) return;
+    const char* stageName = GameDataFunction::getCurrentStageName(GameDataHolderAccessor(koopa));
+    if (!stageName || strncmp(stageName, "Cloud", 5) != 0) return;
+    *reinterpret_cast<s32*>(counter + 4) = 0;
+    al::setNerve(koopa, getNerveFromDb("KoopaLv1NrvDeadAndDemoEnd"));
 };
 
 struct MofumofuPatternEntry {
@@ -774,6 +817,10 @@ void SettingsHooks::installSettingsHooks() {
     hk::hook::writeBranchLinkAtSym<"ShineChipWatcherGotCheck6">(shardWatcherIsGotShine);
     hk::hook::writeBranchLinkAtSym<"ShineChipWatcherGotCheck7">(shardWatcherIsGotShine);
     hk::hook::writeBranchLinkAtSym<"ShineChipWatcherGotCheck8">(shardWatcherIsGotShine);
+#if BTT_V130
+    // 1.3 duplicates the moon check at the end of ShineChipWatcher::initAfterPlacement (Check3) on two paths
+    hk::hook::writeBranchLinkAtSym<"ShineChipWatcherGotCheck3b">(shardWatcherIsGotShine);
+#endif
     shardWatcherTypeEmptyHook.installAtSym<"_ZN2rs34isCurrentShineChipWatcherTypeEmptyEPKN2al18IUseSceneObjHolderE">();
 
     installDemoHooks();
@@ -797,9 +844,13 @@ void SettingsHooks::installSettingsHooks() {
     isBossAttackedHomeNextHook.installAtSym<"_ZNK14GameDataHolder22isBossAttackedHomeNextEi">();
     worldMapAppearHook.installAtSym<"_ZN23StageSceneStateWorldMap6appearEv">();
     nextLockedWorldNumSceneHook.installAtSym<"_ZN16GameDataFunction33calcNextLockedWorldNumForWorldMapEPKN2al5SceneE">();
+#if !BTT_V130 // 1.3 has no LayoutActor variants (the world map layouts use the Scene ones)
     nextLockedWorldNumLayoutHook.installAtSym<"_ZN16GameDataFunction33calcNextLockedWorldNumForWorldMapEPKN2al11LayoutActorE">();
+#endif
     nextLockedWorldIdSceneHook.installAtSym<"_ZN16GameDataFunction32calcNextLockedWorldIdForWorldMapEPKN2al5SceneEi">();
+#if !BTT_V130
     nextLockedWorldIdLayoutHook.installAtSym<"_ZN16GameDataFunction32calcNextLockedWorldIdForWorldMapEPKN2al11LayoutActorEi">();
+#endif
     unlockWorldNumForWorldMapHook.installAtSym<"_ZN16GameDataFunction28getUnlockWorldNumForWorldMapEPKN2al5SceneE">();
     hk::hook::writeBranchLinkAtSym<"OdysseyInitUnlockCheck1">(odysseyInitIsUnlockedWorld);
     hk::hook::writeBranchLinkAtSym<"OdysseyInitUnlockCheck2">(odysseyInitIsUnlockedWorld);
@@ -839,7 +890,7 @@ void SettingsHooks::installSettingsHooks() {
     seedGetGrowLevelHook.installAtSym<"_ZN2rs22getGrowFlowerGrowLevelEPKN2al9LiveActorEPKNS0_11PlacementIdE">();
     seedAddGrowLevelHook.installAtSym<"_ZN2rs22addGrowFlowerGrowLevelEPKN2al9LiveActorEPKNS0_11PlacementIdEj">();
     checkpointFlagHook.installAtSym<"_ZN2rs31setTouchCheckpointFlagToWatcherEP14CheckpointFlag">();
-    cloudSkipHook.installAtSym<"_ZNK10StageScene16isDefeatKoopaLv1Ev">();
+    koopaLv1MovementHook.installAtSym<"_ZN8KoopaLv18movementEv">();
     allCheckpointsHook
         .installAtSym<"_ZN16GameDataFunction22isGotCheckpointInWorldE22GameDataHolderAccessori">();
     noclipHook.installAtSym<"_ZN19PlayerActorHakoniwa8movementEv">();

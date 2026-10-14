@@ -1,0 +1,5 @@
+Input display picture skins
+
+Periscope: default skin of periscope by periwinkle (https://codeberg.org/periwinkle/periscope), CC BY-SA 4.0 (Periscope/LICENSE-CC-BY-SA-4.0.txt). Converted (background made transparent, ASTC) for BTT-Studio.
+
+Minimal: drawn for BTT-Studio by tools/subareas/gen_drawn_skins.py.

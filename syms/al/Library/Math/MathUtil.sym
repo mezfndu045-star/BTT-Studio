@@ -8,3 +8,4 @@ _ZN2al20isPercentProbabilityEf
 
 _ZN2al9getRandomEi = 0x00692f20
 _ZN2al17isHalfProbabilityEv = 0x00693bb0
+_ZN2al20isPercentProbabilityEf = 0x00693bf0

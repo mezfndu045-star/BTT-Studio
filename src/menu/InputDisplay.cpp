@@ -6,6 +6,7 @@
 #include "sead/controller/seadControllerMgr.h"
 
 #include "imgui_internal.h"
+#include "menu/InputDisplayStyles.h"
 #include "menu/Menu.h"
 
 namespace btt {
@@ -54,6 +55,11 @@ static void drawButtonRect(
 void drawInputDisplay() {
     SettingsMgr* set = SettingsMgr::instance();
     if (!set->getSettings()->mIsEnableInputDisplay) return;
+    if (set->getSettings()->mInputDisplayStyle != u8(InputDisplayStyle::Classic)) {
+        drawStyledInputDisplay(0, &set->getSettings()->mInputDisplayPos, "##InputDisplayDragP1",
+                               set->getSettings()->mIsEnableInput2P ? "Player 1" : nullptr);
+        return;
+    }
 
     sead::ControllerMgr* controllerMgr = sead::ControllerMgr::instance();
     al::NpadController* controller =
@@ -158,6 +164,10 @@ void drawInputDisplay() {
 void drawInputDisplayP2() {
     SettingsMgr* set = SettingsMgr::instance();
     if (!set->getSettings()->mIsEnableInputDisplay || !set->getSettings()->mIsEnableInput2P) return;
+    if (set->getSettings()->mInputDisplayStyle != u8(InputDisplayStyle::Classic)) {
+        drawStyledInputDisplay(1, &set->getSettings()->mInputDisplayPosP2, "##InputDisplayDragP2", "Player 2");
+        return;
+    }
 
     sead::ControllerMgr* controllerMgr = sead::ControllerMgr::instance();
     al::NpadController* controller =
