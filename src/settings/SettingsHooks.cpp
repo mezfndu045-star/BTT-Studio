@@ -252,6 +252,8 @@ static bool sIsInStageEventDemoInit = false;
 // one (crashed Odyssey, see isCrashHomeHook)
 static bool sIsCloudCrashArrival = false;
 static bool sIsCrashHomeOverride = false;
+// Odyssey travel to the Ruined Kingdom at scenario 1: the dragon attack of the story (see isBossAttackedHomeHook)
+static bool sIsBossAttackOverride = false;
 HkTrampoline stageTalkDemoInitHook = [](TrampolineStatic(), al::LiveActor* demo, const al::ActorInitInfo& info) -> void {
     auto* settings = SettingsMgr::getSettings();
     sIsInStageEventDemoInit =
@@ -356,6 +358,7 @@ HkTrampoline cloudToLostWarpHook = [](TrampolineStatic(), GameDataHolder* holder
     if (modScenario >= 0) scenario = modScenario > 0 ? modScenario : -1;
     else if (isCrash || isOptionTravel) scenario = 1;
     if (btt::isDebugTrace()) btt::dbgLog("DBG: world warp %s scenario %d", stageName, scenario);
+    if (scenario == 1 && strcmp(stageName, "BossRaidWorldHomeStage") == 0) sIsBossAttackOverride = true;
     if (scenario <= 0) return r;
     snprintf(sForcedScenarioStage, sizeof(sForcedScenarioStage), "%s", stageName);
     sForcedScenario = scenario;
@@ -392,6 +395,19 @@ HkTrampoline calcNextScenarioNoHook = [](TrampolineStatic(), GameDataHolder* hol
     const char* next = file ? *reinterpret_cast<const char**>(file + cNextStageNameOffset) : nullptr;
     if (next && strcmp(next, sForcedScenarioStage) == 0) return sForcedScenario;
     return scenario;
+};
+// The travel to the Ruined Kingdom with the dragon attack (DemoChangeWorldScene / HakoniwaStateDemoWorldWarp: the
+// BossRaidAttack cutscene) and the Odyssey's talk there follow the progress "attacked by the boss" (GameProgressData
+// +0x34 == 6, isBossAttackedHome), set by GameDataFile::startStage only from "home repaired". On a save past it, answer
+// "attacked" for a travel there at scenario 1, until the Odyssey is repaired (repairHomeByCrashedBoss) or Mario leaves
+// the Ruined Kingdom. The save keeps its progress.
+HkTrampoline isBossAttackedHomeHook = [](TrampolineStatic(), GameDataHolder* holder) -> bool {
+    if (sIsBossAttackOverride) return true;
+    return orig(holder);
+};
+HkTrampoline repairHomeByCrashedBossHook = [](TrampolineStatic(), GameDataHolder* holder) -> void {
+    sIsBossAttackOverride = false;
+    orig(holder);
 };
 HkTrampoline isRepairHomeHook = [](TrampolineStatic(), GameDataHolder* holder) -> bool {
     if (sIsCrashHomeOverride) return false;
@@ -462,6 +478,11 @@ HkTrampoline stageSceneInitHook = [](TrampolineStatic(), StageScene* stageScene,
         if (btt::isDebugTrace())
             btt::dbgLog("DBG: sub-area return %d (stage %s kingdom %d, last %s world %d)", sIsSubAreaReturn,
                         stage ? stage : "?", kingdom, sLastStage, sLastWorld);
+    }
+    if (sIsBossAttackOverride) {
+        const char* stage = info.initStageName;
+        if (!stage || !(strncmp(stage, "Demo", 4) == 0 || strncmp(stage, "BossRaid", 8) == 0))
+            sIsBossAttackOverride = false;
     }
     if (sIsCrashHomeOverride) {
         // The scene is not initialized yet: the stage being loaded comes from SceneInitInfo. The crash
@@ -1230,6 +1251,8 @@ void SettingsHooks::installSettingsHooks() {
     isFindKoopaHook.installAtSym<"_ZN16GameDataFunction11isFindKoopaE22GameDataHolderAccessor">();
     isCrashHomeHook.installAtSym<"_ZN16GameDataFunction11isCrashHomeE22GameDataHolderAccessor">();
     calcNextScenarioNoHook.installAtSym<"_ZN16GameDataFunction18calcNextScenarioNoE22GameDataHolderAccessor">();
+    isBossAttackedHomeHook.installAtSym<"_ZN16GameDataFunction18isBossAttackedHomeE22GameDataHolderAccessor">();
+    repairHomeByCrashedBossHook.installAtSym<"_ZN16GameDataFunction23repairHomeByCrashedBossE20GameDataHolderWriter">();
     isRepairHomeHook.installAtSym<"_ZN16GameDataFunction12isRepairHomeE22GameDataHolderAccessor">();
     repairHomeHook.installAtSym<"_ZN16GameDataFunction10repairHomeE20GameDataHolderWriter">();
     cloudToLostWarpHook.installAtSym<"_ZN16GameDataFunction35tryChangeNextStageWithDemoWorldWarpE20GameDataHolderWriterPKc">();

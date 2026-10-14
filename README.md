@@ -20,7 +20,12 @@ Le site officiel en ligne est disponible sur **GitHub Pages** ([https://mezfndu0
 
 ---
 
-## 🆕 Nouveautés v1.7.2
+## 🆕 Nouveautés v1.7.3
+
+- **Timer** : le *Black Screen* reconnaît l'écran noir après une Multi Moon, et les écrans noirs / blancs ne sont plus manqués après plusieurs chargements.
+- **Voyage vers le Royaume en Ruines au scénario 1** (*Always Odyssey Power Up*, *Cutscene Refresh*, ou *Warp to Stage* avec *Kingdom Enter Refresh*) : l'attaque du dragon pendant le voyage revient, comme dans l'histoire.
+
+## Nouveautés v1.7.2
 
 - **Installation plus rapide** : les images de chaque style d'Input Display sont regroupées dans un seul fichier (environ 590 fichiers au lieu de 2 600), SimpleModManager copie beaucoup plus vite.
 - **Version 1.3** : la cinématique du début du royaume ne revient plus en sortant d'une sous-zone (Slots…).

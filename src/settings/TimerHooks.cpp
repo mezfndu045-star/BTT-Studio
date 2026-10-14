@@ -106,7 +106,8 @@ HkTrampoline shineGetDirectWithDemoHook = [](TrampolineStatic(), al::LiveActor* 
     orig(shine);
 };
 
-// Black Screen / White Screen: the frame a black (FadeBlack, or WipeCircle as used by pipes) or white (FadeWhite, as
+// Black Screen / White Screen: the frame a black (FadeBlack, WipeCircle as used by pipes, WipeResultGrand / Main after a
+// Multi Moon / story moon) or white (FadeWhite, as
 // used by warps) wipe finishes closing over the screen, i.e. al::WipeSimple switches to its CloseEnd nerve. The game
 // inlines exeClose / exeCloseEnd into the nerve executors, so watch al::setNerve for that nerve. The wipe colour
 // comes from the layout archive given to its constructor.
@@ -114,28 +115,50 @@ enum class WipeColor : u8 { Other, Black, White };
 struct WipeColorEntry {
     const void* wipe;
     WipeColor color;
+    u32 lastUse;
 };
-static WipeColorEntry sWipeColors[64] = {};
-static s32 sWipeColorNext = 0;
+// Only the black / white wipes. Every scene creates its own wipes, while the ones used for stage changes belong to the
+// sequence and are created once at boot: a full table drops the least recently used entry (not the oldest one, which
+// would drop the sequence's wipes after a few stage loads and miss every black / white screen from then on).
+static WipeColorEntry sWipeColors[128] = {};
+static u32 sWipeUse = 0;
 
 static void registerWipeColor(const void* wipe, const char* archiveName) {
     WipeColor color = WipeColor::Other;
-    if (archiveName && (strcmp(archiveName, "FadeBlack") == 0 || strcmp(archiveName, "WipeCircle") == 0))
+    // Black: fades, pipes (WipeCircle), and the end of a Multi Moon / story moon get (WipeResultGrand / WipeResultMain,
+    // StageSceneStateGetShineGrand / GetShineMain)
+    if (archiveName && (strcmp(archiveName, "FadeBlack") == 0 || strcmp(archiveName, "WipeCircle") == 0 ||
+                        strcmp(archiveName, "WipeResultGrand") == 0 || strcmp(archiveName, "WipeResultMain") == 0))
         color = WipeColor::Black;
     else if (archiveName && strcmp(archiveName, "FadeWhite") == 0) color = WipeColor::White;
+    WipeColorEntry* slot = nullptr;
     for (auto& entry : sWipeColors) {
         if (entry.wipe == wipe) {
-            entry.color = color;
-            return;
+            slot = &entry;  // a new wipe at the address of a deleted one
+            break;
         }
     }
-    sWipeColors[sWipeColorNext] = { wipe, color };
-    sWipeColorNext = (sWipeColorNext + 1) % (s32)(sizeof(sWipeColors) / sizeof(sWipeColors[0]));
+    if (!slot) {
+        if (color == WipeColor::Other) return;
+        slot = &sWipeColors[0];
+        for (auto& entry : sWipeColors) {
+            if (!entry.wipe) {
+                slot = &entry;
+                break;
+            }
+            if (entry.lastUse < slot->lastUse) slot = &entry;
+        }
+    }
+    *slot = { color == WipeColor::Other ? nullptr : wipe, color, ++sWipeUse };
 }
 
 static WipeColor findWipeColor(const void* wipe) {
-    for (auto& entry : sWipeColors)
-        if (entry.wipe == wipe) return entry.color;
+    for (auto& entry : sWipeColors) {
+        if (entry.wipe == wipe) {
+            entry.lastUse = ++sWipeUse;
+            return entry.color;
+        }
+    }
     return WipeColor::Other;
 }
 
