@@ -10,5 +10,7 @@ bool isDebugTrace();
 void dbgLog(const char* fmt, ...);
 // "cloudwin": true once (KoopaLv1::movement then defeats Bowser)
 bool takeDbgCloudWin();
+// "img <romfs path>" / "img off": draws that picture (test of the romfs picture loading)
+void drawDebugImage();
 
 } // namespace btt

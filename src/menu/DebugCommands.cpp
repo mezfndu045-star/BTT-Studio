@@ -2,7 +2,7 @@
 // per second, results in the emulator log ("DBG: ..."). Used to test warps and refresh options without the menu.
 //   kingdom <index> <scenario>          Stages > Warp to Stage
 //   stage <stage> <entrance> <scenario> warp to a stage
-//   opt <npc|kingdom|warptext|moon> <0|1>
+//   opt <npc|kingdom|warptext|moon|input|input2p> <0|1>, opt style <index>, opt size <percent>
 //   reload                              end the scene (restart)
 //   trace <0|1>                         log the StageScene nerves (start demos)
 #include "menu/DebugCommands.h"
@@ -22,6 +22,8 @@
 #include "helpers/getHelper.h"
 #include "logger.h"
 #include "menu/stage_warp.h"
+#include "menu/SubAreaImages.h"
+#include "imgui.h"
 #include "src/settings/SettingsMgr.h"
 
 namespace btt {
@@ -32,6 +34,7 @@ namespace {
     int sPoll = 0;
     bool sIsTrace = false;
     bool sIsCloudWin = false;
+    char sDebugImage[96] = {};
 
     void run(char* line, HakoniwaSequence* gameSeq) {
         char cmd[32] = {}, a[96] = {}, b[96] = {};
@@ -52,10 +55,17 @@ namespace {
             else if (strcmp(a, "kingdom") == 0) s->mIsEnableRefreshKingdomEnter = v;
             else if (strcmp(a, "warptext") == 0) s->mIsEnableRefreshWarpText = v;
             else if (strcmp(a, "moon") == 0) s->mIsEnableMoonRefresh = v;
+            else if (strcmp(a, "input") == 0) s->mIsEnableInputDisplay = v;
+            else if (strcmp(a, "input2p") == 0) s->mIsEnableInput2P = v;
+            else if (strcmp(a, "style") == 0) s->mInputDisplayStyle = u8(atoi(b));
+            else if (strcmp(a, "size") == 0) s->mInputDisplaySize = atoi(b);
             dbgLog("DBG: opt %s = %d", a, v);
         } else if (strcmp(cmd, "reload") == 0) {
             if (StageScene* scene = helpers::tryGetStageScene(gameSeq)) scene->kill();
             dbgLog("DBG: reload");
+        } else if (strcmp(cmd, "img") == 0) {
+            snprintf(sDebugImage, sizeof(sDebugImage), "%s", count >= 2 && strcmp(a, "off") != 0 ? a : "");
+            dbgLog("DBG: img %s", sDebugImage);
         } else if (strcmp(cmd, "cloudwin") == 0) {
             sIsCloudWin = true;
             dbgLog("DBG: cloudwin requested");
@@ -66,6 +76,12 @@ namespace {
     }
 
 } // namespace
+
+void drawDebugImage() {
+    if (!sDebugImage[0]) return;
+    if (ImTextureID tex = getRomfsImage(sDebugImage))
+        ImGui::GetForegroundDrawList()->AddImage(tex, ImVec2(600, 250), ImVec2(600 + 384 * 1.5f, 250 + 216 * 1.5f));
+}
 
 bool takeDbgCloudWin() {
     bool r = sIsCloudWin;

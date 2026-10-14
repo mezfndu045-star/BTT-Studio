@@ -14,6 +14,7 @@
 #include "heap/seadHeap.h"
 
 #include "helpers/fsHelper.h"
+#include "nn/fs.h" // IWYU pragma: keep
 
 namespace btt {
 
@@ -91,24 +92,75 @@ namespace {
         return true;
     }
 
+} // namespace
+
+// Pack of a skin: "BTTP", u32 count, count x { char name[24]; u32 offset; u32 size; }, then the files
+FsLoad::Data loadRomfsFile(const char* path, void* heap) {
+    FsLoad::Data out;
+    char full[160];
+    snprintf(full, sizeof(full), "content:/%s", path);
+    if (FsHelper::isFileExist(full)) {
+        FsHelper::LoadData data = { .path = full };
+        FsHelper::loadFileFromPath(data, static_cast<sead::Heap*>(heap));
+        out.buffer = data.buffer;
+        out.size = data.bufSize;
+        return out;
+    }
+    constexpr const char cSkins[] = "ImGuiData/Skins/";
+    if (strncmp(path, cSkins, sizeof(cSkins) - 1) != 0) return out;
+    const char* id = path + sizeof(cSkins) - 1;
+    const char* slash = strchr(id, '/');
+    if (!slash || slash - id > 40) return out;
+    const char* name = slash + 1;
+    char packPath[96];
+    snprintf(packPath, sizeof(packPath), "content:/%s%.*s.pack", cSkins, int(slash - id), id);
+    nn::fs::FileHandle handle;
+    if (nn::fs::OpenFile(&handle, packPath, nn::fs::OpenMode_Read).IsFailure()) return out;
+    u32 head[2] = {};
+    if (nn::fs::ReadFile(handle, 0, head, sizeof(head)).IsSuccess() && memcmp(head, "BTTP", 4) == 0 && head[1] < 256) {
+        struct Entry {
+            char name[24];
+            u32 offset;
+            u32 size;
+        };
+        Entry entries[256];
+        if (nn::fs::ReadFile(handle, sizeof(head), entries, head[1] * sizeof(Entry)).IsSuccess()) {
+            for (u32 i = 0; i < head[1]; i++) {
+                if (strncmp(entries[i].name, name, sizeof(entries[i].name)) != 0) continue;
+                out.buffer = malloc(entries[i].size);
+                if (out.buffer && nn::fs::ReadFile(handle, entries[i].offset, out.buffer, entries[i].size).IsSuccess()) {
+                    out.size = entries[i].size;
+                } else if (out.buffer) {
+                    free(out.buffer);
+                    out.buffer = nullptr;
+                }
+                break;
+            }
+        }
+    }
+    nn::fs::CloseFile(handle);
+    return out;
+}
+
+namespace {
+
     // key = path relative to content:/
     bool loadSlot(Slot& slot, const char* key) {
         const char* stage = key;
         snprintf(slot.stage, sizeof(slot.stage), "%s", key);
 
-        char path[128];
-        snprintf(path, sizeof(path), "content:/%s", key);
-        FsHelper::LoadData data = { .path = path };
-        FsHelper::loadFileFromPath(data, getHeap());
+        FsLoad::Data file = loadRomfsFile(key, getHeap());
+        FsHelper::LoadData data = { .path = key, .buffer = file.buffer, .bufSize = file.size };
         // An image identical to another one (input display skins sharing pictures) is a "REF:<path>" file: load that one
         if (data.buffer && data.bufSize > 4 && data.bufSize < 120 && memcmp(data.buffer, "REF:", 4) == 0) {
             char refPath[128];
             int len = int(data.bufSize) - 4;
             while (len > 0 && (static_cast<const char*>(data.buffer)[4 + len - 1] <= ' ')) len--;
-            snprintf(refPath, sizeof(refPath), "content:/%.*s", len, static_cast<const char*>(data.buffer) + 4);
+            snprintf(refPath, sizeof(refPath), "%.*s", len, static_cast<const char*>(data.buffer) + 4);
             free(data.buffer);
-            data = { .path = refPath };
-            FsHelper::loadFileFromPath(data, getHeap());
+            file = loadRomfsFile(refPath, getHeap());
+            data.buffer = file.buffer;
+            data.bufSize = file.size;
         }
         if (data.buffer && !tryDecompressYaz0(data)) {
             free(data.buffer);

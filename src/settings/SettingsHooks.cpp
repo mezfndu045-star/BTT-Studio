@@ -219,6 +219,16 @@ HkTrampoline talkMessageFlagOnHook = [](TrampolineStatic(), const al::IUseSceneO
 static bool sIsSubAreaReturn = false;
 static char sLastStage[64] = {};
 static s32 sLastWorld = -1;
+// Current world of the save (GameDataFile +0x9f0 / 1.3 +0xa38, as GameDataFunction::getCurrentWorldId reads it)
+static s32 currentWorldIdOf(GameDataHolder* holder) {
+#if BTT_V130
+    constexpr int cCurrentWorldIdOffset = 0xa38;
+#else
+    constexpr int cCurrentWorldIdOffset = 0x9f0;
+#endif
+    u8* file = holder ? *reinterpret_cast<u8**>(reinterpret_cast<u8*>(holder) + 0x20) : nullptr;
+    return file ? *reinterpret_cast<s32*>(file + cCurrentWorldIdOffset) : -1;
+}
 namespace btt {
 int getKingdomIndexOfStage(const char* stageName);  // stage_warp.cpp
 } // namespace btt
@@ -469,8 +479,7 @@ HkTrampoline stageSceneInitHook = [](TrampolineStatic(), StageScene* stageScene,
         GameDataHolderAccessor accessor(stageScene);
         const char* loaded = GameDataFunction::getCurrentStageName(accessor);
         snprintf(sLastStage, sizeof(sLastStage), "%s", loaded ? loaded : "");
-        sLastWorld = accessor.mData && accessor.mData->getGameDataFile() ?
-                         accessor.mData->getGameDataFile()->getCurrentWorldId() : -1;
+        sLastWorld = currentWorldIdOf(accessor.mData);
     }
     if (sForcedScenario > 0) {
         const char* loaded = GameDataFunction::getCurrentStageName(GameDataHolderAccessor(stageScene));
@@ -485,7 +494,7 @@ HkTrampoline stageSceneInitHook = [](TrampolineStatic(), StageScene* stageScene,
                     al::isNerve(stageScene, getNerveFromDb("StageSceneNrvDemoAppearFromHome")),
                     al::isNerve(stageScene, getNerveFromDb("StageSceneNrvDemoStageStartCapManHeroTalk")));
 #endif
-        s32 worldId = accessor.mData->getGameDataFile()->getCurrentWorldId();
+        s32 worldId = currentWorldIdOf(accessor.mData);
         btt::dbgLog("DBG: StageScene::init %s world %d unlocked %d scenario %d crash %d",
                     GameDataFunction::getCurrentStageName(accessor), worldId,
                     GameDataFunction::isUnlockedWorld(accessor, worldId < 0 ? 0 : worldId),

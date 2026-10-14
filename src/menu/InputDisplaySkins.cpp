@@ -44,9 +44,9 @@ namespace {
         sSkin = Skin();
         snprintf(sSkin.id, sizeof(sSkin.id), "%s", id);
         char path[96];
-        snprintf(path, sizeof(path), "content:/ImGuiData/Skins/%s/skin.txt", id);
-        FsHelper::LoadData data = { .path = path };
-        FsHelper::loadFileFromPath(data, nullptr);
+        snprintf(path, sizeof(path), "ImGuiData/Skins/%s/skin.txt", id);
+        FsLoad::Data file = loadRomfsFile(path, nullptr);
+        FsHelper::LoadData data = { .path = path, .buffer = file.buffer, .bufSize = file.size };
         sSkin.isLoaded = true;
         if (!data.buffer) return false;
         char* text = (char*)malloc(data.bufSize + 1);

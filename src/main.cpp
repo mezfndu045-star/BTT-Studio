@@ -1,3 +1,4 @@
+#include "menu/DebugCommands.h"
 #include "menu/MoonNames.h"
 #include "hk/gfx/ImGuiBackendNvn.h"
 #include "hk/hook/Trampoline.h"
@@ -104,6 +105,7 @@ HkTrampoline gameSystemInit = [](TrampolineStatic(), GameSystem* gameSystem) -> 
                     p = ImVec2(pivot.x + (p.x - pivot.x) * scale, pivot.y + (p.y - pivot.y) * scale);
                 }
             };
+            btt::drawDebugImage();
             scaled(settings->mInputDisplayPos, [] { btt::drawInputDisplay(); });
             if (settings->mIsEnableInput2P) scaled(settings->mInputDisplayPosP2, [] { btt::drawInputDisplayP2(); });
         }

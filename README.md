@@ -20,7 +20,12 @@ Le site officiel en ligne est disponible sur **GitHub Pages** ([https://mezfndu0
 
 ---
 
-## 🆕 Nouveautés v1.7.1
+## 🆕 Nouveautés v1.7.2
+
+- **Installation plus rapide** : les images de chaque style d'Input Display sont regroupées dans un seul fichier (environ 590 fichiers au lieu de 2 600), SimpleModManager copie beaucoup plus vite.
+- **Version 1.3** : la cinématique du début du royaume ne revient plus en sortant d'une sous-zone (Slots…).
+
+## Nouveautés v1.7.1
 
 - **Input Display** : réglage *Size* (30 à 150 %) pour la taille des manettes (1re et 2e).
 - **Input Display** : 109 styles OJD gardés (manettes Switch, Xbox, PS4, GameCube, N64…) ; les anciennes consoles et leurs *Streamer* sont retirés. Le style choisi est gardé.
