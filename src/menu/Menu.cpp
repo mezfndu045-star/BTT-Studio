@@ -1,5 +1,7 @@
 #include "menu/Menu.h"
 
+#include <cmath>
+
 #include "nn/oe.h"
 
 #include "al/Library/Camera/CameraUtil.h"
@@ -20,6 +22,9 @@
 #include "imgui_internal.h"
 #include "menu/stage_warp.h"
 #include "menu/InputDisplayStyles.h"
+#include "menu/QuickWheel.h"
+#include "menu/DebugCommands.h"
+#include "menu/PhotoTourList.h"
 #include "menu/Keyboard.h"
 #include "menu/MoonList.h"
 #include "menu/MoonNames.h"
@@ -127,10 +132,170 @@ static void drawStagePreview(const ImVec2& at, const char* stage, const char* na
         drawList->AddImage(image, imgTl, ImVec2(imgTl.x + cWidth, imgTl.y + cHeight));
     else
         drawList->AddText(ImGui::GetFont(), 28.0f, ImVec2(imgTl.x + 12.0f, imgTl.y + cHeight / 2 - 14.0f),
-                          IM_COL32(200, 200, 200, 255), "No picture");
+                          IM_COL32(200, 200, 200, 255), tr("No picture"));
     drawList->AddText(ImGui::GetFont(), 28.0f, ImVec2(imgTl.x + 4.0f, imgTl.y + cHeight + 6.0f), IM_COL32(255, 255, 255, 255),
-                      name);
+                      tr(name));
 }
+
+// Panel next to the menu: a title and wrapped lines
+void drawMenuHelpPanel(const ImVec2& at, const char* title, const char* body) {
+    constexpr float cWidth = 460.f, cPad = 12.f, cWrap = cWidth - 2 * cPad;
+    ImDrawList* dl = ImGui::GetForegroundDrawList();
+    ImFont* font = ImGui::GetFont();
+    if (!title) title = "";
+    ImVec2 titleSize = font->CalcTextSizeA(30.f, FLT_MAX, 0.f, title);
+    ImVec2 bodySize = font->CalcTextSizeA(24.f, FLT_MAX, cWrap, body);
+    float height = cPad + titleSize.y + 6.f + bodySize.y + cPad;
+    ImVec2 tl(std::min(at.x, 1600.f - cWidth - 10.f), std::min(at.y, 900.f - height - 10.f));
+    dl->AddRectFilled(tl, ImVec2(tl.x + cWidth, tl.y + height), IM_COL32(0, 0, 0, 200), 12.f);
+    float y = tl.y + cPad;
+    dl->AddText(font, 30.f, ImVec2(tl.x + cPad, y), IM_COL32(255, 255, 255, 255), title);
+    y += titleSize.y + 6.f;
+    dl->AddText(font, 24.f, ImVec2(tl.x + cPad, y), IM_COL32(215, 215, 225, 255), body, nullptr, cWrap);
+}
+
+// Timer: help panel shown next to Start Type / End Type (what the event is) and Start Count / End Count
+namespace {
+
+struct TimerTypeHelp {
+    TimerHookType type;
+    const char* name;
+    const char* when; // completes "Starts / Stops when..."
+    const char* whenFr; // completes "Démarre / S'arrête quand..."
+};
+
+constexpr TimerTypeHelp cTimerTypeHelp[] = {
+    { TimerHookType::None, "None", "never by itself: use Start / Stop Timer or the timer hotkeys.",
+      "jamais tout seul : utilise « Lancer le chrono » / « Arrêter le chrono » ou les raccourcis du chrono." },
+    { TimerHookType::GameStart, "Press Start",
+      "A is pressed on the mode select screen of a new game (Start / Start in Assist Mode).",
+      "A est appuyé sur l'écran de choix du mode d'une nouvelle partie (Commencer / Commencer en mode assisté)." },
+    { TimerHookType::OdysseyPowerUp, "Odyssey Power Up",
+      "the screen turns black after \"The Odyssey has powered up!\" (only that black screen counts).",
+      "l'écran devient noir après « L'Odyssée a été rechargée ! » (seul cet écran noir compte)." },
+    { TimerHookType::BlackScreen, "Black Screen",
+      "a black screen fully covers the game: pipes, doors, loading zones, death, Restart Scene...",
+      "un écran noir recouvre tout le jeu : tuyaux, portes, zones de chargement, mort, « Recommencer la scène »..." },
+    { TimerHookType::WhiteScreen, "White Screen",
+      "a white screen fully covers the game: warp to a checkpoint flag or to the Odyssey...",
+      "un écran blanc recouvre tout le jeu : téléportation vers un drapeau ou vers l'Odyssée..." },
+    { TimerHookType::Capture, "Capture", "Mario captures something (start of the capture animation).",
+      "Mario capture quelque chose (début de l'animation de capture)." },
+    { TimerHookType::Damage, "Damage", "Mario takes a hit (also counted with No Damage on).",
+      "Mario prend un coup (compte aussi avec « Pas de dégâts »)." },
+    { TimerHookType::EscapeWire, "Escape Wire",
+      "captured Bowser leaves along the last electric wire of the Moon Kingdom escape.",
+      "Bowser capturé part le long du dernier fil électrique de la fuite, au Pays de la Lune." },
+    { TimerHookType::MoonGet, "Moon Get", "Mario touches a moon (the moment it is grabbed).",
+      "Mario touche une lune (au moment où il l'attrape)." },
+    { TimerHookType::ShineTick, "Shine Tick", "the moon counter goes up on the moon get screen.",
+      "le compteur de lunes augmente sur l'écran où Mario obtient la lune." },
+    { TimerHookType::TwoMoons, "2 Moons (Grab)", "Mario touches his 2nd moon (every 2 moons grabbed).",
+      "Mario touche sa 2e lune (une fois toutes les 2 lunes attrapées)." },
+    { TimerHookType::TwoMoonsTick, "2 Moons (Tick)", "the moon counter goes up for the 2nd time (every 2 moons).",
+      "le compteur de lunes augmente pour la 2e fois (une fois toutes les 2 lunes)." },
+    { TimerHookType::ShineGrab, "Shine Grab", "the moon get cutscene starts (Mario holds the moon up).",
+      "la cinématique de la lune commence (Mario brandit la lune)." },
+};
+
+const TimerTypeHelp& findTimerTypeHelp(TimerHookType type) {
+    for (const TimerTypeHelp& h : cTimerTypeHelp)
+        if (h.type == type) return h;
+    return cTimerTypeHelp[0];
+}
+
+} // namespace
+
+// Start Type / End Type, with the help panel of the selected type
+class TimerTypeMenuComponent : public EnumMenuComponent<int> {
+    const int* mIndex;
+    const TimerHookType* mTypes;
+    bool mIsStart;
+
+public:
+    TimerTypeMenuComponent(int* index, const TimerHookType* types, const char* const* names, int count, bool isStart,
+                           std::function<void(int)> onChange)
+        : EnumMenuComponent<int>(index, names, count, isStart ? "Start Type" : "End Type", 34, onChange),
+          mIndex(index), mTypes(types), mIsStart(isStart) {}
+
+    void drawPreview(const ImVec2& at) override {
+        const TimerTypeHelp& h = findTimerTypeHelp(mTypes[*mIndex]);
+        auto* s = SettingsMgr::getSettings();
+        const bool fr = isFrench();
+        char body[512];
+        int n;
+        if (h.type == TimerHookType::None)
+            n = fr ? snprintf(body, sizeof(body), "Le chrono %s %s", mIsStart ? "ne démarre" : "ne s'arrête", h.whenFr)
+                   : snprintf(body, sizeof(body), "The timer %s %s", mIsStart ? "starts" : "stops", h.when);
+        else
+            n = fr ? snprintf(body, sizeof(body), "%s quand %s", mIsStart ? "Démarre (à partir de zéro)" : "S'arrête",
+                              h.whenFr)
+                   : snprintf(body, sizeof(body), "%s when %s", mIsStart ? "Starts (from zero)" : "Stops", h.when);
+        if (s && h.type != TimerHookType::None && s->mTimerStartType == s->mTimerEndType && n > 0)
+            snprintf(body + n, sizeof(body) - n, "%s",
+                     fr ? "\nMême type au départ et à l'arrivée : le 1er événement lance le chrono, le suivant l'arrête "
+                          "(ou affiche un temps intermédiaire si « Temps intermédiaire » est activé)."
+                        : "\nSame Start and End Type: the 1st event starts the timer, the next one stops it (or shows a "
+                          "lap with Timer Split).");
+        drawMenuHelpPanel(at, tr(h.name), body);
+    }
+};
+
+// Start Count / End Count, with an explanation using the current type and count
+class TimerCountMenuComponent : public IntMenuComponent<int> {
+    const int* mValue;
+    bool mIsStart;
+
+public:
+    TimerCountMenuComponent(int* value, bool isStart, std::function<void(int)> onChange)
+        : IntMenuComponent<int>(value, isStart ? "Start Count" : "End Count", 1, 99, 1, 34, onChange), mValue(value),
+          mIsStart(isStart) {}
+
+    void drawPreview(const ImVec2& at) override {
+        auto* s = SettingsMgr::getSettings();
+        if (!s) return;
+        const TimerTypeHelp& h = findTimerTypeHelp(mIsStart ? s->mTimerStartType : s->mTimerEndType);
+        char body[512];
+        int count = *mValue;
+        if (isFrench()) {
+            const char* name = tr(h.name);
+            const char* verb = mIsStart ? "lancer" : "arrêter";
+            const char* does = mIsStart ? "démarre" : "s'arrête";
+            if (h.type == TimerHookType::None)
+                snprintf(body, sizeof(body), "Nombre d'événements nécessaires pour %s le chrono. Choisis d'abord un type "
+                         "%s.", verb, mIsStart ? "de départ" : "d'arrivée");
+            else if (count <= 1)
+                snprintf(body, sizeof(body),
+                         "Nombre de « %s » nécessaires pour %s le chrono.\n1 = le chrono %s au 1er.\nExemple : avec 3, "
+                         "il %s au 3e « %s ».",
+                         name, verb, does, does, name);
+            else
+                snprintf(body, sizeof(body),
+                         "Nombre de « %s » nécessaires pour %s le chrono.\nEn ce moment : le chrono %s au %de « %s » (les %d "
+                         "premiers sont ignorés). Le compte repart de zéro après chaque %s.",
+                         name, verb, does, count, name, count - 1, mIsStart ? "départ" : "arrêt");
+        } else {
+            auto ord = [](int n) { return (n % 100 >= 11 && n % 100 <= 13) ? "th" : n % 10 == 1 ? "st" : n % 10 == 2 ? "nd" : n % 10 == 3 ? "rd" : "th"; };
+            if (h.type == TimerHookType::None) {
+                snprintf(body, sizeof(body), "How many %s events are needed to %s the timer. Choose a %s first.",
+                         mIsStart ? "Start Type" : "End Type", mIsStart ? "start" : "stop", mIsStart ? "Start Type" : "End Type");
+            } else if (count <= 1) {
+                snprintf(body, sizeof(body),
+                         "How many \"%s\" are needed to %s the timer.\n1 = the timer %s at the 1st one.\nExample: %s Count 3 = "
+                         "it %s at the 3rd \"%s\".",
+                         h.name, mIsStart ? "start" : "stop", mIsStart ? "starts" : "stops", mIsStart ? "Start" : "End",
+                         mIsStart ? "starts" : "stops", h.name);
+            } else {
+                snprintf(body, sizeof(body),
+                         "How many \"%s\" are needed to %s the timer.\nNow: the timer %s at the %d%s \"%s\" (the first %d "
+                         "are skipped). The count starts again after each %s.",
+                         h.name, mIsStart ? "start" : "stop", mIsStart ? "starts" : "stops", count, ord(count), h.name,
+                         count - 1, mIsStart ? "start" : "stop");
+            }
+        }
+        drawMenuHelpPanel(at, tr(mIsStart ? "Start Count" : "End Count"), body);
+    }
+};
 
 // Stages > Kingdom: the selected kingdom's picture is shown next to the menu
 class KingdomMenuComponent : public EnumMenuComponent<int> {
@@ -156,7 +321,23 @@ public:
         : EnumMenuComponent<int>(&mIndex, kingdom.names, kingdom.count, kingdom.title), mKingdom(kingdom),
           mScenario(scenario) {}
 
-    void onConfirm() override { warpToStage(mKingdom.areas[mIndex].stage, mScenario ? *mScenario : 0); }
+    // Arrive through the sub area's own entrance (the one of its pipe / door, from the photo tour list): the game then
+    // plays the entrance animation (Mario walking in), also after a reload. "start" when there is none.
+    void onConfirm() override {
+        const char* stage = mKingdom.areas[mIndex].stage;
+        const char* label = "start";
+        char shot[96];
+        snprintf(shot, sizeof(shot), "%s_in", stage);
+        for (const PhotoTourShot& s : sPhotoTourShots) {
+            if (strcmp(s.shot, shot) == 0 && s.label && s.label[0]) {
+                label = s.label;
+                break;
+            }
+        }
+        // The Scenario setting is not used for sub areas: in the same kingdom the current scenario is kept, from another
+        // kingdom its scenario of the save (1 if not reached yet), whatever the scenario Mario is in
+        warpToStageSafe(stage, label, 0);
+    }
 
     // Outside (the pipe / door leading there) and inside (where Mario starts), taken in game; else one picture
     void drawPreview(const ImVec2& at) override {
@@ -178,16 +359,16 @@ public:
         drawList->AddRectFilled(tl, ImVec2(tl.x + cWidth + 2 * cPad, tl.y + boxH), IM_COL32(0, 0, 0, 190), 12.0f);
         ImFont* font = ImGui::GetFont();
         float y = tl.y + cPad;
-        drawList->AddText(font, 30.0f, ImVec2(tl.x + cPad + 4.0f, y), IM_COL32(255, 255, 255, 255), mKingdom.names[mIndex]);
+        drawList->AddText(font, 30.0f, ImVec2(tl.x + cPad + 4.0f, y), IM_COL32(255, 255, 255, 255), tr(mKingdom.names[mIndex]));
         y += cText;
-        const struct { ImTextureID image; const char* label; } pictures[2] = { { outImage, "Entrance" }, { inImage, "Inside" } };
+        const struct { ImTextureID image; const char* label; } pictures[2] = { { outImage, tr("Entrance") }, { inImage, tr("Inside") } };
         for (const auto& pic : pictures) {
             ImVec2 imgTl(tl.x + cPad, y);
             if (pic.image)
                 drawList->AddImage(pic.image, imgTl, ImVec2(imgTl.x + cWidth, imgTl.y + cHeight));
             else
                 drawList->AddText(font, 26.0f, ImVec2(imgTl.x + 12.0f, imgTl.y + cHeight / 2 - 13.0f),
-                                  IM_COL32(200, 200, 200, 255), "No picture");
+                                  IM_COL32(200, 200, 200, 255), tr("No picture"));
             drawList->AddText(font, 26.0f, ImVec2(imgTl.x + 4.0f, imgTl.y + cHeight + 4.0f), IM_COL32(255, 215, 0, 255),
                               pic.label);
             y += cHeight + cText;
@@ -240,6 +421,44 @@ void Menu::initCategories() {
     // Noclip: left stick moves, ZR goes up, ZL goes down, X/Y speed up, A/B slow down (see noclipHook)
     mCategories[0].components.push_back(new BoolMenuComponent(&mIsEnableNoclip, "Noclip"));
     mCategories[0].components.push_back(new BoolMenuComponent(&mIsReloadPos, "Reload Scene at Pos"));
+
+    // Help panel of each option (shown next to the menu while it is selected)
+    static const char* const sOptionHelp[][2] = {
+        { "Moon Refresh", "Moons you collect still count (moon counter, story) but come back as new moons: you can collect the same moon again as many times as you want." },
+        { "Gray Moon Refresh", "Moons already collected look normal again (not gray), as if they were never collected." },
+        { "Purple Coins Refresh", "Purple coins come back when the scene is reloaded." },
+        { "Doors Refresh", "Doors already opened are closed again when the scene is reloaded." },
+        { "Moon Shards Refresh", "Moon shards (and their counter) come back, even when their moon is already collected." },
+        { "Kingdom Enter Refresh", "The Odyssey arrival cutscene of the kingdom plays again." },
+        { "Warp Text Refresh", "Cappy says his texts again (the checkpoint warp explanation when you touch a flag, his texts at the start of the kingdoms), and the camera with the story text at the start of a kingdom plays again (back at each reload)." },
+        { "Seeds Refresh", "Seeds come back and pots are empty at each reload. The plant grows normally (with time or water)." },
+        { "Seeds Growing", "A planted seed grows to the end at once and its moon appears. Works with or without Seeds Refresh." },
+        { "Cutscene Refresh", "Cutscenes and first talks of the characters (Toads, Peach, Captain Toad...) play again." },
+        { "Always Manual Cutscene", "Cutscenes never skip by themselves: you choose when to skip them." },
+        { "Always Checkpoints", "You can always warp to the flags from the map, even where the game normally forbids it." },
+        { "Disable Autosave", "The game no longer saves by itself: your save file stays the same while you practice." },
+        { "Disable TP Puppet", "Mario is not placed automatically during the moon get animation." },
+        { "Skip Cloud", "In the Cloud Kingdom, Bowser is beaten as soon as his intro cutscene ends: the battle end cutscene plays right away." },
+        { "All Checkpoints", "Every flag of the kingdom is available on the map, even the ones not touched yet." },
+        { "Luigi Pixels", "The 8-bit Luigi hidden in some bushes always comes out (10% chance in the normal game). Reload the scene after turning it on." },
+        { "Spawn All Hint Art", "Every hint art appears, without having to unlock it." },
+        { "Pipe Maze Override", "Forces the path of the pipe mazes (the same layout every time)." },
+        { "No Checkpoint Touch", "Touching a flag does not activate it (your tries are not changed by a flag touched by mistake)." },
+        { "No Damage", "Mario no longer loses health." },
+        { "Disable Music", "Turns the music off: only the sound effects stay." },
+        { "Disable Moon Lock", "The Odyssey can leave without the number of moons the kingdom normally asks for." },
+        { "Skip Broodals", "As soon as the intro of a Broodal fight ends (Hariet, Rango, Spewart, Madame Broode), the boss is beaten and its Multi Moon appears." },
+        { "Always Odyssey Power Up", "Each time you go to the Odyssey, even without moons, it powers up and offers the next kingdom of the story." },
+        { "Odyssey In All Kingdoms", "The Odyssey is in every kingdom, even the ones your save has not reached yet, and you can warp to it from the map." },
+        { "Night Metro Multi Moon", "At the start of Night Metro, the Mechawiggler Multi Moon falls next to Mario: grab it to go straight to day Metro." },
+        { "Noclip", "Mario flies through everything. Left stick = move, ZR = up, ZL = down, X/Y = faster, A/B = slower. Turns off at each game launch." },
+        { "Reload Scene at Pos", "When the scene is reloaded, Mario comes back exactly where he was." },
+    };
+    for (MenuComponent* c : mCategories[0].components) {
+        if (!c || !c->getWheelName()) continue;
+        for (const auto& h : sOptionHelp)
+            if (strcmp(h[0], c->getWheelName()) == 0) c->setHelp(h[1]);
+    }
 
     // 1: Stages
     static int sSelectedStageIdx = 0;
@@ -341,21 +560,21 @@ void Menu::initCategories() {
     mCategories[3].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableSegTimerSplit, "Timer Split"));
     static int sTimerStartTypeIdx = findVisibleTimerHookType(set->getSettings()->mTimerStartType);
     static int sTimerEndTypeIdx = findVisibleTimerHookType(set->getSettings()->mTimerEndType);
-    mCategories[3].components.push_back(new EnumMenuComponent<int>(&sTimerStartTypeIdx, VisibleTimerHookTypeNames, IM_ARRAYSIZE(VisibleTimerHookTypeNames), "Start Type", 34, [](int i) {
+    mCategories[3].components.push_back(new TimerTypeMenuComponent(&sTimerStartTypeIdx, VisibleTimerHookTypes, VisibleTimerHookTypeNames, IM_ARRAYSIZE(VisibleTimerHookTypeNames), true, [](int i) {
         SettingsMgr::getSettings()->mTimerStartType = VisibleTimerHookTypes[i];
         if (btt::Timer::sInstance) btt::Timer::sInstance->resetEventCounts();
     }));
     static int sTimerStartCount = set->getSettings()->mTimerStartCount ? set->getSettings()->mTimerStartCount : 1;
-    mCategories[3].components.push_back(new IntMenuComponent<int>(&sTimerStartCount, "Start Count", 1, 99, 1, 34, [](int n) {
+    mCategories[3].components.push_back(new TimerCountMenuComponent(&sTimerStartCount, true, [](int n) {
         SettingsMgr::getSettings()->mTimerStartCount = (u8)n;
         if (btt::Timer::sInstance) btt::Timer::sInstance->resetEventCounts();
     }));
-    mCategories[3].components.push_back(new EnumMenuComponent<int>(&sTimerEndTypeIdx, VisibleTimerHookTypeNames, IM_ARRAYSIZE(VisibleTimerHookTypeNames), "End Type", 34, [](int i) {
+    mCategories[3].components.push_back(new TimerTypeMenuComponent(&sTimerEndTypeIdx, VisibleTimerHookTypes, VisibleTimerHookTypeNames, IM_ARRAYSIZE(VisibleTimerHookTypeNames), false, [](int i) {
         SettingsMgr::getSettings()->mTimerEndType = VisibleTimerHookTypes[i];
         if (btt::Timer::sInstance) btt::Timer::sInstance->resetEventCounts();
     }));
     static int sTimerEndCount = set->getSettings()->mTimerEndCount ? set->getSettings()->mTimerEndCount : 1;
-    mCategories[3].components.push_back(new IntMenuComponent<int>(&sTimerEndCount, "End Count", 1, 99, 1, 34, [](int n) {
+    mCategories[3].components.push_back(new TimerCountMenuComponent(&sTimerEndCount, false, [](int n) {
         SettingsMgr::getSettings()->mTimerEndCount = (u8)n;
         if (btt::Timer::sInstance) btt::Timer::sInstance->resetEventCounts();
     }));
@@ -484,6 +703,9 @@ void Menu::initCategories() {
     mCategories[4].components.push_back(new EnumMenuComponent<SettingsMgr::InputDisplayColor>(&set->getSettings()->mInputDisplayRingColor, sColorNames, 13, "Ring Color"));
     mCategories[4].components.push_back(new EnumMenuComponent<SettingsMgr::InputDisplayColor>(&set->getSettings()->mInputDisplayBackColor, sColorNames, 13, "BG Color"));
 
+    // Quick wheel actions: the Options, Misc and Timer entries built above
+    buildWheelActions(this);
+
     // 5: Keybinds
     mCategories[5].name = "Keybinds";
     mCategories[5].components.push_back(new EnumMenuComponent<u8>(&set->getSettings()->mMenuKey, MenuKeys, IM_ARRAYSIZE(MenuKeys), "Open Menu"));
@@ -497,6 +719,26 @@ void Menu::initCategories() {
     mCategories[5].components.push_back(new EnumMenuComponent<SettingsMgr::SettingsHotkey>(&set->getSettings()->mTimerStartKey, Keys, 11, "Timer Start"));
     mCategories[5].components.push_back(new EnumMenuComponent<SettingsMgr::SettingsHotkey>(&set->getSettings()->mTimerEndKey, Keys, 11, "Timer End"));
     mCategories[5].components.push_back(new EnumMenuComponent<SettingsMgr::SettingsHotkey>(&set->getSettings()->mTimerResetKey, Keys, 11, "Timer Reset"));
+    // Right column: the quick wheel (menu/QuickWheel.h)
+    mCategories[5].columnSplit = (int)mCategories[5].components.size();
+    if (set->getSettings()->mWheelKey >= IM_ARRAYSIZE(cWheelKeyNames)) set->getSettings()->mWheelKey = 0;
+    mCategories[5].components.push_back(new EnumMenuComponent<u8>(&set->getSettings()->mWheelKey, cWheelKeyNames, IM_ARRAYSIZE(cWheelKeyNames), "Wheel Key"));
+    if (set->getSettings()->mWheelSize >= IM_ARRAYSIZE(cWheelSizeNames)) set->getSettings()->mWheelSize = 1;
+    mCategories[5].components.push_back(new EnumMenuComponent<u8>(&set->getSettings()->mWheelSize, cWheelSizeNames, IM_ARRAYSIZE(cWheelSizeNames), "Wheel Size"));
+    static const char* const sWheelSlotTitles[cWheelSlotNum] = {
+        "Wheel Slot 1", "Wheel Slot 2", "Wheel Slot 3", "Wheel Slot 4",  "Wheel Slot 5",  "Wheel Slot 6",
+        "Wheel Slot 7", "Wheel Slot 8", "Wheel Slot 9", "Wheel Slot 10", "Wheel Slot 11", "Wheel Slot 12",
+    };
+    static int sWheelSlotActions[cWheelSlotNum] = {};
+    for (int i = 0; i < cWheelSlotNum; i++) {
+        sWheelSlotActions[i] = findWheelAction(set->getSettings()->mWheelSlots[i]);
+        mCategories[5].components.push_back(new EnumMenuComponent<int>(&sWheelSlotActions[i], getWheelActionNames(), getWheelActionNum(), sWheelSlotTitles[i], 34, [i](int action) {
+            SettingsMgr::Settings* s = SettingsMgr::getSettings();
+            if (!s) return;
+            const char* name = action > 0 ? getWheelActionNames()[action] : "";
+            snprintf(s->mWheelSlots[i], sizeof(s->mWheelSlots[i]), "%s", name);
+        }));
+    }
 
     // 6: Info
     mCategories[6].name = "Info";
@@ -506,13 +748,15 @@ void Menu::initCategories() {
     // 7: Settings
     mCategories[7].name = "Settings";
     mCategories[7].components.push_back(new EnumMenuComponent<u8>(&set->getSettings()->mMenuCorner, Corners, 4, "Menu Corner"));
+    if (set->getSettings()->mLanguage >= IM_ARRAYSIZE(cLanguageNames)) set->getSettings()->mLanguage = 0;
+    mCategories[7].components.push_back(new EnumMenuComponent<u8>(&set->getSettings()->mLanguage, cLanguageNames, IM_ARRAYSIZE(cLanguageNames), "Language"));
 }
 
 int Menu::getCategoryHeight(int id) {
     int height = 0;
     ImFont* font = ImGui::GetIO().Fonts->Fonts[0];
     for (int i = 0; i < id; i++) {
-        ImVec2 textSize = font ? font->CalcTextSizeA((float)sCategoryFontSize, FLT_MAX, 0.f, mCategories[i].name) : ImVec2(100, (float)sCategoryFontSize);
+        ImVec2 textSize = font ? font->CalcTextSizeA((float)sCategoryFontSize, FLT_MAX, 0.f, tr(mCategories[i].name)) : ImVec2(100, (float)sCategoryFontSize);
         height += sCategorySpacing + (int)textSize.y + sCategorySpacing;
     }
     return height;
@@ -530,7 +774,7 @@ void Menu::draw() {
 
     mBgSize = ImVec2(0, 0);
     for (int i = 0; i < 8; i++) {
-        ImVec2 textSize = font->CalcTextSizeA((float)sCategoryFontSize, FLT_MAX, 0.f, mCategories[i].name);
+        ImVec2 textSize = font->CalcTextSizeA((float)sCategoryFontSize, FLT_MAX, 0.f, tr(mCategories[i].name));
         float width = (float)sCategorySpacing * 2.0f + textSize.x + (float)sCategorySpacing * 2.0f;
         mBgSize.x = std::max(mBgSize.x, width);
     }
@@ -551,9 +795,9 @@ void Menu::draw() {
     // 3. Category labels in white
     float curY = 0;
     for (int i = 0; i < 8; i++) {
-        ImVec2 textSize = font->CalcTextSizeA((float)sCategoryFontSize, FLT_MAX, 0.f, mCategories[i].name);
+        ImVec2 textSize = font->CalcTextSizeA((float)sCategoryFontSize, FLT_MAX, 0.f, tr(mCategories[i].name));
         curY += (float)sCategorySpacing;
-        drawList->AddText(font, (float)sCategoryFontSize, ImVec2((float)sCategorySpacing * 2.0f, curY), IM_COL32(255, 255, 255, 255), mCategories[i].name);
+        drawList->AddText(font, (float)sCategoryFontSize, ImVec2((float)sCategorySpacing * 2.0f, curY), IM_COL32(255, 255, 255, 255), tr(mCategories[i].name));
         curY += textSize.y + (float)sCategorySpacing;
     }
 
@@ -665,6 +909,7 @@ void Menu::drawTwoColumnCategory(Category& cat) {
 
     ImDrawList* drawList = ImGui::GetForegroundDrawList();
     float colX = mBgSize.x + 8.0f;
+    float previewY = startY;
     for (int c = 0; c < 2; c++) {
         float drawY = 0;
         for (int i = ranges[c][0]; i < ranges[c][1]; i++) {
@@ -684,11 +929,15 @@ void Menu::drawTwoColumnCategory(Category& cat) {
             comp->setIsHovered(mCurrentComponentInCategory == i);
             comp->setIsFocused(mCurrentComponentInCategory == i && mIsFocusedOnCurrentComponent);
             comp->draw(tl);
+            if (mCurrentComponentInCategory == i) previewY = tl.y;
 
             drawY += itemH + 3.0f;
         }
         colX += colWidth[c] + 8.0f;
     }
+    // Help of the selected entry, right of both columns
+    if (mCurrentComponentInCategory >= 0 && mCurrentComponentInCategory < count && cat.components[mCurrentComponentInCategory])
+        cat.components[mCurrentComponentInCategory]->drawPreview(ImVec2(colX + 4.0f, previewY));
 }
 
 static bool isPressMenuKey() {
@@ -809,10 +1058,12 @@ void Menu::handleAlways() {
 
     updateMenuInput();
 
-    handleHotkeys();
+    updateQuickWheel(this);
+    if (!isQuickWheelBlockingHotkeys()) handleHotkeys();
 
     updateStageWarp();
     updatePhotoTour();
+    updateDebugCommands();
 
     if (mCancelCameraInterpoleFrames > 0) {
         mCancelCameraInterpoleFrames--;

@@ -1,0 +1,14 @@
+#pragma once
+
+namespace btt {
+
+// Developer test channel (sd:/BTT-Studio/dbg_cmd.txt, see DebugCommands.cpp), game thread every frame
+void updateDebugCommands();
+// "trace 1": log the StageScene nerves and the stage start demos
+bool isDebugTrace();
+// Trace line for sd:/BTT-Studio/dbg_log.txt
+void dbgLog(const char* fmt, ...);
+// "cloudwin": true once (KoopaLv1::movement then defeats Bowser)
+bool takeDbgCloudWin();
+
+} // namespace btt

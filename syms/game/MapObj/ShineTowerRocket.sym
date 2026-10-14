@@ -82,3 +82,4 @@ _ZN16GameDataFunction14isActivateHomeE22GameDataHolderAccessor = 0x004d7830
 _ZN2al7isAliveEPKNS_9LiveActorE = 0x0065d590
 _ZN2rs10isGotShineEPK5Shine = 0x004fa3f0
 _ZN2rs34isCurrentShineChipWatcherTypeEmptyEPKN2al18IUseSceneObjHolderE = 0x001bab70
+_ZNK14GameDataHolder32isPlayAlreadyScenarioStartCameraEi = 0x004dc060

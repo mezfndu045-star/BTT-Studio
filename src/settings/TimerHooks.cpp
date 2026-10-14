@@ -15,6 +15,11 @@
 
 #include "helpers/InputHelper.h"
 #include "menu/Timer.h"
+#include "menu/DebugCommands.h"
+#include "helpers/getHelper.h"
+#include "logger.h"
+#include <typeinfo>
+#include "al/Library/Nerve/Nerve.h"
 
 #include "nn/os.h"
 
@@ -166,6 +171,11 @@ HkTrampoline wipeSetNerveHook = [](TrampolineStatic(), al::IUseNerve* user, cons
     static const al::Nerve* sWireKoopaChargeNerve =
         reinterpret_cast<const al::Nerve*>(hk::sail::lookupSymbolFromDb<>("ElectricWireKoopaNrvInCharge"));
     orig(user, nerve);
+    if (btt::isDebugTrace() && nerve) {
+        StageScene* scene = helpers::tryGetStageScene(helpers::tryGetHakoniwaSequence());
+        if (scene && static_cast<const void*>(user) == static_cast<const void*>(static_cast<al::IUseNerve*>(scene)))
+            btt::dbgLog("DBG: StageScene nerve %s", typeid(*nerve).name());
+    }
     // al::WipeSimple's IUseNerve base is at offset 0, so `user` is the wipe itself
     if (nerve == sWipeCloseEndNerve) onWipeClosed(user);
     else if (nerve == sSelectModeDecideNerve && Timer::sInstance) Timer::sInstance->event(TimerHookType::GameStart);

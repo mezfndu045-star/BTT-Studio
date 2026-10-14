@@ -1,3 +1,4 @@
+#include "menu/Lang.h"
 #include "al/Library/LiveActor/ActorMovementFunction.h"
 #include "al/Library/LiveActor/ActorPoseKeeper.h"
 
@@ -79,7 +80,7 @@ void Menu::drawInfoWindow() {
     GameDataHolderAccessor* accessor = helpers::tryGetGameDataHolderAccess();
 
     if (!accessor) {
-        ImGui::Text("No Game Data Holder");
+        ImGui::Text(btt::tr("No Game Data Holder"));
         return;
     }
     s32 jumpCount = rs::getPlayerJumpCount(accessor->mData);
@@ -87,11 +88,11 @@ void Menu::drawInfoWindow() {
     u64 playTimeTotal = GameDataFunction::getPlayTimeTotal(*accessor);
     u64 playTimeAcrossFile = GameDataFunction::getPlayTimeAcrossFile(*accessor);
     s32 totalCoinNum = rs::getTotalCoinNum(accessor->mData);
-    ImGui::Text("Jumps: %d", jumpCount);
-    ImGui::Text("Cap Throws: %d", throwCapCount);
-    ImGui::Text("Total Coins: %d", totalCoinNum);
-    ImGui::Text("Play Time Total: %lu", playTimeTotal);
-    ImGui::Text("Play Time Across File: %lu", playTimeAcrossFile);
+    ImGui::Text(btt::tr("Jumps: %d"), jumpCount);
+    ImGui::Text(btt::tr("Cap Throws: %d"), throwCapCount);
+    ImGui::Text(btt::tr("Total Coins: %d"), totalCoinNum);
+    ImGui::Text(btt::tr("Play Time Total: %lu"), playTimeTotal);
+    ImGui::Text(btt::tr("Play Time Across File: %lu"), playTimeAcrossFile);
 
     if (!isEnablePlayerInfo) {
         ImGui::End();
@@ -99,13 +100,13 @@ void Menu::drawInfoWindow() {
     }
 
     if (!playerHak) {
-        ImGui::Text("No Player");
+        ImGui::Text(btt::tr("No Player"));
         ImGui::End();
         return;
     }
     al::ActorPoseKeeperBase* pose = playerHak->mPoseKeeper;
     if (!pose) {
-        ImGui::Text("No Pose");
+        ImGui::Text(btt::tr("No Pose"));
         ImGui::End();
         return;
     }

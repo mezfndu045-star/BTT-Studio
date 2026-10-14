@@ -1,0 +1,14 @@
+bg bg 360 270
+btn a i0 271 64 45 43
+btn b i1 237 94 30 28
+btn down i2 111 182 11 9
+btn l i3 26 4 77 35
+btn left i4 97 166 9 10
+btn plus i5 158 73 43 24
+btn r i6 256 4 79 39
+btn right i7 126 166 9 11
+btn up i8 111 153 10 9
+btn x i9 321 59 21 40
+btn y i10 263 40 39 23
+stick L i11 46 69 38 38 22 22
+stick R i12 222 152 38 38 22 22

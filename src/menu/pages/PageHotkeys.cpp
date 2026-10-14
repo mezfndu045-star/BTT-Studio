@@ -1,3 +1,4 @@
+#include "helpers/ProgressSnapshot.h"
 #include "hk/sail/detail.h"
 
 #include "al/Library/LiveActor/ActorPoseUtil.h"
@@ -226,6 +227,8 @@ void Menu::restartScene() {
         if (!(cmpNrv || cmpState || PlayerFunction::isPlayerDeadStatus(playerHak))) {
             GameDataFunction::recoveryPlayer(playerHak);
             GameDataFunction::recoveryPlayer(playerHak);
+            // Moon Refresh: moons and story steps of this try are undone (the stage restarts at the same entrance)
+            restoreProgressSnapshot(GameDataHolderAccessor(stageScene).mData);
 
             if (mIsReloadPos) {
                 triggerReloadPos();
@@ -234,6 +237,13 @@ void Menu::restartScene() {
             }
         }
     }
+}
+
+void Menu::warpLastCheckpoint() {
+    if (!stageScene || !mLastMapTarget) return;
+    stageScene->mStateCollectionList->mStateStageMap->mMapThing = mLastMapTarget;
+    ptr addr = hk::sail::lookupSymbolFromDb<>("StageSceneNrvWarpToCheckpoint");
+    stageScene->getNerveKeeper()->setNerve((al::Nerve*)addr);
 }
 
 void Menu::handleHotkeys() {
@@ -288,23 +298,15 @@ void Menu::handleHotkeys() {
         set->getSettings()->mWigglerPattern++;
         if (set->getSettings()->mWigglerPattern >= hk::util::arraySize(WigglerPatterns))
             set->getSettings()->mWigglerPattern = 0;
-        setPopupText("Wiggler Pattern: %s", WigglerPatterns[set->getSettings()->mWigglerPattern]);
+        setPopupText("Wiggler Pattern: %s", tr(WigglerPatterns[set->getSettings()->mWigglerPattern]));
     }
     if (isHotkey(set->getSettings()->mDecPatternKey)) {
         set->getSettings()->mWigglerPattern--;
         if (set->getSettings()->mWigglerPattern < 0)
             set->getSettings()->mWigglerPattern = hk::util::arraySize(WigglerPatterns) - 1;
-        setPopupText("Wiggler Pattern: %s", WigglerPatterns[set->getSettings()->mWigglerPattern]);
+        setPopupText("Wiggler Pattern: %s", tr(WigglerPatterns[set->getSettings()->mWigglerPattern]));
     }
-    if (isHotkey(set->getSettings()->mWarpLastCpKey)) {
-        if (stageScene) {
-            if (mLastMapTarget) {
-                stageScene->mStateCollectionList->mStateStageMap->mMapThing = mLastMapTarget;
-                ptr addr = hk::sail::lookupSymbolFromDb<>("StageSceneNrvWarpToCheckpoint");
-                stageScene->getNerveKeeper()->setNerve((al::Nerve*)addr);
-            }
-        }
-    }
+    if (isHotkey(set->getSettings()->mWarpLastCpKey)) warpLastCheckpoint();
     if (isHotkey(set->getSettings()->mTimerStartKey)) {
         if (Timer::sInstance) {
             Timer::sInstance->start();

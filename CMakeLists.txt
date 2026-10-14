@@ -32,6 +32,10 @@ if(DEBUG)
 endif()
 
 # Practice mod BTT 1.3: build for Super Mario Odyssey 1.3.0, without the options not ported to 1.3 yet
+# Developer test channel (sd:/BTT-Studio/dbg_cmd.txt, src/menu/DebugCommands.cpp): cmake -DBTT_DEBUG_COMMANDS=ON
+if(BTT_DEBUG_COMMANDS)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE BTT_DEBUG_COMMANDS=1)
+endif()
 if(BTT_V130)
     target_compile_definitions(${PROJECT_NAME} PRIVATE BTT_V130=1)
 endif()

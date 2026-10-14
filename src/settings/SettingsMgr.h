@@ -140,6 +140,12 @@ public:
         SETTING(SeedGrowing);
         // InputDisplayStyle (menu/InputDisplayStyles.h)
         u8 mInputDisplayStyle = 0;
+        // Quick wheel (menu/QuickWheel.h): key (cWheelKeyNames), the action name of each slot, size (cWheelSizes)
+        u8 mWheelKey = 2;
+        char mWheelSlots[12][32] = {};
+        u8 mWheelSize = 1;
+        // Menu language (menu/Lang.h): 0 English, 1 French
+        u8 mLanguage = 0;
     } mSettings;
 
     // Settings* getSettings() { return &mSettings; }

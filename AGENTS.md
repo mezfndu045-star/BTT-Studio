@@ -78,6 +78,9 @@ Deux mods sont déployés dans `C:\Users\FlowUP\AppData\Roaming\yuzu\load\010000
 - **Correction** : les 8 `bl rs::isGotShine` du watcher (init +0x1d4a60/+0x1d4ba4, `createShineChips` +0x1d4c30 qui crée les fragments "vides"/gris si la lune est prise, `initAfterPlacement` +0x1d4df4/+0x1d4ff4/+0x1d50bc, `updateHints` +0x1d5174, `appear` +0x1d5314 → `ShineChipWatcherGotCheck1..8`) renvoient `false` quand l'option est active. 1re version (3 appels seulement) : fragments encore gris. Recharger la scène après avoir activé l'option.
 - **Compteur en haut de l'écran** : `StageSceneLayout` / `ShineChipLayoutParts` ne l'affichent pas si `rs::isCurrentShineChipWatcherTypeEmpty` (= lune du watcher déjà prise) → trampoline qui renvoie `false` avec l'option.
 
+### PUBLIÉ — v1.6.0 sur le compte GitHub mezfndu045-star (commit ae14864, parent bb7b9c4)
+- v1.6.0 : téléportation depuis une nouvelle sauvegarde (préchargement de Cascade libéré + unlockWorld), Misc et Input Display sur 2 colonnes, réglages P2 de position. Zips `*-v1.6.0.zip` faits depuis les v1.5.0 (binaires + section 3g du guide), scripts `mkzips16.py` / `edit_site16.py` (scratchpad).
+
 ### PUBLIÉ — v1.5.0 sur le compte GitHub mezfndu045-star (commit bb7b9c4, parent 3f5ddf1)
 - v1.5.0 : version pour SMO 1.3.0 (zips `BTT-Studio-1.3-*-v1.5.0.zip` : dossier `Practice mod BTT 1.3`, exefs de build130, romfs = ImGuiData seulement, guide `GUIDE_ET_RACCOURCIS_1.3.txt`), zips 1.0 v1.5.0 (472 images SubAreas + Skins, section 3f du guide), site + README (images royaumes / sous-zones, Rename All Moons, Style de l'Input Display, Skip Cloud). Scripts : `mkzips15.py`, `edit_site15.py` (scratchpad). `build130/` ajouté au .gitignore. Push à faire depuis PowerShell (gh n'est pas dans le PATH du bash devkitPro : le push y reste bloqué) : `git -c credential.helper= -c "credential.helper=!'C:/Program Files/GitHub CLI/gh.exe' auth git-credential" push <url> <sha>:refs/heads/main`. En ligne et vérifié le 14/10/2026.
 
@@ -476,3 +479,93 @@ Le fichier `main.npdm` definit les permissions du module.
 ### A TESTER — Misc sur 2 colonnes (1.0 et 1.3)
 - `mCategories[2].columnSplit` avant "Reload Scene" : gauche Outfit Body → Remove 1000 Coins (14), droite Reload Scene, Previous Scene, Wiggler Pattern, Rename All Moons, Reset All Moon Names.
 - Input Display aussi sur 2 colonnes : gauche Input Display, 2P Mode, Style, Preset Pos, Position X/Y, Reset Position ; droite P2 Preset Pos, P2 Position X/Y, P2 Reset Position (mInputDisplayPosP2, déjà sauvegardé) puis les 5 couleurs.
+
+### A TESTER — 212 styles d'Input Display d'Open Joystick Display (1.0 et 1.3)
+- Source : `Downloads/open-joystick-display-2.8.0-x64-windows/*.exe` (installeur Electron, pas lancé) : archive 7z intégrée (offset 232629) -> `resources/app.asar` -> `app/themes/` (17 thèmes, 215 styles, BSD 4-Clause Attribution, Anthony Mattera / KernelZechs). Extraits dans le scratchpad (`ojd_app`, lecteur asar `asar.py`).
+- `tools/subareas/gen_ojd_skins.py <app> <romfs Skins> <tmp> <astcenc>` : chaque style est affiché dans Edge sans fenêtre (Playwright, `channel='msedge'`, page écrite dans un fichier : depuis about:blank les CSS file:// ne se chargent pas). Il génère :
+  - le fond sans les sticks (ASTC 6x6, max 360x300) ;
+  - une image par bouton appuyé (classe `active` sur `[ojd-button=…]`, zone qui change, ASTC 4x4) ;
+  - les sticks seuls (`[ojd-directional]`, amplitude = moitié du wrapper).
+  - Sortie : `romfs/ImGuiData/Skins/OJD000…OJD211` + `OJD-LICENSE.txt`, et `include/menu/OjdSkins.inc` (macro `BTT_OJD_SKIN(id, nom)`, incluse deux fois dans InputDisplayStyles.h).
+- Correspondance des boutons :
+  - Xbox / PS / Scuf : par position (bas = B, droite = A…).
+  - Nintendo : par nom.
+  - Sega : A B C = Y B A, X Y Z = X L R ; Master System 1/2 = B/A.
+  - N64 : Z = ZL|ZR. GameCube : Z = R.
+- 3 styles sans rendu ignorés. Total des skins : 18 Mo. SubAreaImages accepte maintenant l'ASTC 6x6.
+- Aperçu d'un skin : `tools/subareas/preview_ojd.py`.
+
+### A TESTER — Roue rapide (Quick Wheel), 1.0 et 1.3
+- `src/menu/QuickWheel.cpp` / `include/menu/QuickWheel.h`.
+- Ouverture : clic de stick selon `Settings::mWheelKey` (0 Off, 1 L3, 2 R3 par défaut, 3 L3 ou R3).
+- 8 emplacements : un stick vise, A lance, B ou la touche de la roue ferme. Les touches du jeu sont bloquées pendant la roue (`disableButtons`) et les raccourcis aussi.
+- Actions possibles : toute option on/off (BoolMenuComponent) et tout bouton (ButtonMenuComponent) des catégories Options, Misc et Timer, plus "Warp Last CP" (`Menu::warpLastCheckpoint`, aussi utilisé par le raccourci).
+  - `buildWheelActions` est appelé dans `initCategories` avant Keybinds.
+  - `MenuComponent::getWheelName` / `getWheelToggle`.
+- Réglages ajoutés à la fin de Settings : `mWheelKey`, `char mWheelSlots[8][32]`. Chaque emplacement est enregistré par nom d'action.
+- Menu Keybinds sur 2 colonnes : à droite Wheel Key et Wheel Slot 1 à 8.
+- Dessin : `prepareQuickWheel` + `drawQuickWheel` dans la fonction de dessin du menu (main.cpp). Popup « Nom: ON/OFF » après l'action.
+- v2 de la roue :
+  - **Taille** : `mWheelSize` (6/8/12), `mWheelSlots` passe à [12][32] (toujours en fin de Settings).
+  - **Touches** : Wheel Key ajoute "L (hold)" / "R (hold)" : maintenir pour ouvrir, relâcher pour lancer. ZL/ZR, la croix ou l'autre gâchette pendant le maintien annulent la roue (combinaisons de raccourcis) ; les raccourcis restent actifs en mode maintien. L3/R3 : clic pour ouvrir, nouveau clic pour lancer.
+  - **Mario peut bouger** : seul le stick droit est retiré au jeu pendant la roue (`disableButtons`) et sert à viser.
+  - **A/B** ne servent plus à la roue.
+- v3 : A valide la case visée dans tous les modes ; pendant la roue, seuls le stick droit et A sont retirés au jeu (disableButtons : `mButtons.Reset(A)`).
+
+### A TESTER — Explications du Timer (1.0 et 1.3)
+- Menu.cpp : `TimerTypeMenuComponent` (Start Type / End Type) et `TimerCountMenuComponent` (Start Count / End Count) affichent un panneau à droite (`drawPreview`). Le panneau contient un dessin ImGui de l'événement (`drawTimerTypeIcon` : écran noir/blanc, lune, cœur, chapeau, fil…), une phrase « Starts (from zero) / Stops when … » (`cTimerTypeHelp`) et la note quand Start et End sont du même type.
+- Pour les counts : explication avec le type et le nombre actuels (ex. « the timer starts at the 3rd "Black Screen" »).
+- Dessins retirés à la demande de l'utilisateur : le panneau ne montre plus que le titre et l'explication.
+- Panneau d'aide généralisé : `MenuComponent::setHelp` + `drawPreview` par défaut (`drawMenuHelpPanel`, titre = `getHelpTitle`). `drawTwoColumnCategory` affiche maintenant aussi l'aperçu de l'élément sélectionné, à droite des 2 colonnes (x limité à 1600 - largeur). Les 29 options de la catégorie Options ont une explication (table `sOptionHelp` dans initCategories, appliquée par nom).
+
+### A TESTER — Menu en français (1.0 et 1.3)
+- `include/menu/Lang.h` / `src/menu/Lang.cpp` : `tr(en)` renvoie le texte français (table `cFrench`, ~330 entrées) quand `Settings::mLanguage == 1` (ajouté en fin de Settings). Cache par pointeur : à n'utiliser qu'avec des littéraux ou des tables statiques, jamais avec un tampon. `trColon()` = " : " en français.
+- Branché dans :
+  - les composants (titre, valeur, oui/non, panneau d'aide) ;
+  - les noms des catégories, les popups (`setPopupText` traduit le format) ;
+  - la roue, le clavier, la fenêtre d'infos, les étiquettes Joueur 1/2, les aperçus de Niveaux.
+  - Aide du Timer : textes français dédiés (`whenFr`, phrases du nombre de départ / d'arrivée).
+- Réglage : Paramètres > Language / Langue (English / Français).
+- Non traduits : noms des sous-zones (noms propres anglais du wiki), costumes (noms internes), styles d'Input Display.
+- Les actions de la roue restent enregistrées par nom anglais.
+
+### A TESTER — Moon Refresh compte les lunes et fait avancer l'histoire (1.0 et 1.3)
+- Avant, `ShineRefreshHook` (GameDataFunction::setGotShine) sautait l'original avec Moon Refresh. Résultat : `getCurrentShineNum` ne bougeait pas (ShineCounter::startCountAnim compte de getCurrentShineNum-1 à getCurrentShineNum) et les lunes d'histoire ne changeaient pas le scénario.
+- Maintenant l'original est toujours appelé. Moon Refresh = la lune reste reprenable comme neuve : `GreyShineRefreshHook` (GameDataFunction::isGotShine(ShineInfo)) renvoie faux avec Moon Refresh OU Gray Moon Refresh.
+- Limite : le jeu ne recompte pas une lune déjà enregistrée (GameDataFile::setGotShine teste lui-même isGotShine), donc la reprendre une 2e fois ne fait pas monter le compteur. La progression en mémoire change (Disable Autosave garde le fichier intact).
+- Suite : Restart Scene remet la progression (lunes, histoire, pièces...) comme au début de la scène, avec Moon Refresh. `src/helpers/ProgressSnapshot.cpp` :
+  - **Photo** : au `StageScene::init` (après l'original), `GameDataFile::writeToStream` (code de sauvegarde du jeu, format [s32 taille][byml], ~100-130 Ko) dans un tampon de 512 Ko via `sead::RamWriteStream` (mode 0), tas = GameDataHolder+0x90 (comme le jeu).
+  - **Restauration** : `Menu::restartScene` : copie du stage (`GameDataFunction::getCurrentStageName`) et de l'entrée (`GameDataHolder::getNextPlayerStartId`), puis `GameDataFile::initializeData` (ne réalloue rien) + `tryReadByamlData`, puis `changeNextStage(stage, entrée, scénario -1)` avant le kill / Reload at Pos habituel.
+  - Adresses 1.3 (GameDataFunction.sym) : RamWriteStream C2 0x960060 / D1 0x9600d0, writeToStream 0x4cc300, initializeData 0x4c2ef0, tryReadByamlData 0x4c3bf0, getNextPlayerStartId 0x4db1b0 (trouvés via readFromStream 0x4cc290 et l'appel de writeToStream à 0x4dbbf0).
+
+### A TESTER — Animation d'entrée des sous-zones après une téléportation (1.0 et 1.3)
+- Le menu envoyait dans les sous-zones par l'entrée « start » : pas d'animation d'arrivée (Mario qui sort en marchant), ni après un rechargement (le jeu reprend la même entrée).
+- `SubAreaMenuComponent::onConfirm` utilise maintenant l'entrée de la sous-zone de `sPhotoTourShots` (`<stage>_in`, entrée vérifiée par la visite photo), avec repli sur « start », via `warpToStageSafe`.
+- Les sous-zones ignorent le réglage Scenario du menu (`warpToStageSafe(stage, label, 0)`) : scénario courant dans le même royaume, scénario de la sauvegarde (ou 1) depuis un autre royaume.
+
+### A TESTER — Kingdom Enter Refresh avec la téléportation du menu (1.0 et 1.3)
+- Le hook `GameProgressData::isAlreadyGoWorld` ne sert qu'au Royaume Champignon dans `startStage` / `changeNextStage`. La cinématique d'arrivée (atterrissage de l'Odyssée + présentation du royaume) n'existe qu'avec le voyage de l'Odyssée : `GameDataFunction::tryChangeNextStageWithDemoWorldWarp` (fin de `ShineTowerRocket::exeDemoWorldTakeoff`).
+- `warpToKingdom` (Stages > Warp to Stage) utilise maintenant ce voyage quand Kingdom Enter Refresh ou Cutscene Refresh est actif, que Scenario = 0 et que le royaume change. Adresse 1.3 0x4d2d30 (trouvée dans exeDemoWorldTakeoff 1.3 par la même suite d'appels : launchHome 0x4d7fb0, getMainStageName 0x4d5510, isForwardWorldWarpDemo 0x4d32f0).
+- Avec un scénario choisi : le voyage en Odyssée est quand même utilisé, puis le scénario de la ChangeStageInfo préparée est remplacé (GameDataFile +0xa30 / 1.3 +0xa78, trouvé dans GameDataFile::changeNextStage 1.3 0x4c8560 avant ChangeStageInfo::copy 0x21c240 ; scénario +0x1cc).
+- Correctif : Warp to Stage ne faisait plus rien avec Kingdom Enter Refresh. `GameDataHolder::changeNextStageWithDemoWorldWarp` remet le drapeau de changement de scène (+0x49) à 0 : la scène ne se termine pas toute seule (dans le jeu, c est la cinématique de décollage). `warpToKingdom` appelle maintenant `StageScene::kill` après avoir préparé le voyage.
+- Le voyage en Odyssée de Warp to Stage ne dépend plus que de Kingdom Enter Refresh (plus de Cutscene Refresh) : option désactivée = téléportation directe sans cinématique.
+
+### A TESTER — Warp Text Refresh : textes de Cappy du début des royaumes (1.0 et 1.3)
+- Les messages de Cappy (début des royaumes, etc., `CapMessageKeeper`) ne sont dits qu'une fois : `GameDataFunction::isFlagOnTalkMessageInfo` (1.0 0x52cb04 / 1.3 0x4d81b0) lit le drapeau de GameDataFile, que `onFlagTalkMessageInfo` (1.0 0x52cb44 / 1.3 0x4d81f0) met.
+- Avec Warp Text Refresh ou Cutscene Refresh, le hook ne renvoie vrai que pour les messages dits depuis le début de la scène (liste `sSceneTalkFlags`, vidée au `StageScene::init`). Les textes reviennent donc à chaque rechargement sans être répétés dans la même scène.
+- Caméra de début de scénario (survol + texte de l histoire, ex. Sables, Ville de nuit) : `GameDataHolder::isPlayAlreadyScenarioStartCamera` (1.0 0x5306bc / 1.3 0x4dc060, tableau holder+0xd8 / 1.3 +0xe8) renvoie faux avec Warp Text Refresh, Cutscene Refresh ou Kingdom Enter Refresh.
+- Cinématique d histoire à l arrivée (ex. Ville de nuit) = `StageTalkDemoNpcCap` placé dans le stage. Son init (1.0 0xd7954 / 1.3 0xc9730) l éteint (+0x128 = 0) si son SaveObjInfo (+0x140, `rs::isOnSaveObjInfo` 1.3 0x4dd190) dit qu elle a été vue. Hook après l original : démo de début de stage (config +0x120, octet +8) déjà vue -> +0x128 = 1, avec Cutscene Refresh ou Kingdom Enter Refresh. StageScene::init la choisit ensuite (placement "StageTalkDemoNpcCap", vtable+0xf0 = isEnableStageStartDemo).
+
+### RESOLU — Cinématiques d'arrivée (Ville de nuit), Mécha-Wiggler, crash Moon Refresh (1.0 ; 1.3 compilé, non testé)
+- Crash Moon Refresh au chargement d'un niveau : `takeProgressSnapshot` écrivait avec le FrameHeap de GameDataHolder+0x90 sans le vider. Le jeu le vide avant chaque sauvegarde (`writeToSaveDataBuffer`, vtable +0x58 = `FrameHeap::freeAll`) : le mod le fait aussi.
+- Dialogue de Cappy à l'arrivée (StageTalkDemoNpcCap, démo de début de stage) : déjà vu -> son init saute la caméra d'event et tue l'acteur ; `tryStartDemo` (1.0 0xd7fdc / 1.3 0xc9f70) relit la sauvegarde. `rs::isOnSaveObjInfo` renvoie "pas vu" pendant ces deux fonctions (Cutscene Refresh / Kingdom Enter Refresh).
+- Arrivée par l'Odyssey : après DemoAppearFromHome, le dialogue ne vient qu'après une caméra de scénario. Hook `StageScene::endDemoAndChangeNerve` (1.3 0x473ee0) : depuis AppearFromHome, si `isExistTalkDemoStageStart`, lance `startTalkDemoStageStart` + nerf DemoStageStartCapManHeroTalk (custom.sym).
+- Caméra de scénario (Mécha-Wiggler) : liée à la quête 0 (`GameDataFile::isPlayScenarioCamera`, 1.3 0x4cfef0) ; quête finie -> aucune quête active. Hook : vrai pour la quête 0 quand aucune quête n'est active (options refresh).
+
+### RESOLU — Rejouer le combat de Cloud : écrasement et arrivée à Lost scénario 1 (1.0 ; 1.3 compilé, non testé)
+- `HakoniwaSequence::exePlayStage` ne fait `crashHome` + voyage vers Lost que si `isFindKoopa` (GameProgressData+0x34 == 3) et `isDefeatKoopaLv1` (StageScene+0x390, rempli dans StageScene::init seulement si isFindKoopa).
+- Hook `GameDataFunction::isFindKoopa` (1.3 0x4d8050) : dans un stage Cloud, vrai pendant StageScene::init et quand Bowser est vaincu (scène prise même terminée : `getCurrentStageSceneEvenEnded`).
+- La victoire met `sIsCrashHomeOverride` : `isCrashHome` vrai / `isRepairHome` faux (1.3 0x4d7fc0 / 0x4d7fe0) pendant les stages Demo* (DemoCrashHomeFallStage) et Clash*, jusqu'à `repairHome` (1.3 0x4d7ff0). La sauvegarde garde sa progression. Le dialogue de Cappy est rejoué sans option.
+- Scénario 1 : `GameDataFunction::calcNextScenarioNo` (1.3 0x4d3040) renvoie 1 pour ClashWorldHomeStage pendant cet état (prochain stage : GameDataFile+0x870 / 1.3 +0x8b8).
+- Attention : `dbgLog` écrit sur la SD ; ne jamais l'appeler dans une fonction appelée en boucle depuis le fil de chargement (abort nn::fs).
+- Canal de test : commande `cloudwin` (DebugCommands) = Bowser K.O. au prochain `KoopaLv1::movement`. Traces de test à retirer avant publication.

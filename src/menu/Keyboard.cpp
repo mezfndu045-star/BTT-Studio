@@ -1,3 +1,4 @@
+#include "menu/Lang.h"
 #include "menu/Keyboard.h"
 
 #include <cstdio>
@@ -87,7 +88,7 @@ namespace {
 } // namespace
 
 void openKeyboard(const char* title, const char* initialText, std::function<void(const char*)> onValidate) {
-    snprintf(sTitle, sizeof(sTitle), "%s", title ? title : "");
+    snprintf(sTitle, sizeof(sTitle), "%s", title ? tr(title) : "");
     snprintf(sText, sizeof(sText), "%s", initialText ? initialText : "");
     sOnValidate = onValidate;
     sIsCaps = sText[0] == '\0';
@@ -158,13 +159,13 @@ void drawKeyboard() {
         bool sel = sRow == cLetterRows && actionOfCol(sCol) == a;
         ImU32 base = a == Validate ? IM_COL32(60, 170, 80, 120) : a == Cancel ? IM_COL32(170, 60, 60, 120) : IM_COL32(255, 255, 255, 40);
         dl->AddRectFilled(k, ImVec2(k.x + actW, k.y + keyH), sel ? IM_COL32(255, 60, 60, 200) : base, 8);
-        const char* label = a == Caps ? (sIsCaps ? "Caps: ON" : "Caps: off") : cActionNames[a];
+        const char* label = tr(a == Caps ? (sIsCaps ? "Caps: ON" : "Caps: off") : cActionNames[a]);
         ImVec2 ts = font->CalcTextSizeA(26, FLT_MAX, 0, label);
         dl->AddText(font, 26, ImVec2(k.x + (actW - ts.x) / 2, k.y + (keyH - ts.y) / 2), IM_COL32(255, 255, 255, 255), label);
     }
     y += keyH + gap;
     dl->AddText(font, 22, ImVec2(tl.x + 20, y + 4), IM_COL32(200, 200, 200, 255),
-                "D-Pad: move   A: type   B: erase   Y: caps   +: OK   -: cancel");
+                tr("D-Pad: move   A: type   B: erase   Y: caps   +: OK   -: cancel"));
 }
 
 } // namespace btt

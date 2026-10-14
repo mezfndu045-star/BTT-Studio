@@ -53,6 +53,8 @@ public:
     void drawPopup();
 
     void setLatestMapTarget(void* target) { mLastMapTarget = target; }
+    // Warp to the last checkpoint touched (Warp Last CP hotkey and quick wheel)
+    void warpLastCheckpoint();
 
     bool isPatternReverse();
     int getPatternTarget(int a);
@@ -83,7 +85,7 @@ public:
     void setPopupText(const char* fmt, ...) {
         va_list args;
         va_start(args, fmt);
-        vsnprintf(popupText, sizeof(popupText), fmt, args);
+        vsnprintf(popupText, sizeof(popupText), tr(fmt), args);
         va_end(args);
         mIsPopup = true;
         popupTimer = 0;

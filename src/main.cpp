@@ -22,6 +22,7 @@
 #include "menu/InputDisplay.h"
 #include "menu/Menu.h"
 #include "menu/stage_warp.h"
+#include "menu/QuickWheel.h"
 #include "menu/Timer.h"
 #include "settings/SettingsHooks.h"
 #include "settings/TimerHooks.h"
@@ -81,6 +82,8 @@ HkTrampoline gameSystemInit = [](TrampolineStatic(), GameSystem* gameSystem) -> 
         btt::Menu* menu = btt::Menu::instance();
         if (menu) {
             if (menu->mIsEnabledMenu) menu->draw();
+            btt::prepareQuickWheel(menu);
+            btt::drawQuickWheel();
             menu->drawInfoWindow();
             menu->drawPopup();
         }
@@ -131,6 +134,15 @@ HkTrampoline hakoniwaSequenceUpdate = [](TrampolineStatic(), HakoniwaSequence* h
 };
 
 void disableButtons(nn::hid::NpadBaseState* state, int count) {
+    // Quick wheel: Mario keeps moving, only the right stick (points at a slot) and A (runs it) are taken from the game
+    if (!InputHelper::isReadInputs() && btt::Menu::instance() && !btt::Menu::instance()->mIsEnabledMenu &&
+        btt::isQuickWheelOpen()) {
+        for (int i = 0; i < count; i++) {
+            state[i].mAnalogStickR = nn::hid::AnalogStickState();
+            state[i].mButtons.Reset((int)nn::hid::NpadButton::A);
+        }
+        return;
+    }
     if (!InputHelper::isReadInputs() && btt::Menu::instance() &&
         btt::Menu::instance()->mIsEnabledMenu) {
         // clear out the data within the state (except for the sampling number and attributes)

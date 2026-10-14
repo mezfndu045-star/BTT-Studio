@@ -3,3 +3,5 @@ Input display picture skins
 Periscope: default skin of periscope by periwinkle (https://codeberg.org/periwinkle/periscope), CC BY-SA 4.0 (Periscope/LICENSE-CC-BY-SA-4.0.txt). Converted (background made transparent, ASTC) for BTT-Studio.
 
 Minimal: drawn for BTT-Studio by tools/subareas/gen_drawn_skins.py.
+
+OJD000 ...: the themes of Open Joystick Display 2.8.0 (https://ojdproject.com), BSD 4-Clause Attribution, Copyright 2019 Anthony Mattera (KernelZechs), Open Joystick Display. Rendered (pressed pictures, sticks) and converted to ASTC for BTT-Studio by tools/subareas/gen_ojd_skins.py. List of the converted styles: OJD-LICENSE.txt.

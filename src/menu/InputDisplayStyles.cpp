@@ -46,6 +46,7 @@ void drawStyledInputDisplay(int port, ImVec2* settingPos, const char* dragId, co
     if (!drawSkinInputDisplay(sInputDisplaySkinIds[skin], npad, center, cMaxW, cMaxH, &skinMin, &skinMax)) return;
 
     if (label) {
+        label = tr(label);
         ImFont* font = ImGui::GetFont();
         ImVec2 ts = font->CalcTextSizeA(24, FLT_MAX, 0.f, label);
         dl->AddText(font, 24, ImVec2(center.x - ts.x / 2, skinMin.y - ts.y - 4), IM_COL32(255, 255, 255, 255), label);

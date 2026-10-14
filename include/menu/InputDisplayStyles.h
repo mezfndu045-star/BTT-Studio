@@ -11,18 +11,25 @@ enum class InputDisplayStyle : unsigned char {
     // tools/subareas/gen_drawn_skins.py
     Periscope,
     Minimal,
+    // Then the Open Joystick Display styles (menu/OjdSkins.inc, tools/subareas/gen_ojd_skins.py)
 };
 
 // Folder of the picture skin of each style from Periscope on
 constexpr const char* sInputDisplaySkinIds[] {
     "Periscope",
     "Minimal",
+#define BTT_OJD_SKIN(id, name) id,
+#include "menu/OjdSkins.inc"
+#undef BTT_OJD_SKIN
 };
 
 constexpr const char* sInputDisplayStyleNames[] {
     "Classic",
     "Periscope",
     "Minimal",
+#define BTT_OJD_SKIN(id, name) name,
+#include "menu/OjdSkins.inc"
+#undef BTT_OJD_SKIN
 };
 
 // Every style but Classic: a picture skin drawn around the input display position

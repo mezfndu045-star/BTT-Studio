@@ -15,6 +15,10 @@
 #include "al/Library/Math/MathUtil.h"
 #include "al/Library/Nerve/NerveKeeper.h"
 #include "al/Library/Nerve/NerveUtil.h"
+#include "helpers/getHelper.h"
+#include "al/Library/Scene/SceneUtil.h"
+#include "al/Library/Nerve/Nerve.h"
+#include <typeinfo>
 #include "al/Library/Player/PlayerUtil.h"
 
 #include "custom/game/MapObj/DoorAreaChange.h"
@@ -29,6 +33,8 @@
 #include "game/System/PlayerHitPointData.h"
 
 #include "helpers/InputHelper.h"
+#include "helpers/ProgressSnapshot.h"
+#include "menu/DebugCommands.h"
 #include "logger.h"
 #include "game/Item/ShineInfo.h"
 #include "menu/Menu.h"
@@ -45,9 +51,11 @@ class ShineChip;
 class GrowFlowerPot;
 class CheckpointFlag;
 
+// Moons collected look new again (Gray Moon Refresh), and with Moon Refresh a moon collected stays collectable
 HkTrampoline GreyShineRefreshHook = [](TrampolineStatic(), GameDataHolderWriter writer,
                                        const ShineInfo* shineInfo) -> bool {
-    return SettingsMgr::instance()->getSettings()->mIsEnableGrayMoonRefresh ? false : orig(writer, shineInfo);
+    auto* s = SettingsMgr::instance()->getSettings();
+    return (s->mIsEnableGrayMoonRefresh || s->mIsEnableMoonRefresh) ? false : orig(writer, shineInfo);
 };
 
 HkTrampoline ShineRefreshHook = [](TrampolineStatic(), GameDataHolderWriter writer,
@@ -58,7 +66,24 @@ HkTrampoline ShineRefreshHook = [](TrampolineStatic(), GameDataHolderWriter writ
     ptr offset = addr - ro::getMainModule()->range().start();
     const char* text = Menu::instance()->getMoonRefreshText();
     ro::getMainModule()->writeRo(offset, text, strlen(text) + 1);
-    if (!SettingsMgr::instance()->getSettings()->mIsEnableMoonRefresh) orig(writer, shineInfo);
+    // The moon is always recorded: the moon counter goes up and a story moon moves the story on, like in the normal
+    // game. Moon Refresh keeps it collectable as a new moon (GreyShineRefreshHook); the game itself only counts a moon
+    // that is not recorded yet.
+    orig(writer, shineInfo);
+};
+
+// Bosses with a GateKeeperDataHolder (Broodals: Topper, Hariet, Spewart, Rango...): "already dead" is their moon got and
+// their defeat saved (rs::isAlreadyDeadGK), then they are not placed again. With Moon Refresh / Gray Moon Refresh the
+// boss comes back with its moon; with Cutscene Refresh its battle start cutscene too (rs::isAlreadyShowDemoBossBattleStart).
+HkTrampoline gateKeeperDeadHook = [](TrampolineStatic(), const void* holder) -> bool {
+    auto* s = SettingsMgr::getSettings();
+    if (s && (s->mIsEnableMoonRefresh || s->mIsEnableGrayMoonRefresh)) return false;
+    return orig(holder);
+};
+HkTrampoline gateKeeperStartDemoHook = [](TrampolineStatic(), const void* holder) -> bool {
+    auto* s = SettingsMgr::getSettings();
+    if (s && s->mIsEnableRefreshNpc) return false;
+    return orig(holder);
 };
 
 // Items of type DotMarioCat roll al::isPercentProbability(10.0f) at init to become
@@ -167,6 +192,230 @@ HkTrampoline mofumofuInitHook = [](TrampolineStatic(), al::LiveActor* mofumofu, 
     if (shine) sNightMetroShine = shine;
 };
 
+// Warp Text Refresh (and Cutscene Refresh): Cappy's texts (start of the kingdoms...) come back. Each one is said once
+// (GameDataFunction::isFlagOnTalkMessageInfo): only the ones said since the scene started stay said, so they come
+// back at each reload without being repeated in the same scene.
+static int sSceneTalkFlags[64];
+static int sSceneTalkFlagNum = 0;
+
+HkTrampoline talkMessageFlagHook = [](TrampolineStatic(), const al::IUseSceneObjHolder* holder, int index) -> bool {
+    auto* s = SettingsMgr::getSettings();
+    if (!s || !(s->mIsEnableRefreshWarpText || s->mIsEnableRefreshNpc)) return orig(holder, index);
+    for (int i = 0; i < sSceneTalkFlagNum; i++)
+        if (sSceneTalkFlags[i] == index) return true;
+    return false;
+};
+HkTrampoline talkMessageFlagOnHook = [](TrampolineStatic(), const al::IUseSceneObjHolder* holder, int index) -> void {
+    orig(holder, index);
+    for (int i = 0; i < sSceneTalkFlagNum; i++)
+        if (sSceneTalkFlags[i] == index) return;
+    if (sSceneTalkFlagNum < int(sizeof(sSceneTalkFlags) / sizeof(sSceneTalkFlags[0])))
+        sSceneTalkFlags[sSceneTalkFlagNum++] = index;
+};
+
+// Same options: the scenario start camera (fly-over with the text of the story at the start of a kingdom / scenario,
+// e.g. Sand Kingdom, Night Metro) is only played once (GameDataHolder::isPlayAlreadyScenarioStartCamera)
+HkTrampoline scenarioStartCameraHook = [](TrampolineStatic(), const void* holder, int index) -> bool {
+    auto* s = SettingsMgr::getSettings();
+    if (s && (s->mIsEnableRefreshWarpText || s->mIsEnableRefreshNpc || s->mIsEnableRefreshKingdomEnter)) return false;
+    return orig(holder, index);
+};
+
+// Cutscene Refresh / Kingdom Enter Refresh: the story cutscene at the arrival in a kingdom (e.g. Night Metro, Sand
+// Kingdom) is a StageTalkDemoNpcCap placed in the stage. A stage start one (+0x120 -> config, +8) turns itself off
+// (+0x128) when its save object (+0x140) says it was already watched, and then skips its event camera and kills
+// itself at the end of init: the save object reads "not watched" during its init (isOnSaveObjInfoHook below).
+extern "C" bool rs_isOnSaveObjInfo(const void* info) asm("_ZN2rs15isOnSaveObjInfoEPK11SaveObjInfo");
+static bool sIsInStageEventDemoInit = false;
+// Set when exePlayStage sees Bowser defeated in the Cloud Kingdom: the next travel / Lost Kingdom arrival is the story
+// one (crashed Odyssey, see isCrashHomeHook)
+static bool sIsCloudCrashArrival = false;
+static bool sIsCrashHomeOverride = false;
+HkTrampoline stageTalkDemoInitHook = [](TrampolineStatic(), al::LiveActor* demo, const al::ActorInitInfo& info) -> void {
+    auto* settings = SettingsMgr::getSettings();
+    sIsInStageEventDemoInit =
+        sIsCrashHomeOverride || (settings && (settings->mIsEnableRefreshNpc || settings->mIsEnableRefreshKingdomEnter));
+    orig(demo, info);
+    sIsInStageEventDemoInit = false;
+    u8* p = reinterpret_cast<u8*>(demo);
+    const u8* config = *reinterpret_cast<u8**>(p + 0x120);
+    void* saveObj = *reinterpret_cast<void**>(p + 0x140);
+    bool isWatched = saveObj && rs_isOnSaveObjInfo(saveObj);
+    if (btt::isDebugTrace())
+        btt::dbgLog("DBG: StageTalkDemoNpcCap %s cfg %d %d %d saveObj %d watched %d enable %d",
+                                demo->getName() ? demo->getName() : "?", config ? config[8] : -1, config ? config[9] : -1,
+                                config ? config[10] : -1, saveObj != nullptr, isWatched, p[0x128]);
+};
+// StageTalkDemoNpcCap::tryStartDemo (called when the scene starts the stage start talk) checks the save object again
+HkTrampoline stageTalkTryStartHook = [](TrampolineStatic(), al::LiveActor* demo) -> bool {
+    auto* s = SettingsMgr::getSettings();
+    sIsInStageEventDemoInit = sIsCrashHomeOverride || (s && (s->mIsEnableRefreshNpc || s->mIsEnableRefreshKingdomEnter));
+    bool isStarted = orig(demo);
+    sIsInStageEventDemoInit = false;
+    if (btt::isDebugTrace()) btt::dbgLog("DBG: StageTalkDemoNpcCap::tryStartDemo %d", isStarted);
+    return isStarted;
+};
+
+// Cutscene Refresh / Kingdom Enter Refresh: a scenario start camera (e.g. the Mechawiggler in Night Metro) plays only
+// while its linked quest (QuestInfo: +8 number, +0x18 enabled) is active. Once the kingdom's first quest is done, no
+// quest is active anymore in that scenario and the camera never comes back: allow the first quest's one then.
+extern "C" int rs_getActiveQuestNum(const void* holder) asm("_ZN2rs17getActiveQuestNumEPKN2al18IUseSceneObjHolderE");
+HkTrampoline isPlayScenarioCameraHook = [](TrampolineStatic(), const void* file, const u8* quest) -> bool {
+    if (orig(file, quest)) return true;
+    auto* s = SettingsMgr::getSettings();
+    if (!s || !(s->mIsEnableRefreshNpc || s->mIsEnableRefreshKingdomEnter) || !quest) return false;
+    return *reinterpret_cast<const s32*>(quest + 8) == 0 && quest[0x18] && rs_getActiveQuestNum(quest) == 0;
+};
+
+// After the Bowser fight of the Cloud Kingdom, HakoniwaSequence::exePlayStage crashes the Odyssey and travels to the
+// Lost Kingdom with the world warp, which takes the Lost Kingdom scenario of the save. When the fight is replayed on a
+// save past it, that is a later scenario: always land in scenario 1, as in the story (pending ChangeStageInfo:
+// GameDataFile +0xa30 / 1.3 +0xa78, scenario at +0x1cc).
+// That travel only happens while the story is at "Bowser found" (GameProgressData +0x34 == 3, isFindKoopa): on a save
+// past it, StageScene::init does not even keep the Bowser of the stage (+0x390, isDefeatKoopaLv1) and finishing the
+// fight again would not go to the Lost Kingdom. In a Cloud stage, answer "found" during StageScene::init and once
+// Bowser is defeated, so HakoniwaSequence::exePlayStage crashes the Odyssey and travels as in the story.
+static bool sIsInStageSceneInit = false;
+// The current StageScene, even once it has ended (helpers::tryGetStageScene needs it alive)
+static StageScene* getCurrentStageSceneEvenEnded() {
+    HakoniwaSequence* gameSeq = helpers::tryGetHakoniwaSequence();
+    al::Scene* curScene = gameSeq ? gameSeq->mCurrentScene : nullptr;
+    return curScene && strcmp(curScene->mName.cstr(), "StageScene") == 0 ? static_cast<StageScene*>(curScene) : nullptr;
+}
+HkTrampoline isFindKoopaHook = [](TrampolineStatic(), GameDataHolder* holder) -> bool {
+    if (orig(holder)) return true;
+    const char* current = holder ? GameDataFunction::getCurrentStageName(GameDataHolderAccessor(holder)) : nullptr;
+    if (!current || strncmp(current, "Cloud", 5) != 0) return false;
+    if (sIsInStageSceneInit) return true;
+    // exePlayStage checks it once the scene has ended (not alive anymore)
+    StageScene* scene = getCurrentStageSceneEvenEnded();
+    bool isDefeat = scene && scene->isDefeatKoopaLv1();
+    static int sLast = -1;
+    if (btt::isDebugTrace() && sLast != (int)isDefeat + (scene ? 2 : 0)) {
+        sLast = (int)isDefeat + (scene ? 2 : 0);
+        void* koopa = scene ? *reinterpret_cast<void**>(reinterpret_cast<u8*>(scene) + 0x390) : nullptr;
+        btt::dbgLog("DBG: isFindKoopa scene %d koopa %p defeat %d", scene != nullptr, koopa, isDefeat);
+    }
+    if (isDefeat) sIsCloudCrashArrival = sIsCrashHomeOverride = true;
+    return isDefeat;
+};
+// Scenario of an Odyssey travel (world warp): it goes through a cutscene stage (DemoChangeWorldStage,
+// DemoCrashHomeFallStage...), then the change to the kingdom takes the scenario of the save again
+// (GameDataFunction::calcNextScenarioNo). A forced scenario for the travel's kingdom is kept until it is loaded:
+//  - Stages > Warp to Stage with Kingdom Enter Refresh: the scenario chosen in the menu (btt::setModWorldWarpScenario);
+//  - the Cloud Kingdom crash: scenario 1 of the Lost Kingdom (story arrival);
+//  - Always Odyssey Power Up / Cutscene Refresh: scenario 1 (arrival cutscene, first boss... e.g. Seaside -> Luncheon
+//    again for an IL).
+static char sForcedScenarioStage[64] = {};
+static s32 sForcedScenario = -1;
+static s32 sModWorldWarpScenario = -1;
+namespace btt {
+void setModWorldWarpScenario(s32 scenario) {
+    sModWorldWarpScenario = scenario;
+}
+} // namespace btt
+HkTrampoline cloudToLostWarpHook = [](TrampolineStatic(), GameDataHolder* holder, const char* stageName) -> bool {
+    s32 modScenario = sModWorldWarpScenario;
+    sModWorldWarpScenario = -1;
+    auto* settings = SettingsMgr::getSettings();
+    bool isCrash = sIsCloudCrashArrival && stageName && strcmp(stageName, "ClashWorldHomeStage") == 0;
+    bool isOptionTravel = modScenario < 0 && !isCrash && stageName && settings &&
+                          (settings->mIsEnableAlwaysOdysseyPowerUp || settings->mIsEnableRefreshNpc);
+    // Moon Refresh / Gray Moon Refresh: going back to that kingdom's scenario 1 also undoes its story moons (the progress
+    // from before the first travel there is put back, before the game prepares the travel)
+    if (isOptionTravel && (settings->mIsEnableMoonRefresh || settings->mIsEnableGrayMoonRefresh)) {
+        bool isRestored = btt::takeOrRestoreTravelSnapshot(holder, stageName);
+        if (btt::isDebugTrace()) btt::dbgLog("DBG: travel snapshot %s restored %d", stageName, isRestored);
+    }
+    bool r = orig(holder, stageName);
+    if (!stageName) return r;
+    s32 scenario = -1;
+    if (modScenario >= 0) scenario = modScenario > 0 ? modScenario : -1;
+    else if (isCrash || isOptionTravel) scenario = 1;
+    if (btt::isDebugTrace()) btt::dbgLog("DBG: world warp %s scenario %d", stageName, scenario);
+    if (scenario <= 0) return r;
+    snprintf(sForcedScenarioStage, sizeof(sForcedScenarioStage), "%s", stageName);
+    sForcedScenario = scenario;
+    u8* file = *reinterpret_cast<u8**>(reinterpret_cast<u8*>(holder) + 0x20);
+#if BTT_V130
+    constexpr int cChangeStageInfoOffset = 0xa78;
+#else
+    constexpr int cChangeStageInfoOffset = 0xa30;
+#endif
+    u8* next = file ? *reinterpret_cast<u8**>(file + cChangeStageInfoOffset) : nullptr;
+    if (next) *reinterpret_cast<s32*>(next + 0x1cc) = scenario;
+    return r;
+};
+
+// The story of that crash (the Odyssey shot down during the travel, then in the Lost Kingdom the intro, Mario getting
+// up and Cappy's talk instead of Mario walking out of the Odyssey) plays while the progress is "home crashed"
+// (GameProgressData +0x34 == 4, isCrashHome). GameProgressData::crashHome only sets it from "Bowser found": on a save
+// past it, the progress stays later. Answer "crashed" (and not "repaired") from the defeat until the Odyssey is
+// repaired (repairHome) or Mario leaves the Lost Kingdom. The save itself keeps its progress.
+HkTrampoline isCrashHomeHook = [](TrampolineStatic(), GameDataHolder* holder) -> bool {
+    if (sIsCrashHomeOverride) return true;
+    return orig(holder);
+};
+// Forced scenario of the Odyssey travel (cloudToLostWarpHook above). Next stage name: GameDataFile +0x870 / 1.3 +0x8b8.
+HkTrampoline calcNextScenarioNoHook = [](TrampolineStatic(), GameDataHolder* holder) -> s32 {
+    s32 scenario = orig(holder);
+    if (sForcedScenario <= 0 || !holder) return scenario;
+    u8* file = *reinterpret_cast<u8**>(reinterpret_cast<u8*>(holder) + 0x20);
+#if BTT_V130
+    constexpr int cNextStageNameOffset = 0x8b8;
+#else
+    constexpr int cNextStageNameOffset = 0x870;
+#endif
+    const char* next = file ? *reinterpret_cast<const char**>(file + cNextStageNameOffset) : nullptr;
+    if (next && strcmp(next, sForcedScenarioStage) == 0) return sForcedScenario;
+    return scenario;
+};
+HkTrampoline isRepairHomeHook = [](TrampolineStatic(), GameDataHolder* holder) -> bool {
+    if (sIsCrashHomeOverride) return false;
+    return orig(holder);
+};
+HkTrampoline repairHomeHook = [](TrampolineStatic(), GameDataHolder* holder) -> void {
+    sIsCrashHomeOverride = false;
+    orig(holder);
+};
+
+// Arrival by the Odyssey (Kingdom Enter Refresh world warp): after Mario walks out of the Odyssey, the game starts the
+// stage start talk of Cappy only after a scenario start camera (exeDemoScenarioCamera). Without one, the demo ends
+// (endDemoAndChangeNerve) and the talk never comes: start it there, the way exeDemoScenarioCamera does.
+extern "C" bool CapManHeroDemoUtil_isExistTalkDemoStageStart(const al::Scene* scene)
+    asm("_ZN18CapManHeroDemoUtil25isExistTalkDemoStageStartEPKN2al5SceneE");
+extern "C" void CapManHeroDemoUtil_startTalkDemoStageStart(const al::Scene* scene)
+    asm("_ZN18CapManHeroDemoUtil23startTalkDemoStageStartEPKN2al5SceneE");
+HkTrampoline endDemoAndChangeNerveHook = [](TrampolineStatic(), StageScene* scene) -> void {
+    auto* s = SettingsMgr::getSettings();
+    if (s && (s->mIsEnableRefreshNpc || s->mIsEnableRefreshKingdomEnter) &&
+        al::isNerve(scene, getNerveFromDb("StageSceneNrvDemoAppearFromHome")) &&
+        CapManHeroDemoUtil_isExistTalkDemoStageStart(scene)) {
+        CapManHeroDemoUtil_startTalkDemoStageStart(scene);
+        al::updateKitListPostOnNerveEnd(scene);
+        al::setNerve(scene, getNerveFromDb("StageSceneNrvDemoStageStartCapManHeroTalk"));
+        return;
+    }
+    orig(scene);
+};
+
+// The story cutscenes at the start of a stage (e.g. Night Metro arrival) are StageEventDemo objects: once watched
+// (their save object, rs::isOnSaveObjInfo), StageEventDemo::init does not even create the cutscene. With Cutscene
+// Refresh / Kingdom Enter Refresh, the save object reads "not watched" during their init.
+HkTrampoline stageEventDemoInitHook = [](TrampolineStatic(), al::LiveActor* demo, const al::ActorInitInfo& info) -> void {
+    auto* s = SettingsMgr::getSettings();
+    sIsInStageEventDemoInit = s && (s->mIsEnableRefreshNpc || s->mIsEnableRefreshKingdomEnter);
+    orig(demo, info);
+    sIsInStageEventDemoInit = false;
+    if (btt::isDebugTrace())
+        btt::dbgLog("DBG: StageEventDemo %s stageStart %d", demo->getName() ? demo->getName() : "?",
+                    reinterpret_cast<u8*>(demo)[0x118]);
+};
+HkTrampoline isOnSaveObjInfoHook = [](TrampolineStatic(), const void* info) -> bool {
+    if (sIsInStageEventDemoInit) return false;
+    return orig(info);
+};
+
 // Pots with a grow level kept in memory by Seeds Refresh (see seedGetGrowLevelHook), reset on each scene
 static int sSeedGrowLevelNum = 0;
 
@@ -174,7 +423,42 @@ HkTrampoline stageSceneInitHook = [](TrampolineStatic(), StageScene* stageScene,
     sNightMetroShine = nullptr;
     sIsNightMetroShineAppeared = false;
     sSeedGrowLevelNum = 0;
+    sSceneTalkFlagNum = 0;
+    sIsInStageSceneInit = true;
+    if (sIsCrashHomeOverride) {
+        // The scene is not initialized yet: the stage being loaded comes from the sequence's GameDataHolder. The crash
+        // story lasts through the cutscene stages (Demo*: DemoCrashHomeFallStage) and the Lost Kingdom (Clash*).
+        GameDataHolder* holder = helpers::tryGetGameDataHolder();
+        const char* stage = holder ? GameDataFunction::getCurrentStageName(GameDataHolderAccessor(holder)) : nullptr;
+        bool isCrashStory = stage && (strncmp(stage, "Demo", 4) == 0 || strncmp(stage, "Clash", 5) == 0 ||
+                                      (sIsCloudCrashArrival && strncmp(stage, "Cloud", 5) == 0));
+        if (btt::isDebugTrace()) btt::dbgLog("DBG: crash story stage %s keep %d", stage ? stage : "?", isCrashStory);
+        if (!isCrashStory) sIsCrashHomeOverride = false;
+        if (stage && strncmp(stage, "Clash", 5) == 0) sIsCloudCrashArrival = false;
+    }
     orig(stageScene, info);
+    sIsInStageSceneInit = false;
+    if (sForcedScenario > 0) {
+        const char* loaded = GameDataFunction::getCurrentStageName(GameDataHolderAccessor(stageScene));
+        if (loaded && strcmp(loaded, sForcedScenarioStage) == 0) sForcedScenario = -1;
+    }
+    if (btt::isDebugTrace()) {
+        GameDataHolderAccessor accessor(stageScene);
+#if !BTT_V130
+        btt::dbgLog("DBG: init worldWarp %d nerve intro %d appear %d talk %d",
+                    GameDataFunction::isPlayDemoWorldWarp(accessor),
+                    al::isNerve(stageScene, getNerveFromDb("StageSceneNrvDemoWorldIntroCamera")),
+                    al::isNerve(stageScene, getNerveFromDb("StageSceneNrvDemoAppearFromHome")),
+                    al::isNerve(stageScene, getNerveFromDb("StageSceneNrvDemoStageStartCapManHeroTalk")));
+#endif
+        s32 worldId = accessor.mData->getGameDataFile()->getCurrentWorldId();
+        btt::dbgLog("DBG: StageScene::init %s world %d unlocked %d scenario %d crash %d",
+                    GameDataFunction::getCurrentStageName(accessor), worldId,
+                    GameDataFunction::isUnlockedWorld(accessor, worldId < 0 ? 0 : worldId),
+                    worldId < 0 ? -1 : GameDataFunction::getWorldScenarioNo(accessor, worldId), sIsCrashHomeOverride);
+    }
+        // Moon Refresh: the progress at the start of the scene, put back by Restart Scene
+    btt::takeProgressSnapshot(GameDataHolderAccessor(stageScene).mData);
 };
 
 static void tryAppearNightMetroShine(StageScene* stageScene) {
@@ -536,8 +820,15 @@ HkTrampoline checkpointFlagHook = [](TrampolineStatic(), CheckpointFlag* checkpo
 // last punch leads to (DeadAndDemoEnd: defeat, then the battle end cutscene).
 HkTrampoline koopaLv1MovementHook = [](TrampolineStatic(), al::LiveActor* koopa) -> void {
     orig(koopa);
-    if (!SettingsMgr::instance()->getSettings()->mIsEnableSkipCloud) return;
     u8* counter = *reinterpret_cast<u8**>(reinterpret_cast<u8*>(koopa) + 0x120);
+    // Test channel "cloudwin": defeat Bowser now
+    if (btt::takeDbgCloudWin() && counter) {
+        btt::dbgLog("DBG: cloudwin hits %d koopa %p", *reinterpret_cast<s32*>(counter + 4), koopa);
+        *reinterpret_cast<s32*>(counter + 4) = 0;
+        al::setNerve(koopa, getNerveFromDb("KoopaLv1NrvDeadAndDemoEnd"));
+        return;
+    }
+    if (!SettingsMgr::instance()->getSettings()->mIsEnableSkipCloud) return;
     if (!counter || *reinterpret_cast<s32*>(counter + 4) != 3) return;
     if (al::isNerve(koopa, getNerveFromDb("KoopaLv1NrvDemoStart"))) return;
     const char* stageName = GameDataFunction::getCurrentStageName(GameDataHolderAccessor(koopa));
@@ -868,6 +1159,8 @@ void SettingsHooks::installSettingsHooks() {
     offset = addr - ro::getMainModule()->range().start();
     ro::getMainModule()->writeRo(offset, "BTT Studio", strlen("BTT Studio") + 1);
 
+    gateKeeperDeadHook.installAtSym<"_ZNK20GateKeeperDataHolder13isAlreadyDeadEv">();
+    gateKeeperStartDemoHook.installAtSym<"_ZNK20GateKeeperDataHolder22isAlreadyShowStartDemoEv">();
     GreyShineRefreshHook
         .installAtSym<"_ZN16GameDataFunction10isGotShineE22GameDataHolderAccessorPK9ShineInfo">();
     ShineRefreshHook.installAtSym<"_ZN16GameDataFunction11setGotShineE20GameDataHolderWriterPK9ShineInfo">();
@@ -889,6 +1182,21 @@ void SettingsHooks::installSettingsHooks() {
     seedRefreshHook2.installAtSym<"_ZN2rs20isUsedGrowFlowerSeedEPKN2al9LiveActorEPKNS0_11PlacementIdE">();
     seedGetGrowLevelHook.installAtSym<"_ZN2rs22getGrowFlowerGrowLevelEPKN2al9LiveActorEPKNS0_11PlacementIdE">();
     seedAddGrowLevelHook.installAtSym<"_ZN2rs22addGrowFlowerGrowLevelEPKN2al9LiveActorEPKNS0_11PlacementIdEj">();
+    stageEventDemoInitHook.installAtSym<"_ZN14StageEventDemo4initERKN2al13ActorInitInfoE">();
+    isOnSaveObjInfoHook.installAtSym<"_ZN2rs15isOnSaveObjInfoEPK11SaveObjInfo">();
+    isFindKoopaHook.installAtSym<"_ZN16GameDataFunction11isFindKoopaE22GameDataHolderAccessor">();
+    isCrashHomeHook.installAtSym<"_ZN16GameDataFunction11isCrashHomeE22GameDataHolderAccessor">();
+    calcNextScenarioNoHook.installAtSym<"_ZN16GameDataFunction18calcNextScenarioNoE22GameDataHolderAccessor">();
+    isRepairHomeHook.installAtSym<"_ZN16GameDataFunction12isRepairHomeE22GameDataHolderAccessor">();
+    repairHomeHook.installAtSym<"_ZN16GameDataFunction10repairHomeE20GameDataHolderWriter">();
+    cloudToLostWarpHook.installAtSym<"_ZN16GameDataFunction35tryChangeNextStageWithDemoWorldWarpE20GameDataHolderWriterPKc">();
+    isPlayScenarioCameraHook.installAtSym<"_ZNK12GameDataFile20isPlayScenarioCameraEPK9QuestInfo">();
+    endDemoAndChangeNerveHook.installAtSym<"_ZN10StageScene21endDemoAndChangeNerveEv">();
+    stageTalkTryStartHook.installAtSym<"_ZN19StageTalkDemoNpcCap12tryStartDemoEv">();
+    stageTalkDemoInitHook.installAtSym<"_ZN19StageTalkDemoNpcCap4initERKN2al13ActorInitInfoE">();
+    scenarioStartCameraHook.installAtSym<"_ZNK14GameDataHolder32isPlayAlreadyScenarioStartCameraEi">();
+    talkMessageFlagHook.installAtSym<"_ZN16GameDataFunction23isFlagOnTalkMessageInfoEPKN2al18IUseSceneObjHolderEi">();
+    talkMessageFlagOnHook.installAtSym<"_ZN16GameDataFunction21onFlagTalkMessageInfoEPKN2al18IUseSceneObjHolderEi">();
     checkpointFlagHook.installAtSym<"_ZN2rs31setTouchCheckpointFlagToWatcherEP14CheckpointFlag">();
     koopaLv1MovementHook.installAtSym<"_ZN8KoopaLv18movementEv">();
     allCheckpointsHook

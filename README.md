@@ -20,7 +20,22 @@ Le site officiel en ligne est disponible sur **GitHub Pages** ([https://mezfndu0
 
 ---
 
-## 🆕 Nouveautés v1.6.0
+## 🆕 Nouveautés v1.7.0
+
+- **Input Display** : 212 styles en plus, repris d'[Open Joystick Display](https://ojdproject.com).
+- **Roue rapide** (*Keybinds > Wheel Key / Wheel Size / Wheel Slot*) : s'ouvre avec L3, R3, L ou R, 6, 8 ou 12 cases, n'importe quelle action des Options, Keybinds, Misc ou Timer. Le stick droit choisit, A valide, Mario peut bouger.
+- **Explications** à côté de chaque option et des réglages du Timer.
+- **Settings > Language** : tout le menu en français.
+- **Moon Refresh / Gray Moon Refresh** : le compteur de lunes monte et les lunes d'histoire font avancer l'histoire ; *Restart Scene* remet l'histoire comme au début de la scène. Les Broodals (Spewart…) reviennent avec leur lune.
+- **Stages** : sous-zones accessibles quel que soit le scénario, avec la marche de Mario à l'entrée.
+- **Kingdom Enter Refresh** : *Warp to Stage* fait le voyage en Odyssée (cinématique d'arrivée) ; option coupée = téléportation directe.
+- **Warp Text Refresh / Cutscene Refresh** : textes de Cappy du début des royaumes, caméra d'introduction du scénario (Mécha-Wiggler…), dialogue de Cappy à l'arrivée (Ville de nuit…), aussi en arrivant avec l'Odyssée.
+- **Always Odyssey Power Up / Cutscene Refresh** : un voyage en Odyssée arrive toujours au scénario 1 (pour refaire un IL, ex. Bord de Mer → Lunch) ; avec *Moon Refresh / Gray Moon Refresh*, la progression d'avant le premier voyage vers ce royaume est remise.
+- **Combat de Bowser au Royaume des Nuages rejoué** (sauvegarde déjà plus loin) : écrasement de l'Odyssée, arrivée au Royaume Perdu scénario 1 avec la cinématique et le dialogue de Cappy.
+- **Correction** : plus de crash en arrivant dans un royaume avec Moon Refresh.
+- **Mod plus léger** : images compressées sans perte (20 Mo → 13 Mo).
+
+## Nouveautés v1.6.0
 
 - **Téléportation depuis une nouvelle sauvegarde** (encore à Cap ou Cascade, Odyssée pas réparée) : plus de blocage en arrivant dans un autre royaume. Un royaume pas encore débloqué l'est comme avec l'Odyssée (avec ceux qui le précèdent), pour pouvoir payer des lunes et repartir.
 - **Misc** et **Input Display** s'affichent sur 2 colonnes.
@@ -147,7 +162,7 @@ Le menu vertical translucide s'ouvre avec la combinaison **`L + D-Pad Gauche`**.
 ### 🎮 5. Input Display (Affichage Manette)
 - **Input Display** : Affiche ou masque la manette à l'écran.
 - **2P Mode** : Affiche aussi la 2e manette (Joueur 2 / Cappy).
-- **Style** : Apparence de la manette (Classic, Periscope, Minimal), avec le nom des boutons.
+- **Style** : Apparence de la manette (Classic, Periscope, Minimal, et 212 styles OJD), avec le nom des boutons.
 - **Preset Pos** : Place la manette au Centre ou dans les 4 coins d'un clic.
 - **Position X & Y** : Règle l'emplacement par pas de 25px (ou glisser-déposer à la souris).
 - **Reset Position** : Replace la manette au centre de l'écran.
@@ -236,3 +251,4 @@ Mêmes emplacements, avec le dossier **Practice mod BTT 1.3** (Yuzu / Simple Mod
 - [SMO-Exlaunch-Base](https://github.com/CraftyBoss/SMO-Exlaunch-Base) par **CraftyBoss**
 - [OdysseyHeaders](https://github.com/MonsterDruide1/OdysseyHeaders) par **MonsterDruide1**
 - [Dear ImGui](https://github.com/ocornut/imgui) par **ocornut**
+- Styles OJD de l'Input Display : thèmes d'[Open Joystick Display](https://ojdproject.com), BSD 4-Clause Attribution, Copyright 2019 Anthony Mattera (KernelZechs). This product includes software developed by Anthony Mattera (KernelZechs) and Open Joystick Display.

@@ -1,4 +1,5 @@
 #include "menu/stage_warp.h"
+#include "src/settings/SettingsMgr.h"
 #include "hk/hook/Trampoline.h"
 
 #include "al/Library/Base/StringUtil.h"
@@ -431,6 +432,11 @@ static s32 getWorldIdOfKingdom(HakoniwaSequence* gameSeq, int kingdomIdx);
 // A kingdom the save has not unlocked yet (e.g. from a new save still in Cap / Cascade) is unlocked the way the Odyssey
 // does it (GameDataFunction::unlockWorld unlocks every kingdom of the story up to it and sets the Odyssey level):
 // otherwise paying a moon to the Odyssey there opens a world map without the current kingdom and the game crashes.
+namespace btt {
+// SettingsHooks.cpp: scenario of the next world warp started by the mod (0 = the save's)
+void setModWorldWarpScenario(s32 scenario);
+} // namespace btt
+
 static void markModWorldChange(HakoniwaSequence* gameSeq, const char* stageName) {
     int target = getKingdomOfStage(stageName);
     int current = getKingdomOfStage(GameDataFunction::getCurrentStageName(gameSeq->mGameDataHolderAccessor));
@@ -549,6 +555,32 @@ void warpToKingdom(int kingdomIdx, int scenarioNo) {
     if (kingdomIdx < 0 || kingdomIdx >= (int)(sizeof(mainNames) / sizeof(mainNames[0]))) return;
     int sc = scenarioNo == 0 ? getSaveScenarioOf(gameSeq, kingdomIdx) : scenarioNo;
     markModWorldChange(gameSeq, mainNames[kingdomIdx].mInternal);
+    // Kingdom Enter Refresh only (off: direct warp, no cutscene): travel there like with the Odyssey (the game's world warp, as at the
+    // end of ShineTowerRocket::exeDemoWorldTakeoff) so the arrival plays: Odyssey landing and kingdom intro. The world
+    // warp picks the scenario of the save: a scenario chosen in the menu replaces it in the stage change it prepared
+    // (GameDataFile +0xa30 / 1.3 +0xa78 -> ChangeStageInfo, scenario at +0x1cc).
+    btt::SettingsMgr::Settings* s = btt::SettingsMgr::getSettings();
+    int current = getKingdomOfStage(GameDataFunction::getCurrentStageName(gameSeq->mGameDataHolderAccessor));
+    if (s && s->mIsEnableRefreshKingdomEnter && current != kingdomIdx) {
+        GameDataHolder* holder = gameSeq->mGameDataHolderAccessor.mData;
+        btt::setModWorldWarpScenario(scenarioNo > 0 ? scenarioNo : 0);
+        GameDataFunction::tryChangeNextStageWithDemoWorldWarp(GameDataHolderWriter(holder), mainNames[kingdomIdx].mInternal);
+        if (scenarioNo > 0) {
+            u8* file = *reinterpret_cast<u8**>(reinterpret_cast<u8*>(holder) + 0x20);
+#if BTT_V130
+            constexpr int cChangeStageInfoOffset = 0xa78;
+#else
+            constexpr int cChangeStageInfoOffset = 0xa30;
+#endif
+            ChangeStageInfo* next = file ? *reinterpret_cast<ChangeStageInfo**>(file + cChangeStageInfoOffset) : nullptr;
+            if (next && al::isEqualString(next->getStageName(), mainNames[kingdomIdx].mInternal))
+                *reinterpret_cast<s32*>(reinterpret_cast<u8*>(next) + 0x1cc) = scenarioNo;
+        }
+        // Unlike changeNextStage, the world warp does not end the scene (the Odyssey takeoff cutscene does): end it, the
+        // sequence then plays the world warp to the prepared stage
+        if (StageScene* scene = helpers::tryGetStageScene(gameSeq)) scene->kill();
+        return;
+    }
     ChangeStageInfo stageInfo(
         gameSeq->mGameDataHolderAccessor.mData, "start", mainNames[kingdomIdx].mInternal, false, sc,
         ChangeStageInfo::SubScenarioType::NO_SUB_SCENARIO

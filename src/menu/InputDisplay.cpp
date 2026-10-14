@@ -92,7 +92,7 @@ void drawInputDisplay() {
     if (set->getSettings()->mIsEnableInput2P) {
         ImGui::GetForegroundDrawList()->AddText(
             ImGui::GetDefaultFont(), 27.f, { pos.x + 20, pos.y - 100 },
-            makeColor(getInputDisplayColor(SettingsMgr::InputDisplayColor::White)), "Player 1"
+            makeColor(getInputDisplayColor(SettingsMgr::InputDisplayColor::White)), tr("Player 1")
         );
     }
 
@@ -199,7 +199,7 @@ void drawInputDisplayP2() {
 
     ImGui::GetForegroundDrawList()->AddText(
         ImGui::GetDefaultFont(), 27.f, { pos.x + 20, pos.y - 100 },
-        makeColor(getInputDisplayColor(SettingsMgr::InputDisplayColor::White)), "Player 2"
+        makeColor(getInputDisplayColor(SettingsMgr::InputDisplayColor::White)), tr("Player 2")
     );
 
     if (set->getSettings()->mInputDisplayBackColor != SettingsMgr::InputDisplayColor::None) {
