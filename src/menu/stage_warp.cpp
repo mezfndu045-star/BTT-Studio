@@ -1,4 +1,5 @@
 #include "menu/stage_warp.h"
+#include "hk/hook/Trampoline.h"
 
 #include "al/Library/Base/StringUtil.h"
 
@@ -6,6 +7,7 @@
 #include "game/Sequence/HakoniwaSequence.h"
 #include "game/System/GameDataFunction.h"
 #include "game/System/GameDataHolder.h"
+#include "game/System/GameDataHolderWriter.h"
 
 #include <cstddef>
 #include <cstdio>
@@ -399,7 +401,49 @@ int getLastScenarioOfStage(const char* stageName) {
     return kingdom >= 0 && kingdom < int(sizeof(cLastScenario) / sizeof(cLastScenario[0])) ? cLastScenario[kingdom] : 0;
 }
 
+// New save still in Cap / Cascade (Odyssey not repaired yet): WorldResourceLoader keeps Cascade preloaded in a resident
+// heap (+0x20) until the Odyssey leaves Cascade, and requestLoadWorldHomeStageResource does nothing while that heap
+// exists, so a warp to any other kingdom never loads it (the stage heap runs out: FrameHeap::tryAlloc abort, softlock).
+// For a kingdom change started by the mod, free the world resources first, as the function does itself when there is
+// no resident heap (the previous scene is already deleted when it runs). Loader: +8 AsyncFunctorThread (done flag at
+// +0x18), +0x20 resident heap, +0x28 loaded world id. Same layout in 1.3.
+static bool sIsModWorldChange = false;
+extern "C" void WorldResourceLoader_tryDestroyWorldResource(void* loader)
+    asm("_ZN19WorldResourceLoader23tryDestroyWorldResourceEv");
+
+HkTrampoline worldHomeStageResourceHook = [](TrampolineStatic(), void* loader, s32 worldId, s32 scenario) -> bool {
+    u8* p = reinterpret_cast<u8*>(loader);
+    if (sIsModWorldChange && *reinterpret_cast<void**>(p + 0x20) && *reinterpret_cast<s32*>(p + 0x28) != worldId) {
+        const u8* thread = *reinterpret_cast<u8**>(p + 8);
+        if (thread && thread[0x18]) WorldResourceLoader_tryDestroyWorldResource(loader);
+    }
+    bool isRequested = orig(loader, worldId, scenario);
+    if (isRequested) sIsModWorldChange = false;
+    return isRequested;
+};
+
+void installStageWarpHooks() {
+    worldHomeStageResourceHook.installAtSym<"_ZN19WorldResourceLoader33requestLoadWorldHomeStageResourceEii">();
+}
+
+static s32 getWorldIdOfKingdom(HakoniwaSequence* gameSeq, int kingdomIdx);
+
+// A kingdom the save has not unlocked yet (e.g. from a new save still in Cap / Cascade) is unlocked the way the Odyssey
+// does it (GameDataFunction::unlockWorld unlocks every kingdom of the story up to it and sets the Odyssey level):
+// otherwise paying a moon to the Odyssey there opens a world map without the current kingdom and the game crashes.
+static void markModWorldChange(HakoniwaSequence* gameSeq, const char* stageName) {
+    int target = getKingdomOfStage(stageName);
+    int current = getKingdomOfStage(GameDataFunction::getCurrentStageName(gameSeq->mGameDataHolderAccessor));
+    if (target < 0 || target == current) return;
+    sIsModWorldChange = true;
+    s32 worldId = getWorldIdOfKingdom(gameSeq, target);
+    GameDataHolder* holder = gameSeq->mGameDataHolderAccessor.mData;
+    if (worldId >= 0 && !GameDataFunction::isUnlockedWorld(GameDataHolderAccessor(holder), worldId))
+        GameDataFunction::unlockWorld(GameDataHolderWriter(holder), worldId);
+}
+
 static void changeStage(HakoniwaSequence* gameSeq, const char* label, const char* stageName, int scenario) {
+    markModWorldChange(gameSeq, stageName);
     ChangeStageInfo stageInfo(
         gameSeq->mGameDataHolderAccessor.mData, label, stageName, false, scenario,
         ChangeStageInfo::SubScenarioType::NO_SUB_SCENARIO
@@ -407,20 +451,27 @@ static void changeStage(HakoniwaSequence* gameSeq, const char* label, const char
     gameSeq->mGameDataHolderAccessor.mData->changeNextStage(&stageInfo, 0);
 }
 
-// Scenario the save is at in a kingdom (scenario -1 would keep the current kingdom's one, which is wrong elsewhere)
-static int getSaveScenarioOf(HakoniwaSequence* gameSeq, int kingdomIdx) {
+// Scenario the save is at in a kingdom (scenario -1 would keep the current kingdom's one, which is wrong elsewhere),
+// 1 for a kingdom the save has not reached yet
+// World index of a kingdom of mainNames, -1 if unknown
+static s32 getWorldIdOfKingdom(HakoniwaSequence* gameSeq, int kingdomIdx) {
     StageScene* scene = helpers::tryGetStageScene(gameSeq);
-    if (!scene || kingdomIdx < 0) return -1;
+    if (!scene || kingdomIdx < 0 || kingdomIdx >= int(sizeof(mainNames) / sizeof(mainNames[0]))) return -1;
 #if BTT_V130
     // 1.3 inlines tryFindWorldIdByMainStageName: the world index follows mainNames, except Seaside (8) and Snow (9)
-    if (kingdomIdx >= int(sizeof(mainNames) / sizeof(mainNames[0]))) return -1;
-    s32 worldId = kingdomIdx == 8 ? 9 : kingdomIdx == 9 ? 8 : kingdomIdx;
+    return kingdomIdx == 8 ? 9 : kingdomIdx == 9 ? 8 : kingdomIdx;
 #else
-    s32 worldId = GameDataFunction::tryFindWorldIdByMainStageName((const al::Scene*)scene, mainNames[kingdomIdx].mInternal);
+    return GameDataFunction::tryFindWorldIdByMainStageName((const al::Scene*)scene, mainNames[kingdomIdx].mInternal);
 #endif
+}
+
+static int getSaveScenarioOf(HakoniwaSequence* gameSeq, int kingdomIdx) {
+    s32 worldId = getWorldIdOfKingdom(gameSeq, kingdomIdx);
     if (worldId < 0) return -1;
     s32 scenario = GameDataFunction::getWorldScenarioNo(gameSeq->mGameDataHolderAccessor, worldId);
-    return scenario > 0 ? scenario : -1;
+    // A kingdom the save has not reached yet (new save still in Cap / Cascade) has no scenario: letting the game pick
+    // one (-1) loads an invalid one and the stage heap runs out (FrameHeap::tryAlloc abort). Its first scenario is safe.
+    return scenario > 0 ? scenario : 1;
 }
 
 static char sPendingStage[64] = {};
@@ -466,7 +517,10 @@ void updateStageWarp() {
     HakoniwaSequence* gameSeq = helpers::tryGetHakoniwaSequence();
     StageScene* scene = helpers::tryGetStageScene(gameSeq);
     bool isAlive = scene && scene->mIsAlive;
-    if (isAlive && (!sIsLastSceneAlive || scene != sLastScene)) sSceneGeneration++;
+    if (isAlive && (!sIsLastSceneAlive || scene != sLastScene)) {
+        sSceneGeneration++;
+        if (!sPendingStage[0]) sIsModWorldChange = false;
+    }
     sLastScene = scene;
     sIsLastSceneAlive = isAlive;
 
@@ -494,6 +548,7 @@ void warpToKingdom(int kingdomIdx, int scenarioNo) {
     if (!gameSeq || !gameSeq->mGameDataHolderAccessor.mData) return;
     if (kingdomIdx < 0 || kingdomIdx >= (int)(sizeof(mainNames) / sizeof(mainNames[0]))) return;
     int sc = scenarioNo == 0 ? getSaveScenarioOf(gameSeq, kingdomIdx) : scenarioNo;
+    markModWorldChange(gameSeq, mainNames[kingdomIdx].mInternal);
     ChangeStageInfo stageInfo(
         gameSeq->mGameDataHolderAccessor.mData, "start", mainNames[kingdomIdx].mInternal, false, sc,
         ChangeStageInfo::SubScenarioType::NO_SUB_SCENARIO

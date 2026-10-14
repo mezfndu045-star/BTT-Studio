@@ -21,6 +21,7 @@
 #include "logger.h"
 #include "menu/InputDisplay.h"
 #include "menu/Menu.h"
+#include "menu/stage_warp.h"
 #include "menu/Timer.h"
 #include "settings/SettingsHooks.h"
 #include "settings/TimerHooks.h"
@@ -184,6 +185,7 @@ extern "C" void hkMain() {
 
     btt::SettingsHooks::installSettingsHooks();
     btt::installMoonNameHooks();
+    installStageWarpHooks();
     btt::TimerHooks::installTimerHooks();
 
     // customboot::prepareCustomBootHook.installAtSym<"_ZN10BootLayoutC1ERKN2al14LayoutInitInfoE">();

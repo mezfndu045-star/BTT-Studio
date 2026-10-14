@@ -20,7 +20,13 @@ Le site officiel en ligne est disponible sur **GitHub Pages** ([https://mezfndu0
 
 ---
 
-## 🆕 Nouveautés v1.5.0
+## 🆕 Nouveautés v1.6.0
+
+- **Téléportation depuis une nouvelle sauvegarde** (encore à Cap ou Cascade, Odyssée pas réparée) : plus de blocage en arrivant dans un autre royaume. Un royaume pas encore débloqué l'est comme avec l'Odyssée (avec ceux qui le précèdent), pour pouvoir payer des lunes et repartir.
+- **Misc** et **Input Display** s'affichent sur 2 colonnes.
+- **Input Display** : *P2 Preset Pos*, *P2 Position X / Y* et *P2 Reset Position* pour déplacer la 2e manette (2P Mode).
+
+## Nouveautés v1.5.0
 
 - **Version pour SMO 1.3.0** : le Practice Mod BTT existe maintenant aussi pour un jeu en version 1.3.0, avec les mêmes options (zips `BTT-Studio-1.3-*`).
 - **Stages** : chaque royaume a son image, chaque sous-zone a deux images (l'entrée vue de l'extérieur et l'intérieur). Avec Scenario à 0, on arrive dans le dernier scénario du royaume.
@@ -145,6 +151,7 @@ Le menu vertical translucide s'ouvre avec la combinaison **`L + D-Pad Gauche`**.
 - **Preset Pos** : Place la manette au Centre ou dans les 4 coins d'un clic.
 - **Position X & Y** : Règle l'emplacement par pas de 25px (ou glisser-déposer à la souris).
 - **Reset Position** : Replace la manette au centre de l'écran.
+- **P2 Preset Pos / P2 Position X / P2 Position Y / P2 Reset Position** : Les mêmes réglages pour la 2e manette (2P Mode).
 - **Button Color** : Couleur des boutons au repos (13 teintes au choix).
 - **Pressed Color** : Couleur des boutons quand ils sont enfoncés.
 - **Stick Color** : Couleur des sticks analogiques.

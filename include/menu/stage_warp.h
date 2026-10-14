@@ -14,3 +14,5 @@ bool isStageWarpPending();
 int getStageSceneGeneration();
 // Last scenario of the kingdom a stage belongs to (Moon Rocks broken, everything unlocked), 0 if unknown
 int getLastScenarioOfStage(const char* stageName);
+// Frees the Cascade preload of a new save when the mod changes kingdom (see stage_warp.cpp)
+void installStageWarpHooks();

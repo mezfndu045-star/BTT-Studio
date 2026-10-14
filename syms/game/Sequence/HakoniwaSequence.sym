@@ -2,8 +2,12 @@
 
 _ZN16HakoniwaSequence6updateEv
 _ZTI16HakoniwaSequence
+_ZN19WorldResourceLoader33requestLoadWorldHomeStageResourceEii
+_ZN19WorldResourceLoader23tryDestroyWorldResourceEv
 
 @smo:130
 
 _ZN16HakoniwaSequence6updateEv = 0x004b4e90
 _ZTI16HakoniwaSequence = 0x012cfaa0
+_ZN19WorldResourceLoader33requestLoadWorldHomeStageResourceEii = 0x004bddb0
+_ZN19WorldResourceLoader23tryDestroyWorldResourceEv = 0x004bdc60

@@ -314,6 +314,8 @@ void Menu::initCategories() {
             else GameDataFunction::addCoin(GameDataHolderWriter(stageScene), -1000);
         }
     }));
+    // Right column starts here
+    mCategories[2].columnSplit = (int)mCategories[2].components.size();
     mCategories[2].components.push_back(new ButtonMenuComponent("Reload Scene", [this]() {
         if (stageScene) stageScene->kill();
     }));
@@ -439,6 +441,41 @@ void Menu::initCategories() {
             sDisplayPreset = 0;
             sInputDisplayX = 800;
             sInputDisplayY = 450;
+        }
+    }));
+    // Right column: position of the 2nd controller (2P Mode), then the colors
+    mCategories[4].columnSplit = (int)mCategories[4].components.size();
+    static int sDisplayPresetP2 = 0;
+    static int sInputDisplayP2X = (int)set->getSettings()->mInputDisplayPosP2.x;
+    static int sInputDisplayP2Y = (int)set->getSettings()->mInputDisplayPosP2.y;
+    mCategories[4].components.push_back(new EnumMenuComponent<int>(&sDisplayPresetP2, sPresetNames, 5, "P2 Preset Pos", 34, [](int preset) {
+        SettingsMgr* s = SettingsMgr::instance();
+        if (!s || !s->getSettings()) return;
+        switch (preset) {
+            case 0: s->getSettings()->mInputDisplayPosP2 = ImVec2(800.f, 450.f); break; // Center
+            case 1: s->getSettings()->mInputDisplayPosP2 = ImVec2(250.f, 720.f); break; // Bottom Left
+            case 2: s->getSettings()->mInputDisplayPosP2 = ImVec2(1380.f, 720.f); break; // Bottom Right
+            case 3: s->getSettings()->mInputDisplayPosP2 = ImVec2(250.f, 220.f); break; // Top Left
+            case 4: s->getSettings()->mInputDisplayPosP2 = ImVec2(1380.f, 220.f); break; // Top Right
+        }
+        sInputDisplayP2X = (int)s->getSettings()->mInputDisplayPosP2.x;
+        sInputDisplayP2Y = (int)s->getSettings()->mInputDisplayPosP2.y;
+    }));
+    mCategories[4].components.push_back(new IntMenuComponent<int>(&sInputDisplayP2X, "P2 Position X", 0, 1600, 25, 34, [](int x) {
+        SettingsMgr* s = SettingsMgr::instance();
+        if (s && s->getSettings()) s->getSettings()->mInputDisplayPosP2.x = (float)x;
+    }));
+    mCategories[4].components.push_back(new IntMenuComponent<int>(&sInputDisplayP2Y, "P2 Position Y", 0, 900, 25, 34, [](int y) {
+        SettingsMgr* s = SettingsMgr::instance();
+        if (s && s->getSettings()) s->getSettings()->mInputDisplayPosP2.y = (float)y;
+    }));
+    mCategories[4].components.push_back(new ButtonMenuComponent("P2 Reset Position", []() {
+        SettingsMgr* s = SettingsMgr::instance();
+        if (s && s->getSettings()) {
+            s->getSettings()->mInputDisplayPosP2 = ImVec2(800.f, 450.f);
+            sDisplayPresetP2 = 0;
+            sInputDisplayP2X = 800;
+            sInputDisplayP2Y = 450;
         }
     }));
     mCategories[4].components.push_back(new EnumMenuComponent<SettingsMgr::InputDisplayColor>(&set->getSettings()->mInputDisplayButtonColor, sColorNames, 13, "Button Color"));
