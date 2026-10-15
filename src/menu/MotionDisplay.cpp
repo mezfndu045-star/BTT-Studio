@@ -163,6 +163,7 @@ constexpr int cMaxModelVerts = 2048, cMaxModelTris = 4096;
 struct DrawTri {
     float depth;
     uint16_t a, b, c;
+    bool isFront;
     ImU32 col;
 };
 
@@ -182,7 +183,13 @@ void drawMesh(ImDrawList* dl, const Projector& pr, float unitPx, const int16_t (
     const float k = unitPx / 2048.f;
     for (int i = 0; i < VN; i++) sModelVerts[i] = pr.rotate({ verts[i][0] * k, verts[i][1] * k, verts[i][2] * k });
     int num = 0;
+    // Marks of the front (buttons, sticks, their wells): drawn after the body (a big face of the body sorted by its
+    // middle could hide them), and only while the front is seen
+    const bool isFrontSeen = pr.rotate({ 0, 0, 1 }).z > 0.05f;
     for (const MotionModelPart& part : parts) {
+        const bool isFront = part.kind == MotionPartKind::Face || part.kind == MotionPartKind::Button ||
+                             part.kind == MotionPartKind::Stick;
+        if (isFront && !isFrontSeen) continue;
         bool isHeld = part.padIdx >= 0 && npad->mPadHold.isOnBit(part.padIdx);
         ImU32 col = colors.body;
         switch (part.kind) {
@@ -214,6 +221,7 @@ void drawMesh(ImDrawList* dl, const Projector& pr, float unitPx, const int16_t (
             d.a = tris[t][0];
             d.b = tris[t][1];
             d.c = tris[t][2];
+            d.isFront = isFront;
             d.col = shade(col, light);
         }
         if (part.kind == MotionPartKind::Stick && (shift.x != 0 || shift.y != 0)) {
@@ -232,7 +240,9 @@ void drawMesh(ImDrawList* dl, const Projector& pr, float unitPx, const int16_t (
                 }
         }
     }
-    std::sort(sModelTris, sModelTris + num, [](const DrawTri& l, const DrawTri& r) { return l.depth < r.depth; });
+    std::sort(sModelTris, sModelTris + num, [](const DrawTri& l, const DrawTri& r) {
+        return l.isFront != r.isFront ? r.isFront : l.depth < r.depth;
+    });
     auto screen = [&](const Vec3& p) {
         float s = cFocal / (cFocal - p.z);
         return ImVec2(pr.center.x + p.x * s, pr.center.y - p.y * s);
@@ -319,7 +329,7 @@ bool drawMotionDisplay(int player, const ImVec2& center, float scale) {
     bool isJoyCons = m.style == cStyleJoyDual || m.style == cStyleHandheld;
     if (isJoyCons) {
         // Two Joy-Con, each turning with its own sensor; same colors as the Pro Controller
-        ModelColors colors { IM_COL32(45, 46, 50, 255), IM_COL32(25, 25, 28, 255), IM_COL32(40, 41, 45, 255),
+        ModelColors colors { IM_COL32(45, 46, 50, 255), IM_COL32(25, 25, 28, 255), IM_COL32(25, 25, 28, 255),
                              IM_COL32(160, 160, 160, 255), IM_COL32(232, 232, 232, 255), flat.pressed };
         for (int side = 0; side < 2; side++) {
             relativeAxes(m.count > side ? m.sensors[side] : sNoSensor, axes);
@@ -334,7 +344,7 @@ bool drawMotionDisplay(int player, const ImVec2& center, float scale) {
         }
     } else {
         // Pro Controller: dark body, light buttons, gray sticks
-        ModelColors colors { IM_COL32(45, 46, 50, 255), IM_COL32(25, 25, 28, 255), IM_COL32(40, 41, 45, 255),
+        ModelColors colors { IM_COL32(45, 46, 50, 255), IM_COL32(25, 25, 28, 255), IM_COL32(25, 25, 28, 255),
                              IM_COL32(160, 160, 160, 255), IM_COL32(232, 232, 232, 255), flat.pressed };
         relativeAxes(m.count > 0 ? m.sensors[0] : sNoSensor, axes);
         for (int i = 0; i < 3; i++) pr.axes[i] = axes[i];
