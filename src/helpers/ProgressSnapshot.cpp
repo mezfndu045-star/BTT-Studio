@@ -37,6 +37,40 @@ namespace {
     void* fileOf(GameDataHolder* holder) { return *reinterpret_cast<void**>(reinterpret_cast<u8*>(holder) + 0x20); }
     void* heapOf(GameDataHolder* holder) { return *reinterpret_cast<void**>(reinterpret_cast<u8*>(holder) + 0x90); }
 
+    // Checkpoint flag positions (CheckpointFlag::init -> GameDataFile::registerCheckpointTrans), not in the save data:
+    // GameDataFile +0x9e8 / 1.3 +0xa30 -> 20 worlds -> 16 entries of 0x148 bytes, position at +0x134. initializeData
+    // clears them and only the main stage of a kingdom registers them again, so they are kept across a restore (else
+    // Restart Scene in a sub-area loses the flags, All Checkpoints included).
+#if BTT_V130
+    constexpr int cCheckpointTableOffset = 0xa30;
+#else
+    constexpr int cCheckpointTableOffset = 0x9e8;
+#endif
+    constexpr int cCheckpointWorldNum = 20, cCheckpointNum = 16, cCheckpointEntrySize = 0x148, cCheckpointTransOffset = 0x134;
+    float sCheckpointTrans[cCheckpointWorldNum][cCheckpointNum][3];
+
+    float* checkpointTrans(void* file, int world, int index) {
+        u8** worlds = *reinterpret_cast<u8***>(static_cast<u8*>(file) + cCheckpointTableOffset);
+        if (!worlds || !worlds[world]) return nullptr;
+        return reinterpret_cast<float*>(worlds[world] + index * cCheckpointEntrySize + cCheckpointTransOffset);
+    }
+
+    void saveCheckpointTrans(void* file) {
+        for (int w = 0; w < cCheckpointWorldNum; w++)
+            for (int i = 0; i < cCheckpointNum; i++) {
+                float* t = checkpointTrans(file, w, i);
+                memcpy(sCheckpointTrans[w][i], t ? t : (const float[3]){ 0, 0, 0 }, sizeof(float) * 3);
+            }
+    }
+
+    void restoreCheckpointTrans(void* file) {
+        for (int w = 0; w < cCheckpointWorldNum; w++)
+            for (int i = 0; i < cCheckpointNum; i++) {
+                float* t = checkpointTrans(file, w, i);
+                if (t && t[0] == 0 && t[1] == 0 && t[2] == 0) memcpy(t, sCheckpointTrans[w][i], sizeof(float) * 3);
+            }
+    }
+
     bool isMoonRefresh() {
         SettingsMgr::Settings* s = SettingsMgr::getSettings();
         return s && s->mIsEnableMoonRefresh;
@@ -90,8 +124,11 @@ bool takeOrRestoreTravelSnapshot(GameDataHolder* holder, const char* stageName) 
     for (TravelSnapshot& snap : sTravelSnapshots) {
         if (!snap.data || strcmp(snap.stage, stageName) != 0) continue;
         snap.age = ++sTravelAge;
+        saveCheckpointTrans(file);
         ProgressSnapshot_initializeData(file);
-        return ProgressSnapshot_tryReadByamlData(file, snap.data + 4);
+        bool isRead = ProgressSnapshot_tryReadByamlData(file, snap.data + 4);
+        restoreCheckpointTrans(file);
+        return isRead;
     }
     // Written in the work buffer, then copied into a slot (a free one, or the oldest)
     static u8* sWork = nullptr;
@@ -128,8 +165,10 @@ bool restoreProgressSnapshot(GameDataHolder* holder) {
     snprintf(stage, sizeof(stage), "%s", curStage);
     snprintf(startId, sizeof(startId), "%s", curStart && curStart[0] ? curStart : "start");
 
+    saveCheckpointTrans(file);
     ProgressSnapshot_initializeData(file);
     if (!ProgressSnapshot_tryReadByamlData(file, sSnapshot + 4)) return false;
+    restoreCheckpointTrans(file);
     restoreVisitScenario();
 
     ChangeStageInfo info(holder, startId, stage, false, -1, ChangeStageInfo::SubScenarioType::NO_SUB_SCENARIO);
