@@ -20,7 +20,11 @@ Le site officiel en ligne est disponible sur **GitHub Pages** ([https://mezfndu0
 
 ---
 
-## 🆕 Nouveautés v1.8.0
+## 🆕 Nouveautés v1.8.1
+
+- **Cutscene Refresh / Kingdom Enter Refresh** : la cinématique de l'histoire ne se rejoue plus quand Mario meurt (seulement en arrivant dans le royaume ou au *Restart Scene*).
+
+## Nouveautés v1.8.0
 
 - **Keybinds > Custom** : chaque raccourci peut prendre n'importe quelle combinaison de touches (choisir *Custom*, A, puis maintenir les touches voulues et les relâcher). Les réglages par défaut ne changent pas.
 - **Options > Open Outfit Doors** : les gardiens des salles à costume laissent entrer Mario, quelle que soit sa tenue.

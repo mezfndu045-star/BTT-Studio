@@ -234,6 +234,13 @@ HkTrampoline talkMessageFlagOnHook = [](TrampolineStatic(), const al::IUseSceneO
 // Back in a kingdom's main stage from one of its sub-areas (e.g. Luncheon from Slots): its stage start cutscenes are
 // not played again (only on arriving in the kingdom or restarting the stage). Set in stageSceneInitHook.
 static bool sIsSubAreaReturn = false;
+// Mario died: the next load of the stage (from the last checkpoint) does not play its start cutscenes again either
+static bool sIsMissReload = false;
+namespace btt {
+void onStageMiss() {
+    sIsMissReload = true;
+}
+} // namespace btt
 static char sLastStage[64] = {};
 static s32 sLastWorld = -1;
 // Current world of the save (GameDataFile +0x9f0 / 1.3 +0xa38, as GameDataFunction::getCurrentWorldId reads it)
@@ -262,6 +269,7 @@ void restoreVisitScenario() {
 } // namespace btt
 HkTrampoline setMainScenarioNoHook = [](TrampolineStatic(), void* file, s32 scenario) -> void {
     orig(file, scenario);
+    if (btt::isDebugTrace()) btt::dbgLog("DBG: setMainScenarioNo %d (visit world %d scenario %d)", scenario, sVisitWorld, sVisitScenario);
     if (file && *reinterpret_cast<s32*>(static_cast<u8*>(file) + cCurrentWorldIdOffset) == sVisitWorld && scenario > 0)
         sVisitScenario = scenario;
 };
@@ -523,6 +531,8 @@ HkTrampoline stageSceneInitHook = [](TrampolineStatic(), StageScene* stageScene,
         sIsSubAreaReturn = stage && strstr(stage, "WorldHomeStage") && sLastStage[0] && strcmp(stage, sLastStage) != 0 &&
                            !strstr(sLastStage, "WorldHomeStage") && strncmp(sLastStage, "Demo", 4) != 0 &&
                            kingdom >= 0 && kingdom == sLastWorld;
+        if (sIsMissReload) sIsSubAreaReturn = true;
+        sIsMissReload = false;
         if (btt::isDebugTrace())
             btt::dbgLog("DBG: sub-area return %d (stage %s kingdom %d, last %s world %d)", sIsSubAreaReturn,
                         stage ? stage : "?", kingdom, sLastStage, sLastWorld);
@@ -558,7 +568,9 @@ HkTrampoline stageSceneInitHook = [](TrampolineStatic(), StageScene* stageScene,
             sVisitScenario = -1;
         }
         sSceneStartVisitScenario = sVisitScenario;
-        if (btt::isDebugTrace()) btt::dbgLog("DBG: visit world %d scenario %d", sVisitWorld, sVisitScenario);
+        if (btt::isDebugTrace())
+            btt::dbgLog("DBG: loaded %s scenario %d world %d -> visit world %d scenario %d", loaded ? loaded : "?",
+                        info.scenarioNo, sLastWorld, sVisitWorld, sVisitScenario);
     }
     if (sForcedScenario > 0) {
         const char* loaded = GameDataFunction::getCurrentStageName(GameDataHolderAccessor(stageScene));

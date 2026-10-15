@@ -186,11 +186,17 @@ static void onWipeClosed(const void* wipe) {
 }
 // Press Start (TimerHookType::GameStart): A is pressed on the game mode screen of a new game ("Start" / "Start in
 // Assist Mode"), i.e. SceneStateSelectMode leaves its Wait nerve for its Decide nerve. Watched in the nerve hook below.
+namespace btt {
+void onStageMiss();  // SettingsHooks.cpp
+} // namespace btt
+
 HkTrampoline wipeSetNerveHook = [](TrampolineStatic(), al::IUseNerve* user, const al::Nerve* nerve) -> void {
     static const al::Nerve* sWipeCloseEndNerve =
         reinterpret_cast<const al::Nerve*>(hk::sail::lookupSymbolFromDb<>("WipeSimpleNrvCloseEnd"));
     static const al::Nerve* sSelectModeDecideNerve =
         reinterpret_cast<const al::Nerve*>(hk::sail::lookupSymbolFromDb<>("SceneStateSelectModeNrvDecide"));
+    static const al::Nerve* sStageMissNerve =
+        reinterpret_cast<const al::Nerve*>(hk::sail::lookupSymbolFromDb<>("StageSceneNrvMiss"));
     static const al::Nerve* sWireKoopaChargeNerve =
         reinterpret_cast<const al::Nerve*>(hk::sail::lookupSymbolFromDb<>("ElectricWireKoopaNrvInCharge"));
     orig(user, nerve);
@@ -199,6 +205,8 @@ HkTrampoline wipeSetNerveHook = [](TrampolineStatic(), al::IUseNerve* user, cons
         if (scene && static_cast<const void*>(user) == static_cast<const void*>(static_cast<al::IUseNerve*>(scene)))
             btt::dbgLog("DBG: StageScene nerve %s", typeid(*nerve).name());
     }
+    // Mario died (StageScene Miss): the stage reloaded after it is not a new start (SettingsHooks.cpp)
+    if (nerve == sStageMissNerve) btt::onStageMiss();
     // al::WipeSimple's IUseNerve base is at offset 0, so `user` is the wipe itself
     if (nerve == sWipeCloseEndNerve) onWipeClosed(user);
     else if (nerve == sSelectModeDecideNerve && Timer::sInstance) Timer::sInstance->event(TimerHookType::GameStart);
