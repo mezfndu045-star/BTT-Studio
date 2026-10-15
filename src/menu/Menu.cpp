@@ -396,7 +396,11 @@ void Menu::initCategories() {
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableDoorRefresh, "Doors Refresh"));
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableShardRefresh, "Moon Shards Refresh"));
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableRefreshKingdomEnter, "Kingdom Enter Refresh"));
-    mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableRefreshWarpText, "Warp Text Refresh"));
+    // Warp Text Refresh is now part of Cutscene Refresh: an older setting turns Cutscene Refresh on instead
+    if (set->getSettings()->mIsEnableRefreshWarpText) {
+        set->getSettings()->mIsEnableRefreshWarpText = false;
+        set->getSettings()->mIsEnableRefreshNpc = true;
+    }
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableFlowerPotRefresh, "Seeds Refresh"));
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableSeedGrowing, "Seeds Growing"));
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableRefreshNpc, "Cutscene Refresh"));
@@ -432,10 +436,9 @@ void Menu::initCategories() {
         { "Doors Refresh", "Doors already opened are closed again when the scene is reloaded." },
         { "Moon Shards Refresh", "Moon shards (and their counter) come back, even when their moon is already collected." },
         { "Kingdom Enter Refresh", "The Odyssey arrival cutscene of the kingdom plays again." },
-        { "Warp Text Refresh", "Cappy says his texts again (the checkpoint warp explanation when you touch a flag, his texts at the start of the kingdoms), and the camera with the story text at the start of a kingdom plays again (back at each reload)." },
         { "Seeds Refresh", "Seeds come back and pots are empty at each reload. The plant grows normally (with time or water)." },
         { "Seeds Growing", "A planted seed grows to the end at once and its moon appears. Works with or without Seeds Refresh." },
-        { "Cutscene Refresh", "Cutscenes and first talks of the characters (Toads, Peach, Captain Toad...) play again." },
+        { "Cutscene Refresh", "Cutscenes and first talks of the characters (Toads, Peach, Captain Toad...) play again, with Cappy's texts (the checkpoint warp explanation, his texts at the start of the kingdoms) and the camera with the story text at the start of a kingdom." },
         { "Always Manual Cutscene", "Cutscenes never skip by themselves: you choose when to skip them." },
         { "Always Checkpoints", "You can always warp to the flags from the map, even where the game normally forbids it." },
         { "Disable Autosave", "The game no longer saves by itself: your save file stays the same while you practice." },
@@ -590,6 +593,13 @@ void Menu::initCategories() {
     mCategories[3].components.push_back(new ButtonMenuComponent("Reset Timer", []() {
         if (btt::Timer::sInstance) btt::Timer::sInstance->reset();
     }));
+    // Splits (like LiveSplit): each End Type event goes to the next split
+    mCategories[3].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableSplits, "Splits"));
+    mCategories[3].components.back()->setHelp("Each End Type event (after End Count) goes to the next split, the last split ends the run. Under the timer, each split shows the time when it ended.");
+    if (set->getSettings()->mSplitCount < 2 || set->getSettings()->mSplitCount > btt::Timer::cMaxSplits) set->getSettings()->mSplitCount = 5;
+    mCategories[3].components.push_back(new IntMenuComponent<u8>(&set->getSettings()->mSplitCount, "Split Count", 2, btt::Timer::cMaxSplits, 1));
+    // Right column: position of the timer
+    mCategories[3].columnSplit = (int)mCategories[3].components.size();
     static int sTimerPreset = 0;
     static const char* sTimerPresetNames[6] = { "Center", "Top Left", "Top Center", "Top Right", "Bottom Left", "Bottom Right" };
     static int sTimerX = (int)set->getSettings()->mTimerPos.x;

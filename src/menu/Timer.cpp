@@ -5,12 +5,45 @@
 #include <cstdio>
 
 #include "imgui.h"
+#include "menu/Lang.h"
 #include "menu/Menu.h"
 #include "src/settings/SettingsMgr.h"
+
+#include <cstring>
 
 namespace btt {
 
 Timer* Timer::sInstance = nullptr;
+
+namespace {
+
+    s64 nowMs(s64 startTick) {
+        s64 freq = nn::os::GetSystemTickFrequency().value;
+        s64 t = nn::os::GetSystemTick().value - startTick;
+        return t / freq * 1000 + (t % freq) * 1000 / freq;
+    }
+
+    int splitCount() {
+        int n = SettingsMgr::getSettings()->mSplitCount;
+        return n < 2 ? 2 : n > Timer::cMaxSplits ? Timer::cMaxSplits : n;
+    }
+
+    // "1:02.345" or "02.345"
+    void formatMs(char* out, int size, s64 ms) {
+        s64 s = ms / 1000, m = s / 60;
+        if (m > 0) snprintf(out, size, "%ld:%02ld.%03ld", m, s % 60, ms % 1000);
+        else snprintf(out, size, "%02ld.%03ld", s % 60, ms % 1000);
+    }
+
+} // namespace
+
+void Timer::split() {
+    if (!mIsRunning) return;
+    int count = splitCount();
+    if (mSplitIndex >= count) return;
+    mSplitMs[mSplitIndex++] = nowMs(mStartTick);
+    if (mSplitIndex >= count) stop();
+}
 
 Timer::Timer() {
     sInstance = this;
@@ -24,6 +57,8 @@ void Timer::start() {
     mMoonTickCount = 0;
     mStartEventCount = 0;
     mEndEventCount = 0;
+    mSplitIndex = 0;
+    memset(mSplitMs, 0, sizeof(mSplitMs));
 }
 
 void Timer::resetEventCounts() {
@@ -70,6 +105,8 @@ void Timer::reset() {
     mIsRunning = false;
     mFrames = 0;
     resetEventCounts();
+    mSplitIndex = 0;
+    memset(mSplitMs, 0, sizeof(mSplitMs));
 }
 
 void Timer::event(TimerHookType type) {
@@ -83,7 +120,9 @@ void Timer::event(TimerHookType type) {
         if (!mIsRunning) {
             if (countEvent(&mStartEventCount, settings->mTimerStartCount)) start();
         } else if (countEvent(&mEndEventCount, settings->mTimerEndCount)) {
-            if (settings->mIsEnableSegTimerSplit)
+            if (settings->mIsEnableSplits)
+                split();
+            else if (settings->mIsEnableSegTimerSplit)
                 showSplit();
             else
                 stop();
@@ -97,7 +136,10 @@ void Timer::event(TimerHookType type) {
             start();
         }
     } else if (mIsRunning) {
-        if (countEvent(&mEndEventCount, settings->mTimerEndCount)) stop();
+        if (countEvent(&mEndEventCount, settings->mTimerEndCount)) {
+            if (settings->mIsEnableSplits) split();
+            else stop();
+        }
     }
 }
 
@@ -108,6 +150,38 @@ void Timer::showSplit() {
         mEndTick = tick.value;
     }
     mShowSplitTick = tick.value;
+}
+
+// The splits under the timer, one row each: the timer's time when the split ended (the split being run shows the
+// running time)
+void Timer::drawSplits() {
+    int count = splitCount();
+    ImDrawList* dl = ImGui::GetForegroundDrawList();
+    ImFont* font = ImGui::GetIO().Fonts->Fonts[0];
+    constexpr float cSize = 28.f, cRowH = 32.f, cWidth = 300.f;
+    ImVec2 pos = btt::SettingsMgr::instance()->getSettings()->mTimerPos;
+    pos.y += 62.f;
+    dl->AddRectFilled(ImVec2(pos.x - 8, pos.y - 4), ImVec2(pos.x + cWidth, pos.y + count * cRowH + 4), IM_COL32(0, 0, 0, 140), 8.f);
+    for (int i = 0; i < count; i++) {
+        float y = pos.y + i * cRowH;
+        bool isCurrent = mIsRunning && i == mSplitIndex;
+        if (isCurrent)
+            dl->AddRectFilled(ImVec2(pos.x - 6, y), ImVec2(pos.x + cWidth - 2, y + cRowH - 2), IM_COL32(60, 90, 160, 160), 6.f);
+        char text[32];
+        snprintf(text, sizeof(text), "%s %d", tr("Split"), i + 1);
+        dl->AddText(font, cSize, ImVec2(pos.x, y), IM_COL32(255, 255, 255, 255), text);
+        ImU32 col = IM_COL32(255, 255, 255, 255);
+        if (i < mSplitIndex) formatMs(text, sizeof(text), mSplitMs[i]);
+        else if (isCurrent) {
+            formatMs(text, sizeof(text), nowMs(mStartTick));
+            col = IM_COL32(170, 200, 255, 255);
+        } else {
+            snprintf(text, sizeof(text), "-");
+            col = IM_COL32(170, 170, 170, 255);
+        }
+        ImVec2 ts = font->CalcTextSizeA(cSize, FLT_MAX, 0.f, text);
+        dl->AddText(font, cSize, ImVec2(pos.x + cWidth - 10 - ts.x, y), col, text);
+    }
 }
 
 void Timer::draw() {
@@ -153,6 +227,8 @@ void Timer::draw() {
                 btt::SettingsMgr::instance()->getSettings()->mTimerPos.y += delta.y;
             }
         }
+
+        if (btt::SettingsMgr::instance()->getSettings()->mIsEnableSplits) drawSplits();
 
         if (isShowSplit)
             ImGui::GetForegroundDrawList()->AddText(

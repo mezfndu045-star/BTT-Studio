@@ -78,6 +78,9 @@ Deux mods sont déployés dans `C:\Users\FlowUP\AppData\Roaming\yuzu\load\010000
 - **Correction** : les 8 `bl rs::isGotShine` du watcher (init +0x1d4a60/+0x1d4ba4, `createShineChips` +0x1d4c30 qui crée les fragments "vides"/gris si la lune est prise, `initAfterPlacement` +0x1d4df4/+0x1d4ff4/+0x1d50bc, `updateHints` +0x1d5174, `appear` +0x1d5314 → `ShineChipWatcherGotCheck1..8`) renvoient `false` quand l'option est active. 1re version (3 appels seulement) : fragments encore gris. Recharger la scène après avoir activé l'option.
 - **Compteur en haut de l'écran** : `StageSceneLayout` / `ShineChipLayoutParts` ne l'affichent pas si `rs::isCurrentShineChipWatcherTypeEmpty` (= lune du watcher déjà prise) → trampoline qui renvoie `false` avec l'option.
 
+### PUBLIÉ — v1.9.0 sur le compte GitHub mezfndu045-star (parent d6ff917)
+- v1.9.0 : Timer > Splits / Split Count (Settings mIsEnableSplits, mSplitCount ; Timer::split() à chaque événement du type de fin quand Splits est activé, le dernier arrête le run ; drawSplits sous le timer : nom + temps du timer à la fin du split, sans écart ni record — demandé ainsi). Warp Text Refresh retiré du menu et fusionné dans Cutscene Refresh (mIsEnableRefreshWarpText reporté sur mIsEnableRefreshNpc au chargement du menu ; No Checkpoint Touch n'est plus contourné). Scripts `mkzips190.py` / `edit_site190.py`.
+
 ### PUBLIÉ — v1.8.3 sur le compte GitHub mezfndu045-star (parent 5e03119)
 - v1.8.3 : positions des drapeaux de checkpoint gardées pendant la remise de la progression (ProgressSnapshot.cpp : GameDataFile +0x9e8 / 1.3 +0xa30 -> 20 mondes -> 16 entrées de 0x148, position à +0x134 ; relevées avant initializeData, remises si vides après tryReadByamlData). Sans ça, Restart Scene (Moon Refresh) dans une sous-zone perdait les drapeaux (All Checkpoints ignore un drapeau sans position). Scripts `mkzips183.py` / `edit_site183.py`.
 

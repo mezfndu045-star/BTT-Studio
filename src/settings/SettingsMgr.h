@@ -155,6 +155,9 @@ public:
         u16 mCustomKeys[24] = {};
         // Options > Open Outfit Doors: the guards of the outfit rooms let Mario in whatever he wears
         bool mIsEnableOpenOutfitDoors = false;
+        // Timer > Splits (like LiveSplit): each End Type event goes to the next split, the last one ends the run
+        bool mIsEnableSplits = false;
+        u8 mSplitCount = 5;
     } mSettings;
 
     // Settings* getSettings() { return &mSettings; }

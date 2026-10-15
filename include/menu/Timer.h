@@ -38,6 +38,11 @@ public:
     // End Type events seen while the timer runs, for the End Count setting
     int mEndEventCount = 0;
 
+    // Splits (Timer > Splits): time of each split done in this run (ms since the start), and the split being run
+    static constexpr int cMaxSplits = 30;
+    s64 mSplitMs[cMaxSplits] = {};
+    int mSplitIndex = 0;
+
 public:
     Timer();
 
@@ -49,8 +54,11 @@ public:
     void showSplit();
     void onMoonGet();
     void onMoonTick();
+    // The current split is done (End Type event with Splits on): next split, or the end of the run
+    void split();
 
     void draw();
+    void drawSplits();
 
     static Timer* sInstance;
 };

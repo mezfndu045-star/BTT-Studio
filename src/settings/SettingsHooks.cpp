@@ -219,7 +219,7 @@ static int sSceneTalkFlagNum = 0;
 
 HkTrampoline talkMessageFlagHook = [](TrampolineStatic(), const al::IUseSceneObjHolder* holder, int index) -> bool {
     auto* s = SettingsMgr::getSettings();
-    if (!s || !(s->mIsEnableRefreshWarpText || s->mIsEnableRefreshNpc)) return orig(holder, index);
+    if (!s || !s->mIsEnableRefreshNpc) return orig(holder, index);
     for (int i = 0; i < sSceneTalkFlagNum; i++)
         if (sSceneTalkFlags[i] == index) return true;
     return false;
@@ -282,7 +282,7 @@ int getKingdomIndexOfStage(const char* stageName);  // stage_warp.cpp
 // e.g. Sand Kingdom, Night Metro) is only played once (GameDataHolder::isPlayAlreadyScenarioStartCamera)
 HkTrampoline scenarioStartCameraHook = [](TrampolineStatic(), const void* holder, int index) -> bool {
     auto* s = SettingsMgr::getSettings();
-    if (!sIsSubAreaReturn && s && (s->mIsEnableRefreshWarpText || s->mIsEnableRefreshNpc || s->mIsEnableRefreshKingdomEnter))
+    if (!sIsSubAreaReturn && s && (s->mIsEnableRefreshNpc || s->mIsEnableRefreshKingdomEnter))
         return false;
     return orig(holder, index);
 };
@@ -934,17 +934,17 @@ HkTrampoline NoDamageHook = [](TrampolineStatic(), PlayerHitPointData* hitPointD
 
 HkTrampoline warpTextHook = [](TrampolineStatic(), GameDataHolderAccessor accessor) -> bool {
     auto* s = SettingsMgr::instance()->getSettings();
-    return (s && (s->mIsEnableRefreshWarpText || s->mIsEnableRefreshNpc)) ? false : orig(accessor);
+    return (s && s->mIsEnableRefreshNpc) ? false : orig(accessor);
 };
 
 HkTrampoline isEnableShowExplainHook = [](TrampolineStatic(), GameDataHolderAccessor accessor) -> bool {
     auto* s = SettingsMgr::instance()->getSettings();
-    return (s && (s->mIsEnableRefreshWarpText || s->mIsEnableRefreshNpc)) ? true : orig(accessor);
+    return (s && s->mIsEnableRefreshNpc) ? true : orig(accessor);
 };
 
 HkTrampoline gameDataFileAlreadyShowExplainHook = [](TrampolineStatic(), void* file) -> bool {
     auto* s = SettingsMgr::instance()->getSettings();
-    return (s && (s->mIsEnableRefreshWarpText || s->mIsEnableRefreshNpc)) ? false : orig(file);
+    return (s && s->mIsEnableRefreshNpc) ? false : orig(file);
 };
 
 HkTrampoline refreshPurpsHook = [](TrampolineStatic(), GameDataHolderAccessor accessor,
@@ -962,7 +962,7 @@ HkTrampoline doorRefreshHook = [](TrampolineStatic(), DoorAreaChange* doorAreaCh
 
 HkTrampoline checkpointFlagHook = [](TrampolineStatic(), CheckpointFlag* checkpointFlag) -> void {
     auto* s = SettingsMgr::instance()->getSettings();
-    if (!s || !s->mIsEnableNoCheckpointTouch || s->mIsEnableRefreshWarpText) orig(checkpointFlag);
+    if (!s || !s->mIsEnableNoCheckpointTouch) orig(checkpointFlag);
 };
 
 // Skip Cloud: in a Cloud stage, Bowser (KoopaLv1) is beaten as soon as his battle start cutscene (DemoStart, his first
@@ -1169,22 +1169,22 @@ HkTrampoline worldTravelingHook2 = [](TrampolineStatic(), WorldTravelingNpc* act
 
 HkTrampoline toadRefreshHook = [](TrampolineStatic(), al::LiveActor* actor) -> bool {
     auto* s = SettingsMgr::instance()->getSettings();
-    return (s && (s->mIsEnableRefreshNpc || s->mIsEnableRefreshWarpText)) ? false : orig(actor);
+    return (s && s->mIsEnableRefreshNpc) ? false : orig(actor);
 };
 
 HkTrampoline hintToadRefreshHook = [](TrampolineStatic(), al::LiveActor* actor) -> bool {
     auto* s = SettingsMgr::instance()->getSettings();
-    return (s && (s->mIsEnableRefreshNpc || s->mIsEnableRefreshWarpText)) ? false : orig(actor);
+    return (s && s->mIsEnableRefreshNpc) ? false : orig(actor);
 };
 
 HkTrampoline musicToadRefreshHook = [](TrampolineStatic(), al::LiveActor* actor) -> bool {
     auto* s = SettingsMgr::instance()->getSettings();
-    return (s && (s->mIsEnableRefreshNpc || s->mIsEnableRefreshWarpText)) ? false : orig(actor);
+    return (s && s->mIsEnableRefreshNpc) ? false : orig(actor);
 };
 
 HkTrampoline peachRefreshHook = [](TrampolineStatic(), al::LiveActor* actor) -> bool {
     auto* s = SettingsMgr::instance()->getSettings();
-    return (s && (s->mIsEnableRefreshNpc || s->mIsEnableRefreshWarpText)) ? false : orig(actor);
+    return (s && s->mIsEnableRefreshNpc) ? false : orig(actor);
 };
 
 HkTrampoline coinStackRefreshHook = [](TrampolineStatic(), al::LiveActor* actor, al::PlacementId* id,

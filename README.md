@@ -20,7 +20,12 @@ Le site officiel en ligne est disponible sur **GitHub Pages** ([https://mezfndu0
 
 ---
 
-## 🆕 Nouveautés v1.8.3
+## 🆕 Nouveautés v1.9.0
+
+- **Timer > Splits / Split Count** : comme LiveSplit, chaque événement du type de fin passe au split suivant (2 à 30 splits), le dernier termine le run. Sous le timer, chaque split affiche le temps auquel il s'est terminé.
+- **Warp Text Refresh** est intégré à **Cutscene Refresh** (textes de Cappy, explication des drapeaux, caméra d'introduction du scénario). Activé chez toi, il active Cutscene Refresh à la place.
+
+## Nouveautés v1.8.3
 
 - **Moon Refresh** : *Restart Scene* dans une sous-zone garde les drapeaux de checkpoint (*All Checkpoints* compris).
 
@@ -120,7 +125,6 @@ Le site officiel en ligne est disponible sur **GitHub Pages** ([https://mezfndu0
 
 ### ⚡ 7. Speedrun Refreshes Intégrés
 - **Cutscene Refresh :** Réactive toutes les cinématiques et dialogues PNJ (Capitaine Toad, Hint Toad, Jammin' Toad, Traveling Peach).
-- **Warp Text Refresh :** Réactive les explications Cappy des checkpoints.
 
 ---
 
@@ -135,10 +139,9 @@ Le menu vertical translucide s'ouvre avec la combinaison **`L + D-Pad Gauche`**.
 - **Doors Refresh** : Réinitialise l'état fermé des portes du niveau.
 - **Moon Shards Refresh** : Fait réapparaître les 5 fragments de lune.
 - **Kingdom Enter Refresh** : Rejoue l'arrivée de l'Odyssée dans le pays.
-- **Warp Text Refresh** : Réactive l'explication de Cappy au drapeau.
 - **Seeds Refresh** : Les graines réapparaissent et les pots sont vides ; la plante pousse normalement.
 - **Seeds Growing** : Une graine plantée pousse tout de suite et la lune apparaît.
-- **Cutscene Refresh** : Réactive les cinématiques et dialogues initiaux des PNJ.
+- **Cutscene Refresh** : Réactive les cinématiques et dialogues initiaux des PNJ, les textes de Cappy (explication des drapeaux, début des royaumes) et la caméra d'introduction du scénario.
 - **Always Manual Cutscene** : Permet de passer les cinématiques sans attente.
 - **Always Checkpoints** : Valide les checkpoints dès qu'on s'en approche.
 - **Disable Autosave** : Coupe la sauvegarde auto pour garder sa partie propre.
@@ -190,6 +193,7 @@ Le menu vertical translucide s'ouvre avec la combinaison **`L + D-Pad Gauche`**.
 ### ⏱️ 4. Timer (Chronomètre)
 - **Segment Timer** : Affiche le chronomètre de speedrun à l'écran.
 - **Timer Split** : Active le découpage automatique des temps aux checkpoints.
+- **Splits / Split Count** : Comme LiveSplit, chaque événement du type de fin passe au split suivant ; chaque split affiche le temps auquel il s'est terminé.
 - **Start Type / End Type** : Événement qui lance / arrête le chronomètre (Press Start, Odyssey Power Up, Black Screen, White Screen, Capture, Damage, Escape Wire, Moon Get, Shine Tick, 2 Moons, Shine Grab).
 - **Start Count / End Count** : Nombre de fois que l'événement doit arriver avant de lancer / arrêter le chronomètre (1 à 99).
 - **Start Timer** : Démarre le chronomètre.
