@@ -18,7 +18,12 @@ class WorldTravelingNpc;
 
 namespace btt {
 
+class Timer;
+
 class Menu {
+    // The timer reads the end types of the splits (VisibleTimerHookTypes)
+    friend class Timer;
+
     SEAD_SINGLETON_DISPOSER(Menu)
 
 public:

@@ -598,6 +598,19 @@ void Menu::initCategories() {
     mCategories[3].components.back()->setHelp("Each End Type event (after End Count) goes to the next split, the last split ends the run. Under the timer, each split shows the time when it ended.");
     if (set->getSettings()->mSplitCount < 2 || set->getSettings()->mSplitCount > btt::Timer::cMaxSplits) set->getSettings()->mSplitCount = 5;
     mCategories[3].components.push_back(new IntMenuComponent<u8>(&set->getSettings()->mSplitCount, "Split Count", 2, btt::Timer::cMaxSplits, 1));
+    // End type of each split: choose the split (Edit Split), then its type (Split Type, "End Type" = the one above)
+    constexpr int cTypeNum = IM_ARRAYSIZE(VisibleTimerHookTypeNames);
+    static const char* sSplitTypeNames[cTypeNum + 1] = { "End Type" };
+    for (int i = 0; i < cTypeNum; i++) sSplitTypeNames[i + 1] = VisibleTimerHookTypeNames[i];
+    static int sEditSplit = 1;
+    static int sSplitTypeIdx = set->getSettings()->mSplitTypes[0];
+    mCategories[3].components.push_back(new IntMenuComponent<int>(&sEditSplit, "Edit Split", 1, btt::Timer::cMaxSplits, 1, 34, [](int n) {
+        sSplitTypeIdx = SettingsMgr::getSettings()->mSplitTypes[n - 1];
+    }));
+    mCategories[3].components.push_back(new EnumMenuComponent<int>(&sSplitTypeIdx, sSplitTypeNames, cTypeNum + 1, "Split Type", 34, [](int i) {
+        SettingsMgr::getSettings()->mSplitTypes[sEditSplit - 1] = (u8)i;
+    }));
+    mCategories[3].components.back()->setHelp("The event that ends the split chosen in Edit Split. \"End Type\": the End Type of the timer.");
     // Right column: position of the timer
     mCategories[3].columnSplit = (int)mCategories[3].components.size();
     static int sTimerPreset = 0;

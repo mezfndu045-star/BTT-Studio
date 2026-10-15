@@ -125,10 +125,11 @@ static u32 sWipeUse = 0;
 
 static void registerWipeColor(const void* wipe, const char* archiveName) {
     WipeColor color = WipeColor::Other;
-    // Black: fades, pipes (WipeCircle), and the end of a Multi Moon / story moon get (WipeResultGrand / WipeResultMain,
-    // StageSceneStateGetShineGrand / GetShineMain)
+    // Black: fades, pipes (WipeCircle), the end of a Multi Moon / story moon get (WipeResultGrand / WipeResultMain,
+    // StageSceneStateGetShineGrand / GetShineMain) and a skipped cutscene (WipeSkip, StageSceneStateSkipDemo)
     if (archiveName && (strcmp(archiveName, "FadeBlack") == 0 || strcmp(archiveName, "WipeCircle") == 0 ||
-                        strcmp(archiveName, "WipeResultGrand") == 0 || strcmp(archiveName, "WipeResultMain") == 0))
+                        strcmp(archiveName, "WipeResultGrand") == 0 || strcmp(archiveName, "WipeResultMain") == 0 ||
+                        strcmp(archiveName, "WipeSkip") == 0))
         color = WipeColor::Black;
     else if (archiveName && strcmp(archiveName, "FadeWhite") == 0) color = WipeColor::White;
     WipeColorEntry* slot = nullptr;

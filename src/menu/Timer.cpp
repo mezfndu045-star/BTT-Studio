@@ -111,8 +111,15 @@ void Timer::reset() {
 
 void Timer::event(TimerHookType type) {
     auto* settings = btt::SettingsMgr::instance()->getSettings();
+    // With Splits, the split being run can have its own end type (Timer > Edit Split / Split Type)
+    TimerHookType endType = settings->mTimerEndType;
+    if (settings->mIsEnableSplits && mIsRunning && mSplitIndex < cMaxSplits) {
+        int t = settings->mSplitTypes[mSplitIndex];
+        if (t > 0 && t <= int(sizeof(Menu::VisibleTimerHookTypes) / sizeof(Menu::VisibleTimerHookTypes[0])))
+            endType = Menu::VisibleTimerHookTypes[t - 1];
+    }
     bool isStartEvent = settings->mTimerStartType == type;
-    bool isEndEvent = settings->mTimerEndType == type;
+    bool isEndEvent = endType == type;
     if (!isStartEvent && !isEndEvent) return;
 
     // Same start and end type: each event stops a running timer (or shows a lap with Timer Split), else starts it

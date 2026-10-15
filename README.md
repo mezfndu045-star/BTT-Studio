@@ -20,7 +20,12 @@ Le site officiel en ligne est disponible sur **GitHub Pages** ([https://mezfndu0
 
 ---
 
-## 🆕 Nouveautés v1.9.0
+## 🆕 Nouveautés v1.9.1
+
+- **Timer > Edit Split / Split Type** : chaque split peut avoir son propre type de fin (*End Type* = celui du timer).
+- **Timer** : passer une cinématique compte comme un *Black Screen*.
+
+## Nouveautés v1.9.0
 
 - **Timer > Splits / Split Count** : comme LiveSplit, chaque événement du type de fin passe au split suivant (2 à 30 splits), le dernier termine le run. Sous le timer, chaque split affiche le temps auquel il s'est terminé.
 - **Warp Text Refresh** est intégré à **Cutscene Refresh** (textes de Cappy, explication des drapeaux, caméra d'introduction du scénario). Activé chez toi, il active Cutscene Refresh à la place.

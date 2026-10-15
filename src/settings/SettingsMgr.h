@@ -158,6 +158,8 @@ public:
         // Timer > Splits (like LiveSplit): each End Type event goes to the next split, the last one ends the run
         bool mIsEnableSplits = false;
         u8 mSplitCount = 5;
+        // End Type of each split: 0 = the Timer End Type, else 1 + index in Menu::VisibleTimerHookTypes
+        u8 mSplitTypes[30] = {};
     } mSettings;
 
     // Settings* getSettings() { return &mSettings; }

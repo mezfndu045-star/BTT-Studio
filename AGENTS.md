@@ -78,6 +78,9 @@ Deux mods sont déployés dans `C:\Users\FlowUP\AppData\Roaming\yuzu\load\010000
 - **Correction** : les 8 `bl rs::isGotShine` du watcher (init +0x1d4a60/+0x1d4ba4, `createShineChips` +0x1d4c30 qui crée les fragments "vides"/gris si la lune est prise, `initAfterPlacement` +0x1d4df4/+0x1d4ff4/+0x1d50bc, `updateHints` +0x1d5174, `appear` +0x1d5314 → `ShineChipWatcherGotCheck1..8`) renvoient `false` quand l'option est active. 1re version (3 appels seulement) : fragments encore gris. Recharger la scène après avoir activé l'option.
 - **Compteur en haut de l'écran** : `StageSceneLayout` / `ShineChipLayoutParts` ne l'affichent pas si `rs::isCurrentShineChipWatcherTypeEmpty` (= lune du watcher déjà prise) → trampoline qui renvoie `false` avec l'option.
 
+### PUBLIÉ — v1.9.1 sur le compte GitHub mezfndu045-star (parent 2c7dd6e)
+- v1.9.1 : type de fin par split (Settings mSplitTypes[30] : 0 = End Type du timer, sinon 1 + index dans Menu::VisibleTimerHookTypes ; Timer::event lit celui du split en cours ; menu Edit Split + Split Type ; Timer est friend de Menu), WipeSkip (cinématique passée) compté comme écran noir. Scripts `mkzips191.py` / `edit_site191.py`.
+
 ### PUBLIÉ — v1.9.0 sur le compte GitHub mezfndu045-star (parent d6ff917)
 - v1.9.0 : Timer > Splits / Split Count (Settings mIsEnableSplits, mSplitCount ; Timer::split() à chaque événement du type de fin quand Splits est activé, le dernier arrête le run ; drawSplits sous le timer : nom + temps du timer à la fin du split, sans écart ni record — demandé ainsi). Warp Text Refresh retiré du menu et fusionné dans Cutscene Refresh (mIsEnableRefreshWarpText reporté sur mIsEnableRefreshNpc au chargement du menu ; No Checkpoint Touch n'est plus contourné). Scripts `mkzips190.py` / `edit_site190.py`.
 
