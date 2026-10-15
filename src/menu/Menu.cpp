@@ -1,3 +1,4 @@
+#include "menu/CustomKeys.h"
 #include "menu/Menu.h"
 
 #include <cmath>
@@ -418,6 +419,7 @@ void Menu::initCategories() {
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableAlwaysOdysseyPowerUp, "Always Odyssey Power Up"));
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableOdysseyInAllKingdoms, "Odyssey In All Kingdoms"));
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableNightMetroMultiMoon, "Night Metro Multi Moon"));
+    mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableOpenOutfitDoors, "Open Outfit Doors"));
     // Noclip: left stick moves, ZR goes up, ZL goes down, X/Y speed up, A/B slow down (see noclipHook)
     mCategories[0].components.push_back(new BoolMenuComponent(&mIsEnableNoclip, "Noclip"));
     mCategories[0].components.push_back(new BoolMenuComponent(&mIsReloadPos, "Reload Scene at Pos"));
@@ -451,6 +453,7 @@ void Menu::initCategories() {
         { "Always Odyssey Power Up", "Each time you go to the Odyssey, even without moons, it powers up and offers the next kingdom of the story." },
         { "Odyssey In All Kingdoms", "The Odyssey is in every kingdom, even the ones your save has not reached yet, and you can warp to it from the map." },
         { "Night Metro Multi Moon", "At the start of Night Metro, the Mechawiggler Multi Moon falls next to Mario: grab it to go straight to day Metro." },
+        { "Open Outfit Doors", "The guards of the outfit rooms let Mario in whatever outfit he wears." },
         { "Noclip", "Mario flies through everything. Left stick = move, ZR = up, ZL = down, X/Y = faster, A/B = slower. Turns off at each game launch." },
         { "Reload Scene at Pos", "When the scene is reloaded, Mario comes back exactly where he was." },
     };
@@ -725,17 +728,21 @@ void Menu::initCategories() {
 
     // 5: Keybinds
     mCategories[5].name = "Keybinds";
-    mCategories[5].components.push_back(new EnumMenuComponent<u8>(&set->getSettings()->mMenuKey, MenuKeys, IM_ARRAYSIZE(MenuKeys), "Open Menu"));
-    mCategories[5].components.push_back(new EnumMenuComponent<SettingsMgr::TpKey>(&set->getSettings()->mSavePosKey, TpKeys, 20, "Save Position"));
-    mCategories[5].components.push_back(new EnumMenuComponent<SettingsMgr::TpKey>(&set->getSettings()->mLoadPosKey, TpKeys, 20, "Load Position"));
-    mCategories[5].components.push_back(new EnumMenuComponent<SettingsMgr::TpKey>(&set->getSettings()->mRestartSceneKey, TpKeys, 20, "Restart Scene"));
-    mCategories[5].components.push_back(new EnumMenuComponent<SettingsMgr::SettingsHotkey>(&set->getSettings()->mHealMarioKey, Keys, 11, "Heal Mario"));
-    mCategories[5].components.push_back(new EnumMenuComponent<SettingsMgr::SettingsHotkey>(&set->getSettings()->mLifeUpKey, Keys, 11, "Life Up"));
-    mCategories[5].components.push_back(new EnumMenuComponent<SettingsMgr::SettingsHotkey>(&set->getSettings()->mPrevSceneKey, Keys, 11, "Prev Scene"));
-    mCategories[5].components.push_back(new EnumMenuComponent<SettingsMgr::SettingsHotkey>(&set->getSettings()->mWarpLastCpKey, Keys, 11, "Warp Last CP"));
-    mCategories[5].components.push_back(new EnumMenuComponent<SettingsMgr::SettingsHotkey>(&set->getSettings()->mTimerStartKey, Keys, 11, "Timer Start"));
-    mCategories[5].components.push_back(new EnumMenuComponent<SettingsMgr::SettingsHotkey>(&set->getSettings()->mTimerEndKey, Keys, 11, "Timer End"));
-    mCategories[5].components.push_back(new EnumMenuComponent<SettingsMgr::SettingsHotkey>(&set->getSettings()->mTimerResetKey, Keys, 11, "Timer Reset"));
+    // Every keybind: the usual choices, or "Custom" (A records any combination of buttons, menu/CustomKeys.h)
+    using TpKey = SettingsMgr::TpKey;
+    using Hotkey = SettingsMgr::SettingsHotkey;
+    auto* st = set->getSettings();
+    mCategories[5].components.push_back(new KeyBindMenuComponent<u8>(&st->mMenuKey, MenuKeys, IM_ARRAYSIZE(MenuKeys), "Open Menu", 4, OpenMenu));
+    mCategories[5].components.push_back(new KeyBindMenuComponent<TpKey>(&st->mSavePosKey, TpKeys, IM_ARRAYSIZE(TpKeys), "Save Position", int(TpKey::Custom), SavePos));
+    mCategories[5].components.push_back(new KeyBindMenuComponent<TpKey>(&st->mLoadPosKey, TpKeys, IM_ARRAYSIZE(TpKeys), "Load Position", int(TpKey::Custom), LoadPos));
+    mCategories[5].components.push_back(new KeyBindMenuComponent<TpKey>(&st->mRestartSceneKey, TpKeys, IM_ARRAYSIZE(TpKeys), "Restart Scene", int(TpKey::Custom), RestartScene));
+    mCategories[5].components.push_back(new KeyBindMenuComponent<Hotkey>(&st->mHealMarioKey, Keys, IM_ARRAYSIZE(Keys), "Heal Mario", int(Hotkey::Custom), HealMario));
+    mCategories[5].components.push_back(new KeyBindMenuComponent<Hotkey>(&st->mLifeUpKey, Keys, IM_ARRAYSIZE(Keys), "Life Up", int(Hotkey::Custom), LifeUp));
+    mCategories[5].components.push_back(new KeyBindMenuComponent<Hotkey>(&st->mPrevSceneKey, Keys, IM_ARRAYSIZE(Keys), "Prev Scene", int(Hotkey::Custom), PrevScene));
+    mCategories[5].components.push_back(new KeyBindMenuComponent<Hotkey>(&st->mWarpLastCpKey, Keys, IM_ARRAYSIZE(Keys), "Warp Last CP", int(Hotkey::Custom), WarpLastCp));
+    mCategories[5].components.push_back(new KeyBindMenuComponent<Hotkey>(&st->mTimerStartKey, Keys, IM_ARRAYSIZE(Keys), "Timer Start", int(Hotkey::Custom), TimerStart));
+    mCategories[5].components.push_back(new KeyBindMenuComponent<Hotkey>(&st->mTimerEndKey, Keys, IM_ARRAYSIZE(Keys), "Timer End", int(Hotkey::Custom), TimerEnd));
+    mCategories[5].components.push_back(new KeyBindMenuComponent<Hotkey>(&st->mTimerResetKey, Keys, IM_ARRAYSIZE(Keys), "Timer Reset", int(Hotkey::Custom), TimerReset));
     // Right column: the quick wheel (menu/QuickWheel.h)
     mCategories[5].columnSplit = (int)mCategories[5].components.size();
     if (set->getSettings()->mWheelKey >= IM_ARRAYSIZE(cWheelKeyNames)) set->getSettings()->mWheelKey = 0;
@@ -963,6 +970,14 @@ static bool isPressMenuKey() {
     case 1: return InputHelper::isHoldL() && InputHelper::isPressPadRight();
     case 2: return InputHelper::isHoldR() && InputHelper::isPressPadLeft();
     case 3: return InputHelper::isHoldR() && InputHelper::isPressPadRight();
+    case 4: {
+        // In the menu, a combination made only of the buttons that move in it (A, B, D-Pad) does not close it, or the
+        // menu could not be used any more (L + D-Pad Left always closes it)
+        constexpr uint16_t cNavigationButtons = (1 << 0) | (1 << 1) | (1 << 12) | (1 << 13) | (1 << 14) | (1 << 15);
+        if (Menu::instance() && Menu::instance()->mIsEnabledMenu && !(getCustomKey(OpenMenu) & ~cNavigationButtons))
+            return false;
+        return isCustomKeyPressed(OpenMenu);
+    }
     default: return false;
     }
 }
@@ -973,6 +988,8 @@ void Menu::updateMenuInput() {
         updateKeyboardInput();
         return;
     }
+    // Keybinds > Custom: the buttons being recorded do not move in the menu
+    if (updateCustomKeyCapture()) return;
     if (isPressMenuKey()) {
         if (mIsEnabledMenu) hideMenu();
         else showMenu();

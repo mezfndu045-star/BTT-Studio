@@ -39,7 +39,7 @@ public:
         LightBlue,
         Multicolor
     };
-    enum class SettingsHotkey : u8 { Disabled, None, L, R, ZL, ZR, LR, LZL, LZR, RZL, RZR };
+    enum class SettingsHotkey : u8 { Disabled, None, L, R, ZL, ZR, LR, LZL, LZR, RZL, RZR, Custom };
     enum class TpKey : u8 {
         DLeft = 0,
         DRight,
@@ -60,7 +60,8 @@ public:
         L_LStick,
         L_RStick,
         ZL_ZR,
-        Disabled
+        Disabled,
+        Custom
     };
 
     struct __attribute__((packed)) Settings {
@@ -150,6 +151,10 @@ public:
         u8 mInputDisplayStyleList = 0;
         // Size of the input displays (1st and 2nd controller), in % (Input Display > Size)
         int mInputDisplaySize = 100;
+        // Keybinds set to "Custom": buttons of each one (menu/CustomKeys.h, CustomKeySlot)
+        u16 mCustomKeys[24] = {};
+        // Options > Open Outfit Doors: the guards of the outfit rooms let Mario in whatever he wears
+        bool mIsEnableOpenOutfitDoors = false;
     } mSettings;
 
     // Settings* getSettings() { return &mSettings; }

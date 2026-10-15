@@ -149,13 +149,10 @@ HkTrampoline hakoniwaSequenceUpdate = [](TrampolineStatic(), HakoniwaSequence* h
 };
 
 void disableButtons(nn::hid::NpadBaseState* state, int count) {
-    // Quick wheel: Mario keeps moving, only the right stick (points at a slot) and A (runs it) are taken from the game
+    // Quick wheel: Mario keeps moving, only the right stick (points at a slot) is taken from the game
     if (!InputHelper::isReadInputs() && btt::Menu::instance() && !btt::Menu::instance()->mIsEnabledMenu &&
         btt::isQuickWheelOpen()) {
-        for (int i = 0; i < count; i++) {
-            state[i].mAnalogStickR = nn::hid::AnalogStickState();
-            state[i].mButtons.Reset((int)nn::hid::NpadButton::A);
-        }
+        for (int i = 0; i < count; i++) state[i].mAnalogStickR = nn::hid::AnalogStickState();
         return;
     }
     if (!InputHelper::isReadInputs() && btt::Menu::instance() &&

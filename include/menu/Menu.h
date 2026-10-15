@@ -105,8 +105,9 @@ private:
     void handleHotkeys();
     void handlePopup();
 
-    bool isHotkey(SettingsMgr::SettingsHotkey key);
-    bool isTpKey(SettingsMgr::TpKey key);
+    // key: the Settings field itself (a "Custom" keybind is found from it)
+    bool isHotkey(const SettingsMgr::SettingsHotkey& key);
+    bool isTpKey(const SettingsMgr::TpKey& key);
 
     ImVec2 getCornerPos(int corner);
 
@@ -157,10 +158,10 @@ private:
                                                             "Mushroom", "Last Talk",  "After Last Talk" };
 
     constexpr static const char* Keys[] {
-        "Disabled", "None", "L", "R", "ZL", "ZR", "L + R", "L + ZL", "L + ZR", "R + ZL", "R + ZR",
+        "Disabled", "None", "L", "R", "ZL", "ZR", "L + R", "L + ZL", "L + ZR", "R + ZL", "R + ZR", "Custom",
     };
     // The sticks can no longer open the menu (pressed by accident while playing)
-    constexpr static const char* MenuKeys[] { "L + DLeft", "L + DRight", "R + DLeft", "R + DRight" };
+    constexpr static const char* MenuKeys[] { "L + DLeft", "L + DRight", "R + DLeft", "R + DRight", "Custom" };
     constexpr static const char* TpKeys[] {
         "D-Pad Left",
         "D-Pad Right",
@@ -182,6 +183,7 @@ private:
         "L + RStick",
         "ZL + ZR",
         "Disabled",
+        "Custom",
     };
 
     constexpr static const char* bodyNames[] = {

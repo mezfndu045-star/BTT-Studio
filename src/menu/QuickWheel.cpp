@@ -173,15 +173,11 @@ void updateQuickWheel(Menu* menu) {
         }
         return;
     }
+    // The right stick points at a slot; Mario keeps moving and A stays with the game
     int pointed = pointedSlot();
     if (pointed >= 0) sSelected = pointed;
-    // A validates in every mode (A is taken from the game while the wheel is open, Mario keeps moving)
-    if (InputHelper::isPressA()) {
-        sIsOpen = false;
-        runSlot(menu, sSelected);
-        return;
-    }
     if (isHoldMode()) {
+        // L / R held: releasing it runs the slot pointed at
         if (isOtherButtonPressed()) {
             sIsOpen = false;
         } else if (!isHoldKeyHeld()) {
@@ -190,7 +186,11 @@ void updateQuickWheel(Menu* menu) {
         }
         return;
     }
+    // L3 / R3: letting the right stick go back to the middle after pointing at a slot runs it; clicking again closes
+    // the wheel without doing anything
     if (isClickPressed()) {
+        sIsOpen = false;
+    } else if (pointed < 0 && sSelected >= 0) {
         sIsOpen = false;
         runSlot(menu, sSelected);
     }
@@ -237,7 +237,7 @@ void drawQuickWheel() {
     }
     dl->AddCircle(c, cOuter, IM_COL32(255, 255, 255, 90), 64, 2.f);
     dl->AddCircleFilled(c, cInner, IM_COL32(30, 30, 45, 230), 48);
-    const char* hint = tr(isHoldMode() ? "A / Release: OK" : "A / Click: OK");
+    const char* hint = tr(isHoldMode() ? "Release: OK" : "Release the stick: OK");
     ImVec2 hs = font->CalcTextSizeA(16.f, FLT_MAX, 0.f, hint);
     dl->AddText(font, 16.f, ImVec2(c.x - hs.x / 2, c.y - hs.y / 2), IM_COL32(255, 255, 255, 200), hint);
 }

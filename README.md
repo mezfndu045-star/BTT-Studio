@@ -20,7 +20,14 @@ Le site officiel en ligne est disponible sur **GitHub Pages** ([https://mezfndu0
 
 ---
 
-## 🆕 Nouveautés v1.7.3
+## 🆕 Nouveautés v1.8.0
+
+- **Keybinds > Custom** : chaque raccourci peut prendre n'importe quelle combinaison de touches (choisir *Custom*, A, puis maintenir les touches voulues et les relâcher). Les réglages par défaut ne changent pas.
+- **Options > Open Outfit Doors** : les gardiens des salles à costume laissent entrer Mario, quelle que soit sa tenue.
+- **Roue rapide** : plus de A. Avec L / R, relâcher la touche valide ; avec L3 / R3, pointer une case au stick droit puis relâcher le stick.
+- **Sous-zones** : entrer dans une sous-zone et en ressortir garde le scénario du royaume (un boss pas encore battu ne débloque plus rien en sortant d'une sous-zone) ; l'histoire avance quand le boss est battu.
+
+## Nouveautés v1.7.3
 
 - **Timer** : le *Black Screen* reconnaît l'écran noir après une Multi Moon, et les écrans noirs / blancs ne sont plus manqués après plusieurs chargements.
 - **Voyage vers le Royaume en Ruines au scénario 1** (*Always Odyssey Power Up*, *Cutscene Refresh*, ou *Warp to Stage* avec *Kingdom Enter Refresh*) : l'attaque du dragon pendant le voyage revient, comme dans l'histoire.
@@ -40,7 +47,7 @@ Le site officiel en ligne est disponible sur **GitHub Pages** ([https://mezfndu0
 ## Nouveautés v1.7.0
 
 - **Input Display** : styles en plus, repris d'[Open Joystick Display](https://ojdproject.com).
-- **Roue rapide** (*Keybinds > Wheel Key / Wheel Size / Wheel Slot*) : s'ouvre avec L3, R3, L ou R, 6, 8 ou 12 cases, n'importe quelle action des Options, Keybinds, Misc ou Timer. Le stick droit choisit, A valide, Mario peut bouger.
+- **Roue rapide** (*Keybinds > Wheel Key / Wheel Size / Wheel Slot*) : s'ouvre avec L3, R3, L ou R, 6, 8 ou 12 cases, n'importe quelle action des Options, Keybinds, Misc ou Timer. Le stick droit choisit ; relâcher la touche (L / R) ou le stick (L3 / R3) valide, Mario peut bouger.
 - **Explications** à côté de chaque option et des réglages du Timer.
 - **Settings > Language** : tout le menu en français.
 - **Moon Refresh / Gray Moon Refresh** : le compteur de lunes monte et les lunes d'histoire font avancer l'histoire ; *Restart Scene* remet l'histoire comme au début de la scène. Les Broodals (Spewart…) reviennent avec leur lune.
@@ -137,6 +144,7 @@ Le menu vertical translucide s'ouvre avec la combinaison **`L + D-Pad Gauche`**.
 - **Always Odyssey Power Up** : À chaque passage à l'Odyssée (même sans lune), elle se recharge et propose le royaume suivant de l'histoire ; l'arrivée joue l'intro, l'atterrissage et le scénario.
 - **Odyssey In All Kingdoms** : L'Odyssée est là dans tous les royaumes et on peut s'y téléporter depuis la carte. *(en test)*
 - **Night Metro Multi Moon** : Au début de la Ville de nuit, la Multi-Lune de Méca-Chenille tombe près de Mario pour passer à la Ville de jour. *(en test)*
+- **Open Outfit Doors** : Les gardiens des salles à costume laissent entrer Mario, quelle que soit sa tenue.
 - **Noclip** : Mario vole et traverse tout (stick = avancer, ZR = monter, ZL = descendre, X/Y = plus vite, A/B = moins vite).
 - **Reload Scene at Pos** : Recharge tout le niveau en restant exactement à sa position.
 
@@ -226,7 +234,7 @@ Le menu vertical translucide s'ouvre avec la combinaison **`L + D-Pad Gauche`**.
 | **D-Pad Bas** | Scène précédente (`Prev Stage`) |
 | **Maintenir R3 (Stick Droit)** | Roue rapide d'actions (`Quick Wheel`) |
 
-*Les touches de Save Pos, Load Pos et Restart Scene sont entièrement configurables dans le menu **Keybinds**.*
+*Tous les raccourcis sont configurables dans le menu **Keybinds**, avec n'importe quelle combinaison de touches (choix *Custom*).*
 
 ---
 

@@ -73,6 +73,23 @@ HkTrampoline ShineRefreshHook = [](TrampolineStatic(), GameDataHolderWriter writ
     orig(writer, shineInfo);
 };
 
+// Open Outfit Doors: the guards of the outfit rooms check the outfit in their talk (event flow nodes CheckCostume,
+// CheckCostumePair, CheckCostumeMissMatchPart: case 0 = the right outfit). With the option, case 0 every time.
+extern "C" s32 al_getCaseEventNextId(const void* node, s32 caseIndex) asm("_ZN2al18getCaseEventNextIdEPKNS_13EventFlowNodeEi");
+static bool isOpenOutfitDoors() {
+    auto* s = SettingsMgr::getSettings();
+    return s && s->mIsEnableOpenOutfitDoors;
+}
+HkTrampoline checkCostumeNextHook = [](TrampolineStatic(), const void* node) -> s32 {
+    return isOpenOutfitDoors() ? al_getCaseEventNextId(node, 0) : orig(node);
+};
+HkTrampoline checkCostumePairNextHook = [](TrampolineStatic(), const void* node) -> s32 {
+    return isOpenOutfitDoors() ? al_getCaseEventNextId(node, 0) : orig(node);
+};
+HkTrampoline checkCostumeMissMatchNextHook = [](TrampolineStatic(), const void* node) -> s32 {
+    return isOpenOutfitDoors() ? al_getCaseEventNextId(node, 0) : orig(node);
+};
+
 // Bosses with a GateKeeperDataHolder (Broodals: Topper, Hariet, Spewart, Rango...): "already dead" is their moon got and
 // their defeat saved (rs::isAlreadyDeadGK), then they are not placed again. With Moon Refresh / Gray Moon Refresh the
 // boss comes back with its moon; with Cutscene Refresh its battle start cutscene too (rs::isAlreadyShowDemoBossBattleStart).
@@ -220,15 +237,34 @@ static bool sIsSubAreaReturn = false;
 static char sLastStage[64] = {};
 static s32 sLastWorld = -1;
 // Current world of the save (GameDataFile +0x9f0 / 1.3 +0xa38, as GameDataFunction::getCurrentWorldId reads it)
-static s32 currentWorldIdOf(GameDataHolder* holder) {
 #if BTT_V130
-    constexpr int cCurrentWorldIdOffset = 0xa38;
+constexpr int cCurrentWorldIdOffset = 0xa38;
 #else
-    constexpr int cCurrentWorldIdOffset = 0x9f0;
+constexpr int cCurrentWorldIdOffset = 0x9f0;
 #endif
+static s32 currentWorldIdOf(GameDataHolder* holder) {
     u8* file = holder ? *reinterpret_cast<u8**>(reinterpret_cast<u8*>(holder) + 0x20) : nullptr;
     return file ? *reinterpret_cast<s32*>(file + cCurrentWorldIdOffset) : -1;
 }
+
+// Scenario of the current visit of a kingdom: the scenario its main stage was loaded with (a scenario forced by a
+// warp / travel, or the save's). Going into its sub-areas and back keeps it instead of taking the save's scenario again
+// (a save further in the story would show what a boss not beaten yet unlocks), and it moves on with the story when a
+// quest of that kingdom is done (GameDataFile::setMainScenarioNo). Another kingdom starts a new visit.
+static s32 sVisitWorld = -1;
+static s32 sVisitScenario = -1;
+static s32 sSceneStartVisitScenario = -1;
+namespace btt {
+// Restart Scene with Moon Refresh puts the story back as it was when the scene started: the visit's scenario too
+void restoreVisitScenario() {
+    sVisitScenario = sSceneStartVisitScenario;
+}
+} // namespace btt
+HkTrampoline setMainScenarioNoHook = [](TrampolineStatic(), void* file, s32 scenario) -> void {
+    orig(file, scenario);
+    if (file && *reinterpret_cast<s32*>(static_cast<u8*>(file) + cCurrentWorldIdOffset) == sVisitWorld && scenario > 0)
+        sVisitScenario = scenario;
+};
 namespace btt {
 int getKingdomIndexOfStage(const char* stageName);  // stage_warp.cpp
 } // namespace btt
@@ -385,7 +421,7 @@ HkTrampoline isCrashHomeHook = [](TrampolineStatic(), GameDataHolder* holder) ->
 // Forced scenario of the Odyssey travel (cloudToLostWarpHook above). Next stage name: GameDataFile +0x870 / 1.3 +0x8b8.
 HkTrampoline calcNextScenarioNoHook = [](TrampolineStatic(), GameDataHolder* holder) -> s32 {
     s32 scenario = orig(holder);
-    if (sForcedScenario <= 0 || !holder) return scenario;
+    if (!holder) return scenario;
     u8* file = *reinterpret_cast<u8**>(reinterpret_cast<u8*>(holder) + 0x20);
 #if BTT_V130
     constexpr int cNextStageNameOffset = 0x8b8;
@@ -393,7 +429,19 @@ HkTrampoline calcNextScenarioNoHook = [](TrampolineStatic(), GameDataHolder* hol
     constexpr int cNextStageNameOffset = 0x870;
 #endif
     const char* next = file ? *reinterpret_cast<const char**>(file + cNextStageNameOffset) : nullptr;
-    if (next && strcmp(next, sForcedScenarioStage) == 0) return sForcedScenario;
+    if (sForcedScenario > 0 && next && strcmp(next, sForcedScenarioStage) == 0) return sForcedScenario;
+    // A stage of the kingdom being visited (main stage or sub-area) taking the save's scenario (no scenario given by
+    // the stage change: GameDataFile +0xa28, and +0xa24 unless +0xa0a / 1.3 +0xa70, +0xa6c, +0xa52): the visit's one
+#if BTT_V130
+    constexpr int cScenarioA = 0xa70, cScenarioB = 0xa6c, cScenarioFlag = 0xa52;
+#else
+    constexpr int cScenarioA = 0xa28, cScenarioB = 0xa24, cScenarioFlag = 0xa0a;
+#endif
+    bool isSaveScenario = file && *reinterpret_cast<s32*>(file + cScenarioA) == -1 &&
+                          (file[cScenarioFlag] || *reinterpret_cast<s32*>(file + cScenarioB) == -1);
+    if (isSaveScenario && scenario > 0 && scenario != 10 && sVisitScenario > 0 && next &&
+        btt::getKingdomIndexOfStage(next) == sVisitWorld)
+        return sVisitScenario;
     return scenario;
 };
 // The travel to the Ruined Kingdom with the dragon attack (DemoChangeWorldScene / HakoniwaStateDemoWorldWarp: the
@@ -501,6 +549,16 @@ HkTrampoline stageSceneInitHook = [](TrampolineStatic(), StageScene* stageScene,
         const char* loaded = GameDataFunction::getCurrentStageName(accessor);
         snprintf(sLastStage, sizeof(sLastStage), "%s", loaded ? loaded : "");
         sLastWorld = currentWorldIdOf(accessor.mData);
+        // A main stage sets the scenario of the visit; a stage of another kingdom ends the visit
+        if (loaded && strstr(loaded, "WorldHomeStage") && info.scenarioNo > 0) {
+            sVisitWorld = sLastWorld;
+            sVisitScenario = info.scenarioNo;
+        } else if (sLastWorld != sVisitWorld) {
+            sVisitWorld = -1;
+            sVisitScenario = -1;
+        }
+        sSceneStartVisitScenario = sVisitScenario;
+        if (btt::isDebugTrace()) btt::dbgLog("DBG: visit world %d scenario %d", sVisitWorld, sVisitScenario);
     }
     if (sForcedScenario > 0) {
         const char* loaded = GameDataFunction::getCurrentStageName(GameDataHolderAccessor(stageScene));
@@ -1223,6 +1281,9 @@ void SettingsHooks::installSettingsHooks() {
     offset = addr - ro::getMainModule()->range().start();
     ro::getMainModule()->writeRo(offset, "BTT Studio", strlen("BTT Studio") + 1);
 
+    checkCostumeNextHook.installAtSym<"_ZNK25EventFlowNodeCheckCostume9getNextIdEv">();
+    checkCostumePairNextHook.installAtSym<"_ZNK29EventFlowNodeCheckCostumePair9getNextIdEv">();
+    checkCostumeMissMatchNextHook.installAtSym<"_ZNK38EventFlowNodeCheckCostumeMissMatchPart9getNextIdEv">();
     gateKeeperDeadHook.installAtSym<"_ZNK20GateKeeperDataHolder13isAlreadyDeadEv">();
     gateKeeperStartDemoHook.installAtSym<"_ZNK20GateKeeperDataHolder22isAlreadyShowStartDemoEv">();
     GreyShineRefreshHook
@@ -1250,6 +1311,7 @@ void SettingsHooks::installSettingsHooks() {
     isOnSaveObjInfoHook.installAtSym<"_ZN2rs15isOnSaveObjInfoEPK11SaveObjInfo">();
     isFindKoopaHook.installAtSym<"_ZN16GameDataFunction11isFindKoopaE22GameDataHolderAccessor">();
     isCrashHomeHook.installAtSym<"_ZN16GameDataFunction11isCrashHomeE22GameDataHolderAccessor">();
+    setMainScenarioNoHook.installAtSym<"_ZN12GameDataFile17setMainScenarioNoEi">();
     calcNextScenarioNoHook.installAtSym<"_ZN16GameDataFunction18calcNextScenarioNoE22GameDataHolderAccessor">();
     isBossAttackedHomeHook.installAtSym<"_ZN16GameDataFunction18isBossAttackedHomeE22GameDataHolderAccessor">();
     repairHomeByCrashedBossHook.installAtSym<"_ZN16GameDataFunction23repairHomeByCrashedBossE20GameDataHolderWriter">();

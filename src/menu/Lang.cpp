@@ -54,6 +54,9 @@ namespace {
         { "Always Odyssey Power Up", "Odyssée toujours rechargée" },
         { "Odyssey In All Kingdoms", "Odyssée dans tous les royaumes" },
         { "Night Metro Multi Moon", "Multi-lune de la Ville de nuit" },
+        { "Open Outfit Doors", "Portes des salles à costume" },
+        { "The guards of the outfit rooms let Mario in whatever outfit he wears.",
+          "Les gardiens des salles à costume laissent entrer Mario, quelle que soit sa tenue." },
         { "Noclip", "Vol libre (noclip)" },
         { "Reload Scene at Pos", "Recharger sur place" },
 
@@ -218,6 +221,8 @@ namespace {
         { "Preset Pos", "Position prédéfinie" },
         { "Reset Position", "Position par défaut" },
         { "Size", "Taille" },
+        { "Custom", "Perso" },
+        { "Press the buttons...", "Appuie sur les touches..." },
         { "Center", "Centre" },
         { "Top Left", "En haut à gauche" },
         { "Top Center", "En haut au centre" },
@@ -318,8 +323,8 @@ namespace {
         { "Empty", "Vide" },
 
         // Quick wheel
-        { "A / Release: OK", "A / relâcher : valider" },
-        { "A / Click: OK", "A / clic : valider" },
+        { "Release: OK", "Relâcher : valider" },
+        { "Release the stick: OK", "Relâcher le stick : valider" },
         { "ON", "activé" },
         { "OFF", "désactivé" },
 

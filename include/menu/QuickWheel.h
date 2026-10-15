@@ -6,7 +6,8 @@ class Menu;
 
 // Quick wheel: 6, 8 or 12 slots (Settings::mWheelSize) holding any on/off option or button of the Options, Misc and
 // Timer categories, or one of the extra actions (Warp Last CP). Slots are saved by name (Settings::mWheelSlots).
-// Mario keeps moving while it is open: only the right stick (points at a slot) and A (runs it) go to the wheel.
+// Mario keeps moving while it is open: only the right stick (points at a slot) goes to the wheel. Releasing the held
+// key (L / R) or the stick (L3 / R3) runs the slot pointed at.
 // - L3 / R3: click to open, click again to run the slot pointed at (or close without one)
 // - L / R (hold): hold to open, release to run the slot pointed at; another button pressed meanwhile cancels it
 //   (L / R + D-Pad hotkeys keep working)

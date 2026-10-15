@@ -16,6 +16,7 @@
 
 #include "helpers/InputHelper.h"
 #include "imgui.h"
+#include "menu/CustomKeys.h"
 #include "menu/Menu.h"
 #include "src/settings/SettingsMgr.h"
 
@@ -84,8 +85,9 @@ void Menu::drawPageHotkeys() {
     }
 }
 
-bool Menu::isTpKey(SettingsMgr::TpKey key) {
+bool Menu::isTpKey(const SettingsMgr::TpKey& key) {
     if (mIsEnabledMenu || key == SettingsMgr::TpKey::Disabled) return false;
+    if (key == SettingsMgr::TpKey::Custom) return isCustomKeyPressed(customKeySlotOf(&key));
 
     bool L = InputHelper::isHoldL();
     bool R = InputHelper::isHoldR();
@@ -143,8 +145,9 @@ bool Menu::isTpKey(SettingsMgr::TpKey key) {
     }
 }
 
-bool Menu::isHotkey(Hotkey key) {
+bool Menu::isHotkey(const Hotkey& key) {
     if (mIsEnabledMenu) return false;
+    if (key == Hotkey::Custom) return isCustomKeyPressed(customKeySlotOf(&key));
     bool isAllowInput = true;
     bool Up = InputHelper::isPressPadUp();
     bool L = InputHelper::isHoldL();

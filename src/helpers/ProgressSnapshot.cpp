@@ -24,6 +24,8 @@ extern "C" const char* ProgressSnapshot_getNextPlayerStartId(const void* holder)
 
 namespace btt {
 
+void restoreVisitScenario();  // SettingsHooks.cpp
+
 namespace {
 
     // A save is about 100-130 KB ([s32 size][byml]); the game itself allows up to 2 MB
@@ -128,6 +130,7 @@ bool restoreProgressSnapshot(GameDataHolder* holder) {
 
     ProgressSnapshot_initializeData(file);
     if (!ProgressSnapshot_tryReadByamlData(file, sSnapshot + 4)) return false;
+    restoreVisitScenario();
 
     ChangeStageInfo info(holder, startId, stage, false, -1, ChangeStageInfo::SubScenarioType::NO_SUB_SCENARIO);
     holder->changeNextStage(&info, 0);
