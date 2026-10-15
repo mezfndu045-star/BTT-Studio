@@ -160,6 +160,14 @@ public:
         u8 mSplitCount = 5;
         // End Type of each split: 0 = the Timer End Type, else 1 + index in Menu::VisibleTimerHookTypes
         u8 mSplitTypes[30] = {};
+        // Unused (v1.9.2 test: separate motion overlay; now the Input Display style "Motion")
+        bool mIsEnableMotionDisplay = false;
+        // Input Display > Reset Motion: the current orientation of the controller becomes the front view
+        SettingsHotkey mResetMotionKey = SettingsHotkey::Disabled;
+        // Reset Motion set to its default (Custom: L + R) once
+        bool mIsMotionKeyInit = false;
+        // Input Display > Motion Controller: 0 Auto, 1 Pro Controller, 2 Joy-Con (sensors read and shape drawn)
+        u8 mMotionController = 0;
     } mSettings;
 
     // Settings* getSettings() { return &mSettings; }

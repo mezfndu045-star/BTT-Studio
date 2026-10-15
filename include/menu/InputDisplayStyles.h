@@ -30,7 +30,11 @@ constexpr const char* sInputDisplayStyleNames[] {
 #define BTT_OJD_SKIN(id, name) name,
 #include "menu/OjdSkins.inc"
 #undef BTT_OJD_SKIN
+    "Motion",
 };
+
+// Style "Motion" (menu/MotionDisplay.h): the controller in 3D, turning with the motion controls
+constexpr unsigned char cMotionInputDisplayStyle = sizeof(sInputDisplayStyleNames) / sizeof(sInputDisplayStyleNames[0]) - 1;
 
 // Every style but Classic: a picture skin drawn around the input display position
 void drawStyledInputDisplay(int port, ImVec2* settingPos, const char* dragId, const char* label);

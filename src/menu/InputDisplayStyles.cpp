@@ -9,6 +9,7 @@
 #include "menu/InputDisplay.h"
 #include "menu/InputDisplaySkins.h"
 #include "menu/Menu.h"
+#include "menu/MotionDisplay.h"
 
 namespace btt {
 
@@ -34,6 +35,16 @@ void drawStyledInputDisplay(int port, ImVec2* settingPos, const char* dragId, co
             settingPos->x += delta.x;
             settingPos->y += delta.y;
         }
+    }
+
+    if (set->mInputDisplayStyle == cMotionInputDisplayStyle) {
+        if (drawMotionDisplay(port, center, 1.0f) && label) {
+            label = tr(label);
+            ImFont* font = ImGui::GetFont();
+            ImVec2 ts = font->CalcTextSizeA(24, FLT_MAX, 0.f, label);
+            dl->AddText(font, 24, ImVec2(center.x - ts.x / 2, center.y - cMaxH / 2 - ts.y + 10), IM_COL32(255, 255, 255, 255), label);
+        }
+        return;
     }
 
     int skin = set->mInputDisplayStyle - u8(InputDisplayStyle::Periscope);

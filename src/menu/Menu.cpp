@@ -672,6 +672,18 @@ void Menu::initCategories() {
     }
     if (set->getSettings()->mInputDisplayStyle >= IM_ARRAYSIZE(sInputDisplayStyleNames)) set->getSettings()->mInputDisplayStyle = 0;
     mCategories[4].components.push_back(new EnumMenuComponent<u8>(&set->getSettings()->mInputDisplayStyle, sInputDisplayStyleNames, IM_ARRAYSIZE(sInputDisplayStyleNames), "Style"));
+    // Style "Motion": the key that makes the current orientation of the controller the front view (L + R at first)
+    if (!set->getSettings()->mIsMotionKeyInit) {
+        set->getSettings()->mResetMotionKey = SettingsMgr::SettingsHotkey::Custom;
+        set->getSettings()->mCustomKeys[ResetMotion] = (1 << 6) | (1 << 7);
+        set->getSettings()->mIsMotionKeyInit = true;
+    }
+    mCategories[4].components.push_back(new KeyBindMenuComponent<SettingsMgr::SettingsHotkey>(&set->getSettings()->mResetMotionKey, Keys, IM_ARRAYSIZE(Keys), "Reset Motion", int(SettingsMgr::SettingsHotkey::Custom), ResetMotion));
+    mCategories[4].components.back()->setHelp("Style \"Motion\": the key that makes the current orientation of the controller the front view.");
+    static const char* const sMotionControllerNames[] = { "Auto", "Pro Controller", "Joy-Con" };
+    if (set->getSettings()->mMotionController >= IM_ARRAYSIZE(sMotionControllerNames)) set->getSettings()->mMotionController = 0;
+    mCategories[4].components.push_back(new EnumMenuComponent<u8>(&set->getSettings()->mMotionController, sMotionControllerNames, IM_ARRAYSIZE(sMotionControllerNames), "Motion Controller"));
+    mCategories[4].components.back()->setHelp("Style \"Motion\": the controller whose motion is shown, and its shape. Auto: the controller in use (Pro Controller, or Joy-Con).");
     mCategories[4].components.push_back(new EnumMenuComponent<int>(&sDisplayPreset, sPresetNames, 5, "Preset Pos", 34, [](int preset) {
         SettingsMgr* s = SettingsMgr::instance();
         if (!s || !s->getSettings()) return;

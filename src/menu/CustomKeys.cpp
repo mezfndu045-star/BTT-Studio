@@ -51,6 +51,7 @@ int customKeySlotOf(const void* field) {
     if (field == &s->mDecCoinsKey) return DecCoins;
     if (field == &s->mIncPatternKey) return IncPattern;
     if (field == &s->mDecPatternKey) return DecPattern;
+    if (field == &s->mResetMotionKey) return ResetMotion;
     return -1;
 }
 

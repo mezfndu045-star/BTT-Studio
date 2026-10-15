@@ -18,6 +18,7 @@
 #include "imgui.h"
 #include "menu/CustomKeys.h"
 #include "menu/Menu.h"
+#include "menu/MotionDisplay.h"
 #include "src/settings/SettingsMgr.h"
 
 using namespace btt;
@@ -327,5 +328,9 @@ void Menu::handleHotkeys() {
             Timer::sInstance->reset();
             setPopupText("Timer reset");
         }
+    }
+    if (isHotkey(set->getSettings()->mResetMotionKey)) {
+        resetMotionDisplay();
+        setPopupText("Motion reset");
     }
 }

@@ -20,7 +20,14 @@ Le site officiel en ligne est disponible sur **GitHub Pages** ([https://mezfndu0
 
 ---
 
-## 🆕 Nouveautés v1.9.1
+## 🆕 Nouveautés v1.9.2
+
+- **Écran titre** : logo *Super Lazyr Odyssey*, avec *by lazyr11* en dessous.
+- **Input Display > Style « Motion »** : la manette en 3D (manette Pro ou les deux Joy-Con) tourne comme la vraie (gyroscope), avec autour ZL/L, ZR/R, les sticks, la croix, A/B/X/Y et +/-.
+  - **Reset Motion** (L + R par défaut, *Custom* pour une autre combinaison) : la position actuelle de la manette devient la vue de face.
+  - **Motion Controller** : Auto (la manette utilisée), Pro Controller ou Joy-Con.
+
+## Nouveautés v1.9.1
 
 - **Timer > Edit Split / Split Type** : chaque split peut avoir son propre type de fin (*End Type* = celui du timer).
 - **Timer** : passer une cinématique compte comme un *Black Screen*.
@@ -298,4 +305,5 @@ Mêmes emplacements, avec le dossier **Practice mod BTT 1.3** (Yuzu / Simple Mod
 - [SMO-Exlaunch-Base](https://github.com/CraftyBoss/SMO-Exlaunch-Base) par **CraftyBoss**
 - [OdysseyHeaders](https://github.com/MonsterDruide1/OdysseyHeaders) par **MonsterDruide1**
 - [Dear ImGui](https://github.com/ocornut/imgui) par **ocornut**
+- Modèles 3D du style *Motion* de l'Input Display : [HOS-InputDisplay](https://github.com/fruityloops1/HOS-InputDisplay) par **fruityloops1** (GPL-3.0 ; manette Pro : modèle de Christopher Vallarta), simplifiés (`tools/subareas/glb2model.py`).
 - Styles OJD de l'Input Display : thèmes d'[Open Joystick Display](https://ojdproject.com), BSD 4-Clause Attribution, Copyright 2019 Anthony Mattera (KernelZechs). This product includes software developed by Anthony Mattera (KernelZechs) and Open Joystick Display.

@@ -30,6 +30,7 @@ enum CustomKeySlot : int {
     DecCoins,
     IncPattern,
     DecPattern,
+    ResetMotion,
     CustomKeySlotNum
 };
 
