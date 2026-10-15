@@ -78,6 +78,9 @@ Deux mods sont déployés dans `C:\Users\FlowUP\AppData\Roaming\yuzu\load\010000
 - **Correction** : les 8 `bl rs::isGotShine` du watcher (init +0x1d4a60/+0x1d4ba4, `createShineChips` +0x1d4c30 qui crée les fragments "vides"/gris si la lune est prise, `initAfterPlacement` +0x1d4df4/+0x1d4ff4/+0x1d50bc, `updateHints` +0x1d5174, `appear` +0x1d5314 → `ShineChipWatcherGotCheck1..8`) renvoient `false` quand l'option est active. 1re version (3 appels seulement) : fragments encore gris. Recharger la scène après avoir activé l'option.
 - **Compteur en haut de l'écran** : `StageSceneLayout` / `ShineChipLayoutParts` ne l'affichent pas si `rs::isCurrentShineChipWatcherTypeEmpty` (= lune du watcher déjà prise) → trampoline qui renvoie `false` avec l'option.
 
+### PUBLIÉ — v1.8.2 sur le compte GitHub mezfndu045-star (parent a717d60)
+- v1.8.2 : hook GameDataHolder::changeNextStage : un changement de stage sans scénario (ChangeStageInfo +0x1cc <= 0 : portes, tuyaux, mort, restart) vers le royaume visité reçoit sVisitScenario. Sans ça, le placement des objets prenait le scénario de la sauvegarde (boules de feu = DamageBallGenerator de Salt Pile Isle, frères casseroles, à Luncheon) même si calcNextScenarioNo donnait celui de la visite. Scripts `mkzips182.py` / `edit_site182.py`.
+
 ### PUBLIÉ — v1.8.1 sur le compte GitHub mezfndu045-star (parent dd7a037)
 - v1.8.1 : pas de cinématique de début de stage après une mort (TimerHooks wipeSetNerveHook : nerf StageSceneNrvMiss, custom.sym 1.0 0x1d8cbe8 / 1.3 0x12c5e18 -> btt::onStageMiss ; le rechargement suivant est traité comme un retour de sous-zone). Traces de scénario (setMainScenarioNo, "loaded ... visit") ajoutées, actives seulement avec trace. Boules de feu de Luncheon (Salt Pile Isle) : DamageBallGenerator du calque Common, allumé par 3 SwitchKeepOnArea, scénario resté 1 d'après la trace ; cause non trouvée, l'utilisateur a laissé tomber. Scripts `mkzips181.py` / `edit_site181.py`.
 

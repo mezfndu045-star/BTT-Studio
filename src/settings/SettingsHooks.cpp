@@ -25,6 +25,7 @@
 #include "custom/game/MapObj/DoorAreaChange.h"
 #include "custom/game/Scene/StageSceneStateStageMap.h"
 #include "game/Item/CoinStackGroup.h"
+#include "game/MapObj/ChangeStageInfo.h"
 #include "game/System/GameDataFile.h"
 #include "game/System/GameDataFunction.h"
 #include "game/System/GameDataHolder.h"
@@ -464,6 +465,21 @@ HkTrampoline isBossAttackedHomeHook = [](TrampolineStatic(), GameDataHolder* hol
 HkTrampoline repairHomeByCrashedBossHook = [](TrampolineStatic(), GameDataHolder* holder) -> void {
     sIsBossAttackOverride = false;
     orig(holder);
+};
+// The objects placed in a stage follow the scenario given by the stage change (ChangeStageInfo +0x1cc, -1 = none): a
+// door or pipe gives none, then the placement takes the save's scenario even when the loading one is the visit's (a save
+// further in the story would show the enemies of a later scenario). A stage change to the kingdom being visited without
+// a scenario gets the visit's one, as an Odyssey travel does.
+HkTrampoline changeNextStageHook = [](TrampolineStatic(), GameDataHolder* holder, const ChangeStageInfo* info, s32 raceType) -> void {
+    if (info && sVisitScenario > 0) {
+        s32* scenario = reinterpret_cast<s32*>(reinterpret_cast<u8*>(const_cast<ChangeStageInfo*>(info)) + 0x1cc);
+        const char* stage = info->getStageName();
+        if (*scenario <= 0 && stage && stage[0] && btt::getKingdomIndexOfStage(stage) == sVisitWorld) {
+            if (btt::isDebugTrace()) btt::dbgLog("DBG: changeNextStage %s scenario %d -> %d", stage, *scenario, sVisitScenario);
+            *scenario = sVisitScenario;
+        }
+    }
+    orig(holder, info, raceType);
 };
 HkTrampoline isRepairHomeHook = [](TrampolineStatic(), GameDataHolder* holder) -> bool {
     if (sIsCrashHomeOverride) return false;
@@ -1324,6 +1340,7 @@ void SettingsHooks::installSettingsHooks() {
     isFindKoopaHook.installAtSym<"_ZN16GameDataFunction11isFindKoopaE22GameDataHolderAccessor">();
     isCrashHomeHook.installAtSym<"_ZN16GameDataFunction11isCrashHomeE22GameDataHolderAccessor">();
     setMainScenarioNoHook.installAtSym<"_ZN12GameDataFile17setMainScenarioNoEi">();
+    changeNextStageHook.installAtSym<"_ZN14GameDataHolder15changeNextStageEPK15ChangeStageInfoi">();
     calcNextScenarioNoHook.installAtSym<"_ZN16GameDataFunction18calcNextScenarioNoE22GameDataHolderAccessor">();
     isBossAttackedHomeHook.installAtSym<"_ZN16GameDataFunction18isBossAttackedHomeE22GameDataHolderAccessor">();
     repairHomeByCrashedBossHook.installAtSym<"_ZN16GameDataFunction23repairHomeByCrashedBossE20GameDataHolderWriter">();

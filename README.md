@@ -20,7 +20,11 @@ Le site officiel en ligne est disponible sur **GitHub Pages** ([https://mezfndu0
 
 ---
 
-## 🆕 Nouveautés v1.8.1
+## 🆕 Nouveautés v1.8.2
+
+- **Sous-zones** : en ressortant d'une sous-zone, les ennemis et objets du royaume restent ceux du scénario de la visite (plus de boules de feu ni de frères casseroles d'un scénario plus avancé à Luncheon).
+
+## Nouveautés v1.8.1
 
 - **Cutscene Refresh / Kingdom Enter Refresh** : la cinématique de l'histoire ne se rejoue plus quand Mario meurt (seulement en arrivant dans le royaume ou au *Restart Scene*).
 
