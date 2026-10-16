@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
 
@@ -32,8 +32,6 @@
     </a>
     <nav class="nav-links">
       <a href="#options">Options</a>
-      <a href="#features">Features</a>
-      <a href="#comparison">Comparison</a>
       <a href="#installation">Installation</a>
       <a href="#keybinds">Keybinds</a>
       <a href="https://github.com/mezfndu045-star/BTT-Studio" target="_blank" class="btn-nav-github">
@@ -106,207 +104,6 @@
         <nav class="gm-cats" aria-label="Menu categories"></nav>
         <div class="gm-items" aria-live="polite"></div>
         <aside class="gm-help" aria-live="polite"></aside>
-      </div>
-    </div>
-  </section>
-
-  <!-- Features Grid -->
-  <section class="features" id="features">
-    <div class="container">
-      <div class="section-title-wrap">
-        <h2>Every Feature of Practice Mod 1.0</h2>
-        <p>A full set of fixes, practice tools and improvements made for the most demanding speedrunners.</p>
-      </div>
-
-      <div class="feature-cards-grid">
-        <!-- Feature 1 -->
-        <div class="feature-card">
-          <div class="card-icon">🎥</div>
-          <h3>Instant Camera on Load Pos</h3>
-          <p>The camera interpolation is cancelled right away (<code>al::requestCancelCameraInterpole</code>) on Mario and the scene, for 10 frames.</p>
-          <ul>
-            <li>Locks onto Mario instantly on the first frame</li>
-            <li>Leftover speed reset to zero (no unwanted momentum)</li>
-            <li>Full support of captures (Frog, Goomba, etc.)</li>
-          </ul>
-        </div>
-
-        <!-- Feature 2 -->
-        <div class="feature-card">
-          <div class="card-icon">🌈</div>
-          <h3>Free &amp; Multicolor Input Display</h3>
-          <p>A fully customizable controller display on screen.</p>
-          <ul>
-            <li><strong>Drag &amp; Drop</strong> with the mouse or touch right on the screen</li>
-            <li>4 corner presets and fine tuning in steps of 25 pixels</li>
-            <li><strong>Multicolor (RGB Rainbow)</strong> color with a smooth animated wave</li>
-            <li>Full 2 Player mode support (independent P1 &amp; P2)</li>
-          </ul>
-        </div>
-
-        <!-- Feature 3 -->
-        <div class="feature-card">
-          <div class="card-icon">🔄</div>
-          <h3>Reload at Pos / Instant Reload</h3>
-          <p>Reloads the whole scene while putting Mario back at his exact current coordinates and rotation.</p>
-          <ul>
-            <li>"Reload at Pos" option (Yes/No) in Misc and Options</li>
-            <li>"Restart at Pos" action button</li>
-            <li>Robust state machine against desyncs (<code>mReloadState</code>)</li>
-            <li>Health restored and cutscenes skipped automatically</li>
-          </ul>
-        </div>
-
-        <!-- Feature 4 -->
-        <div class="feature-card">
-          <div class="card-icon">🪙</div>
-          <h3>The Game's Real 8-bit Luigi</h3>
-          <p>In the official game, some bushes and grass tufts have a 10% chance to hide an 8-bit Luigi. The "Luigi Pixels" option forces that roll to 100%.</p>
-          <ul>
-            <li>100% official animation, coins and sounds: the game itself makes Luigi appear</li>
-            <li>28 official spots across 8 kingdoms</li>
-            <li>Reload the scene after turning the option on <span class="badge-tag-highlight">testing</span></li>
-          </ul>
-        </div>
-
-        <!-- Feature: Skip Broodals -->
-        <div class="feature-card">
-          <div class="card-icon">🐰</div>
-          <h3>Skip Broodals</h3>
-          <p>As soon as the intro cutscene ends, the boss is beaten through its own "last hit" code: the game plays the ending cutscene and spawns the Multi Moon as usual.</p>
-          <ul>
-            <li>Madame Broode (Cascade Kingdom), Hariet (Sand Kingdom), Rango (Lake Kingdom)</li>
-            <li>Spewart (Wooded Kingdom, and the rematch in the Luncheon Kingdom)</li>
-            <li>Also works on the rematches without a Multi Moon <span class="badge-tag-highlight">testing</span></li>
-          </ul>
-        </div>
-
-        <!-- Feature 5 -->
-        <div class="feature-card">
-          <div class="card-icon">🔒</div>
-          <h3>Inputs Blocked in the Menu</h3>
-          <p>While the vertical menu is open, every controller button and stick is cut off from the game.</p>
-          <ul>
-            <li>Mario stays perfectly still while you browse</li>
-            <li>No accidental jump, camera move or Cappy throw</li>
-            <li>Keybinds cannot fire inside the menu</li>
-          </ul>
-        </div>
-
-        <!-- Feature 6 -->
-        <div class="feature-card">
-          <div class="card-icon">🎩</div>
-          <h3>Outfit Picker (42 Outfits)</h3>
-          <p>Change your look instantly without going to the Crazy Cap store.</p>
-          <ul>
-            <li>"Outfit Body" picker (all 42 SMO outfits)</li>
-            <li>"Outfit Cap" picker (42 different hats)</li>
-            <li>"Apply Outfit" button that reloads Mario in his new outfit</li>
-          </ul>
-        </div>
-
-        <!-- Feature 7 -->
-        <div class="feature-card">
-          <div class="card-icon">⚡</div>
-          <h3>Built-in Speedrun Refreshes</h3>
-          <p>Every practice switch to reset the world:</p>
-          <ul>
-            <li><strong>Cutscene Refresh:</strong> brings back the cutscenes and NPC talks (Captain Toad, Hint Toad, Jammin' Toad, Traveling Peach)</li>
-            <li><strong>Doors, Moon Shards, Purple Coins &amp; Gray Moons:</strong> full respawn</li>
-          </ul>
-        </div>
-
-        <!-- Feature 8 -->
-        <div class="feature-card">
-          <div class="card-icon">🎮</div>
-          <h3>Translucent Rodin 1.3 Vertical Menu</h3>
-          <p>The modern and clean design of Practice Mod 1.3, adapted to the native 1.0 features.</p>
-          <ul>
-            <li>8 organized categories: Options, Stages, Misc, Timer, Input Display, Keybinds, Info, Settings</li>
-            <li>Options category on 2 columns to see everything at once</li>
-            <li>Official white high-resolution Rodin font</li>
-            <li>Quick D-Pad shortcuts (Save, Load, Kill Scene)</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Comparison Section -->
-  <section class="comparison" id="comparison">
-    <div class="container">
-      <div class="section-title-wrap">
-        <h2>Version Comparison</h2>
-        <p>Why Practice Mod 1.0 (BTT Studio Edition) is the perfect choice for Any% and 100% speedrun routes.</p>
-      </div>
-
-      <div class="table-card">
-        <table class="comp-table">
-          <thead>
-            <tr>
-              <th>Feature</th>
-              <th>Vanilla SMO</th>
-              <th>Practice Mod 1.3</th>
-              <th>BTT Studio 1.0 (This version)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="feature-col">Super Mario Odyssey game version</td>
-              <td>1.0.0 to 1.3.0</td>
-              <td>SMO 1.3.0 only</td>
-              <td><span class="badge-tag-highlight">SMO 1.0.0 (Best for Speedrun)</span></td>
-            </tr>
-            <tr>
-              <td class="feature-col">1.0 glitches (First Person Glitch, etc.)</td>
-              <td>Yes (in 1.0)</td>
-              <td>❌ Patched in 1.3</td>
-              <td><span class="badge-tag-highlight">✅ 100% available</span></td>
-            </tr>
-            <tr>
-              <td class="feature-col">Graphical interface (UI)</td>
-              <td>None</td>
-              <td>Translucent Rodin vertical menu</td>
-              <td><span class="badge-tag-highlight">✅ Translucent Rodin vertical menu</span></td>
-            </tr>
-            <tr>
-              <td class="feature-col">Instant camera on Load Position</td>
-              <td>No</td>
-              <td>Slight glide</td>
-              <td><span class="badge-tag-highlight">✅ Instant (0 frame lag)</span></td>
-            </tr>
-            <tr>
-              <td class="feature-col">Movable Input Display (Drag &amp; Drop + Presets)</td>
-              <td>No</td>
-              <td>Fixed position</td>
-              <td><span class="badge-tag-highlight">✅ Mouse Drag &amp; Drop + corner presets</span></td>
-            </tr>
-            <tr>
-              <td class="feature-col">Multicolor RGB Wave color</td>
-              <td>No</td>
-              <td>No</td>
-              <td><span class="badge-tag-highlight">✅ Dynamic HSV Chroma</span></td>
-            </tr>
-            <tr>
-              <td class="feature-col">Reload at position (Reload at Pos)</td>
-              <td>No</td>
-              <td>No</td>
-              <td><span class="badge-tag-highlight">✅ Dedicated option &amp; button</span></td>
-            </tr>
-            <tr>
-              <td class="feature-col">8-bit Luigi guaranteed in bushes</td>
-              <td>10% chance</td>
-              <td>No</td>
-              <td><span class="badge-tag-highlight">✅ 100% (real game object)</span></td>
-            </tr>
-            <tr>
-              <td class="feature-col">Skip Broodals (direct Multi Moon)</td>
-              <td>No</td>
-              <td>❌ Option present but inactive</td>
-              <td><span class="badge-tag-highlight">✅ Madame Broode, Hariet, Rango, Spewart</span></td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
   </section>
@@ -523,6 +320,6 @@
 
   <script src="menu-data.js?v=1"></script>
   <script src="menu.js?v=1"></script>
-  <script src="app.js?v=3"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>
