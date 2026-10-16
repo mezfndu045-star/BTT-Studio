@@ -32,7 +32,7 @@ function initCopyButtons() {
       if (textToCopy) {
         navigator.clipboard.writeText(textToCopy).then(() => {
           const origText = btn.textContent;
-          btn.textContent = '✓ Copié !';
+          btn.textContent = '✓ Copied!';
           btn.style.background = 'rgba(16, 185, 129, 0.3)';
           btn.style.color = '#10b981';
           setTimeout(() => {
@@ -48,21 +48,16 @@ function initCopyButtons() {
   });
 }
 
-// Disclaimer: shown for 5 seconds when the page opens, then fades out
+// Disclaimer: shown when the page opens, until "I understand" is pressed
 (function () {
   const box = document.getElementById('disclaimer');
-  if (!box) return;
-  const seconds = document.getElementById('disclaimer-seconds');
-  let left = 5;
+  const button = document.getElementById('disclaimer-close');
+  if (!box || !button) return;
   document.body.style.overflow = 'hidden';
-  const timer = setInterval(() => {
-    left -= 1;
-    if (seconds) seconds.textContent = String(Math.max(left, 0));
-    if (left <= 0) {
-      clearInterval(timer);
-      box.classList.add('is-hidden');
-      document.body.style.overflow = '';
-      setTimeout(() => box.remove(), 500);
-    }
-  }, 1000);
+  button.focus();
+  button.addEventListener('click', () => {
+    box.classList.add('is-hidden');
+    document.body.style.overflow = '';
+    setTimeout(() => box.remove(), 500);
+  });
 })();
