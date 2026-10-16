@@ -20,7 +20,17 @@ Le site officiel en ligne est disponible sur **GitHub Pages** ([https://mezfndu0
 
 ---
 
-## 🆕 Nouveautés v1.9.4
+## 🆕 Nouveautés v1.9.5
+
+- **Input Display** : un seul style par manette (Xbox One, Switch Pro, Joy-Con, HORI Pokkén, PS4 SCUF, PlayStation, Streamers, Fight Sticks), et trois nouveaux réglages :
+  - **Controller Color** : la couleur du corps de la manette (ombres gardées, boutons inchangés) ;
+  - **Controller Pattern** : les motifs des SCUF (Tesla, Supernova, Galaxy, Carbon, Camo…) sur toutes les manettes ;
+  - **Controller Pressed Color** : la couleur des boutons appuyés.
+  Un ancien style est converti (ex. « Tesla » = PS4 SCUF + motif Tesla). Les styles GameCube et N64 sont retirés.
+- **Téléchargements** : sans le guide ni PeepaUserConfig.bin.
+- **Site** : en anglais, avec le menu du jeu à essayer.
+
+## Nouveautés v1.9.4
 
 - **Options > Text Refresh** : les textes de Cappy (début des royaumes, explication des drapeaux…) reviennent à chaque rechargement. Désactivé : ils ne s'affichent jamais. *Cutscene Refresh* ne s'en occupe plus.
 - **Broodals** (Topper…) : la cinématique de début de combat se passe toujours avec *Moon Refresh*, *Gray Moon Refresh* ou *Cutscene Refresh* (le jeu la croyait jamais vue après Restart Scene).

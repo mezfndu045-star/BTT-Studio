@@ -2,7 +2,8 @@
 // per second, results in the emulator log ("DBG: ..."). Used to test warps and refresh options without the menu.
 //   kingdom <index> <scenario>          Stages > Warp to Stage
 //   stage <stage> <entrance> <scenario> warp to a stage
-//   opt <npc|kingdom|warptext|moon|input|input2p> <0|1>, opt style <index>, opt size <percent>
+//   opt <npc|kingdom|warptext|moon|input|input2p> <0|1>, opt style <index>, opt size <percent>, opt body|pressed <color>,
+//   opt pattern <index>
 //   reload                              end the scene (restart)
 //   trace <0|1>                         log the StageScene nerves (start demos)
 #include "menu/DebugCommands.h"
@@ -59,6 +60,9 @@ namespace {
             else if (strcmp(a, "input2p") == 0) s->mIsEnableInput2P = v;
             else if (strcmp(a, "style") == 0) s->mInputDisplayStyle = u8(atoi(b));
             else if (strcmp(a, "size") == 0) s->mInputDisplaySize = atoi(b);
+            else if (strcmp(a, "body") == 0) s->mSkinBodyColor = SettingsMgr::InputDisplayColor(atoi(b));
+            else if (strcmp(a, "pattern") == 0) s->mSkinPattern = u8(atoi(b));
+            else if (strcmp(a, "pressed") == 0) s->mSkinPressedColor = SettingsMgr::InputDisplayColor(atoi(b));
             dbgLog("DBG: opt %s = %d", a, v);
         } else if (strcmp(cmd, "reload") == 0) {
             if (StageScene* scene = helpers::tryGetStageScene(gameSeq)) scene->kill();

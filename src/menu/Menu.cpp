@@ -23,6 +23,7 @@
 #include "imgui_internal.h"
 #include "menu/stage_warp.h"
 #include "menu/InputDisplayStyles.h"
+#include "menu/InputDisplaySkins.h"
 #include "menu/QuickWheel.h"
 #include "menu/DebugCommands.h"
 #include "menu/PhotoTourList.h"
@@ -667,6 +668,45 @@ void Menu::initCategories() {
         }
         set->getSettings()->mInputDisplayStyleList = 1;
     }
+    // Style chosen before the N64 and GameCube styles were removed (list 1, index 3 + position in OjdSkins.inc):
+    // same style in the new list (a removed one: Classic)
+    if (set->getSettings()->mInputDisplayStyleList == 1) {
+        static constexpr u8 cRemovedN64GameCube[] = { 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 64, 65, 66 };
+        u8& style = set->getSettings()->mInputDisplayStyle;
+        if (style >= 3) {
+            int ojd = style - 3, shift = 0;
+            for (u8 removed : cRemovedN64GameCube) {
+                if (removed == ojd) shift = -1000;
+                else if (removed < ojd) shift++;
+            }
+            style = shift < 0 ? 0 : u8(style - shift);
+        }
+        set->getSettings()->mInputDisplayStyleList = 2;
+    }
+    // Style chosen before one style per controller (list 2): its controller, with the color / design / pressed color of
+    // the old style (Input Display > Controller Color / Pattern / Pressed Color)
+    if (set->getSettings()->mInputDisplayStyleList == 2) {
+        struct OldStyle {
+            s8 style, color, pattern, pressed;
+        };
+        static constexpr OldStyle cOldStyles[] = {
+            { 3, -1, -1, -1 }, { 3, -1, -1, -1 }, { 3, -1, -1, -1 }, { 3, -1, -1, -1 }, { 3, -1, -1, -1 }, { 3, -1, -1, -1 }, { 4, -1, -1, -1 }, { 4, -1, -1, -1 }, { 5, 2, -1, -1 }, { 5, 11, -1, -1 }, { 5, 10, -1, -1 }, { 5, 9, -1, -1 }, { 5, 4, -1, -1 }, { 5, 8, -1, -1 }, { 5, 0, -1, -1 }, { 5, 2, -1, -1 }, { 5, 11, -1, -1 }, { 5, 10, -1, -1 }, { 5, 9, -1, -1 }, { 5, 4, -1, -1 }, { 5, 8, -1, -1 }, { 5, 0, -1, -1 }, { 6, -1, -1, -1 }, { 6, -1, -1, 9 }, { 6, -1, -1, 8 }, { 6, -1, -1, 10 }, { 6, -1, -1, 7 }, { 6, -1, -1, 4 }, { 6, -1, -1, 5 }, { 7, -1, -1, -1 }, { 7, -1, -1, -1 }, { 7, -1, -1, -1 }, { 7, -1, -1, -1 }, { 7, -1, -1, -1 }, { 8, -1, -1, -1 }, { 8, -1, -1, -1 }, { 8, -1, -1, -1 }, { 8, -1, -1, -1 }, { 8, -1, -1, -1 }, { 8, -1, -1, -1 }, { 8, -1, -1, -1 }, { 8, -1, -1, -1 }, { 8, -1, -1, -1 }, { 8, -1, -1, -1 }, { 8, -1, -1, -1 }, { 8, -1, -1, -1 }, { 9, -1, -1, -1 }, { 10, -1, -1, -1 }, { 10, -1, -1, 9 }, { 10, -1, -1, 8 }, { 10, -1, -1, 10 }, { 10, -1, -1, 7 }, { 10, -1, -1, 4 }, { 10, -1, -1, 5 }, { 11, -1, -1, -1 }, { 11, -1, -1, 9 }, { 11, -1, -1, 8 }, { 11, -1, -1, 10 }, { 11, -1, -1, 7 }, { 11, -1, -1, 4 }, { 11, -1, -1, 5 }, { 12, 3, -1, -1 }, { 12, 0, -1, -1 }, { 12, 5, -1, -1 }, { 12, 7, -1, -1 }, { 12, 6, -1, -1 }, { 12, 11, -1, -1 }, { 12, 4, -1, -1 }, { 12, 8, -1, -1 }, { 12, 10, -1, -1 }, { 12, 7, -1, -1 }, { 12, -1, 8, -1 }, { 12, -1, 9, -1 }, { 12, -1, 10, -1 }, { 12, -1, 1, -1 }, { 12, -1, 2, -1 }, { 12, -1, 3, -1 }, { 12, -1, 11, -1 }, { 12, -1, 4, -1 }, { 12, -1, 12, -1 }, { 12, -1, 13, -1 }, { 12, -1, 14, -1 }, { 12, -1, 6, -1 }, { 12, -1, 5, -1 }, { 12, -1, 7, -1 }, { 12, -1, 15, -1 }, { 13, -1, -1, -1 }, { 14, -1, -1, -1 }
+        };
+        auto* st = set->getSettings();
+        int ojd = st->mInputDisplayStyle - 3;
+        if (st->mInputDisplayStyle == 91) {
+            st->mInputDisplayStyle = cMotionInputDisplayStyle;
+        } else if (ojd >= 0 && ojd < int(IM_ARRAYSIZE(cOldStyles))) {
+            const OldStyle& o = cOldStyles[ojd];
+            st->mInputDisplayStyle = u8(o.style);
+            if (o.color >= 0) st->mSkinBodyColor = SettingsMgr::InputDisplayColor(o.color);
+            if (o.pattern >= 0) st->mSkinPattern = u8(o.pattern);
+            if (o.pressed >= 0) st->mSkinPressedColor = SettingsMgr::InputDisplayColor(o.pressed);
+        } else if (ojd >= 0) {
+            st->mInputDisplayStyle = 0;
+        }
+        st->mInputDisplayStyleList = 3;
+    }
     if (set->getSettings()->mInputDisplayStyle >= IM_ARRAYSIZE(sInputDisplayStyleNames)) set->getSettings()->mInputDisplayStyle = 0;
     mCategories[4].components.push_back(new EnumMenuComponent<u8>(&set->getSettings()->mInputDisplayStyle, sInputDisplayStyleNames, IM_ARRAYSIZE(sInputDisplayStyleNames), "Style"));
     // Style "Motion": the key that makes the current orientation of the controller the front view (L + R at first)
@@ -681,6 +721,16 @@ void Menu::initCategories() {
     if (set->getSettings()->mMotionController >= IM_ARRAYSIZE(sMotionControllerNames)) set->getSettings()->mMotionController = 0;
     mCategories[4].components.push_back(new EnumMenuComponent<u8>(&set->getSettings()->mMotionController, sMotionControllerNames, IM_ARRAYSIZE(sMotionControllerNames), "Motion Controller"));
     mCategories[4].components.back()->setHelp("Style \"Motion\": the controller whose motion is shown, and its shape. Auto: the controller in use (Pro Controller, or Joy-Con).");
+    // Picture styles: color of the body, design on the body, color of the pressed buttons
+    if (u8(set->getSettings()->mSkinBodyColor) >= 13) set->getSettings()->mSkinBodyColor = SettingsMgr::InputDisplayColor::None;
+    if (u8(set->getSettings()->mSkinPressedColor) >= 13) set->getSettings()->mSkinPressedColor = SettingsMgr::InputDisplayColor::None;
+    if (set->getSettings()->mSkinPattern >= IM_ARRAYSIZE(cSkinPatternNames)) set->getSettings()->mSkinPattern = 0;
+    mCategories[4].components.push_back(new EnumMenuComponent<SettingsMgr::InputDisplayColor>(&set->getSettings()->mSkinBodyColor, sColorNames, 13, "Controller Color"));
+    mCategories[4].components.back()->setHelp("Color of the controller of the picture styles (Xbox One, Switch Pro Controller, Joy-Con, PlayStation...). None: its own color.");
+    mCategories[4].components.push_back(new EnumMenuComponent<u8>(&set->getSettings()->mSkinPattern, cSkinPatternNames, IM_ARRAYSIZE(cSkinPatternNames), "Controller Pattern"));
+    mCategories[4].components.back()->setHelp("A design on the controller of the picture styles (Tesla, Supernova, Galaxy, Carbon...). It replaces the Controller Color.");
+    mCategories[4].components.push_back(new EnumMenuComponent<SettingsMgr::InputDisplayColor>(&set->getSettings()->mSkinPressedColor, sColorNames, 13, "Controller Pressed Color"));
+    mCategories[4].components.back()->setHelp("Color of the pressed buttons of the picture styles. None: the style's own colors.");
     mCategories[4].components.push_back(new EnumMenuComponent<int>(&sDisplayPreset, sPresetNames, 5, "Preset Pos", 34, [](int preset) {
         SettingsMgr* s = SettingsMgr::instance();
         if (!s || !s->getSettings()) return;

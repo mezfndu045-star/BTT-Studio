@@ -147,7 +147,7 @@ public:
         u8 mWheelSize = 1;
         // Menu language (menu/Lang.h): 0 English, 1 French
         u8 mLanguage = 0;
-        // 1 once mInputDisplayStyle uses the v1.7.1 style list (103 Open Joystick Display styles removed)
+        // 1 once mInputDisplayStyle uses the v1.7.1 style list (103 Open Joystick Display styles removed), 2 without the N64 / GameCube styles, 3 one style per controller
         u8 mInputDisplayStyleList = 0;
         // Size of the input displays (1st and 2nd controller), in % (Input Display > Size)
         int mInputDisplaySize = 100;
@@ -168,6 +168,11 @@ public:
         bool mIsMotionKeyInit = false;
         // Input Display > Motion Controller: 0 Auto, 1 Pro Controller, 2 Joy-Con (sensors read and shape drawn)
         u8 mMotionController = 0;
+        // Input Display > Controller Color / Controller Pressed Color / Controller Pattern (picture styles): body of the
+        // controller, pressed buttons (None: the style's own colors), design on the body (0: none, else cSkinPatternNames)
+        InputDisplayColor mSkinBodyColor = InputDisplayColor::None;
+        InputDisplayColor mSkinPressedColor = InputDisplayColor::None;
+        u8 mSkinPattern = 0;
     } mSettings;
 
     // Settings* getSettings() { return &mSettings; }

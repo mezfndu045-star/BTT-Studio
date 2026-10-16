@@ -112,13 +112,16 @@ const MENU = [
     ],
   },
   {
-    name: 'Input Display', split: 10,
+    name: 'Input Display', split: 13,
     items: [
       b('Input Display', 'Shows the controller and the buttons you press on screen.', true),
       b('2P Mode', 'Also shows the 2nd controller (2 player mode, Cappy).'),
-      e('Style', ['Classic', 'Periscope', 'Minimal', 'Switch Pro', 'Xbox', 'PS4', 'GameCube', 'N64', '...', 'Motion'], 0, 'Look of the controller: Classic, Periscope, Minimal, 109 Open Joystick Display styles, and "Motion": a 3D controller that turns like the real one (gyroscope).'),
+      e('Style', ['Classic', 'Periscope', 'Minimal', 'Fight Stick (Xbox)', 'Fight Stick (PlayStation)', 'Xbox One', 'Xbox Streamer', 'Switch Pro Controller', 'Switch Joy-Con', 'HORI Pokkén Tournament DX', 'Switch Pro Streamer', 'Joy-Con Streamer', 'PS4 (SCUF)', 'PlayStation (Analog)', 'PlayStation (Digital)', 'Motion'], 0, 'Look of the controller: Classic, Periscope, Minimal, one picture style per controller (Xbox, Switch, PlayStation, fight sticks... from Open Joystick Display), and "Motion": a 3D controller that turns like the real one (gyroscope).'),
       { t: 'Reset Motion', kind: 'key', v: 'Custom (L + R)', h: 'Style "Motion": the key that makes the current orientation of the controller the front view.' },
       e('Motion Controller', ['Auto', 'Pro Controller', 'Joy-Con'], 0, 'Style "Motion": the controller whose motion is shown, and its shape. Auto: the controller in use (Pro Controller, or Joy-Con).'),
+      e('Controller Color', COLORS, 0, 'Color of the controller of the picture styles (Xbox One, Switch Pro Controller, Joy-Con, PlayStation...). None: its own color.'),
+      e('Controller Pattern', ['None', 'Carbon', 'Camo', 'Galaxy', 'Nebula', 'Supernova', 'Star Storm', 'Tesla', 'Honeycomb', 'Honeycomb White', 'Apex Legends', 'Knights of SCUF', 'Night', 'Reaper', 'Sand Storm', 'Utopia'], 0, 'A design on the controller of the picture styles (Tesla, Supernova, Galaxy, Carbon...). It replaces the Controller Color.'),
+      e('Controller Pressed Color', COLORS, 0, "Color of the pressed buttons of the picture styles. None: the style's own colors."),
       e('Preset Pos', ['Center', 'Bottom Left', 'Bottom Right', 'Top Left', 'Top Right'], 0, 'Puts the controller in the center or in a corner. You can also drag it with the mouse while the menu is open.'),
       n('Position X', 800, 0, 1600, 25, 'Horizontal position of the controller.'),
       n('Position Y', 450, 0, 900, 25, 'Vertical position of the controller.'),
