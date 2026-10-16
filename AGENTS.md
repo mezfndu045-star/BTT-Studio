@@ -78,6 +78,9 @@ Deux mods sont déployés dans `C:\Users\FlowUP\AppData\Roaming\yuzu\load\010000
 - **Correction** : les 8 `bl rs::isGotShine` du watcher (init +0x1d4a60/+0x1d4ba4, `createShineChips` +0x1d4c30 qui crée les fragments "vides"/gris si la lune est prise, `initAfterPlacement` +0x1d4df4/+0x1d4ff4/+0x1d50bc, `updateHints` +0x1d5174, `appear` +0x1d5314 → `ShineChipWatcherGotCheck1..8`) renvoient `false` quand l'option est active. 1re version (3 appels seulement) : fragments encore gris. Recharger la scène après avoir activé l'option.
 - **Compteur en haut de l'écran** : `StageSceneLayout` / `ShineChipLayoutParts` ne l'affichent pas si `rs::isCurrentShineChipWatcherTypeEmpty` (= lune du watcher déjà prise) → trampoline qui renvoie `false` avec l'option.
 
+### PUBLIÉ — zips sans guide ni PeepaUserConfig (parent f6558de)
+- Les 6 zips v1.9.4 n'ont plus GUIDE_ET_RACCOURCIS_*.txt ni PeepaUserConfig.bin (demande utilisateur). Les prochains mkzipsNNN.py ne doivent plus chercher / modifier le guide. Site : menu interactif (docs/menu-data.js + menu.js, section #options), parties Features et Comparison retirées.
+
 ### PUBLIÉ — site en anglais (parent 8ac67c2)
 - docs/index.html entièrement traduit en anglais (lang="en"), bouton Copy -> "Copied!". L'avertissement ne se ferme plus tout seul : bouton "I understand" (#disclaimer-close, app.js). ATTENTION : les prochains edit_siteNNN.py doivent chercher les textes ANGLAIS ("New in v…", "Install the Mod v…", "Version x • y MB", "Download (…)").
 
