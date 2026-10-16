@@ -19,6 +19,7 @@ void Menu::drawPageOptions() {
             ImGui::Checkbox("Refresh Seeds", &set->getSettings()->mIsEnableFlowerPotRefresh);
             ImGui::Checkbox("Seeds Growing", &set->getSettings()->mIsEnableSeedGrowing);
             ImGui::Checkbox("Refresh Toad Text", &set->getSettings()->mIsEnableRefreshNpc);
+            ImGui::Checkbox("Text Refresh", &set->getSettings()->mIsEnableRefreshWarpText);
             ImGui::Checkbox("Disable Saving Coin Stacks", &set->getSettings()->mIsEnableDisableCoinStackSave);
             ImGui::Checkbox(
                 "Refresh Kingdom Enter Cutscenes", &set->getSettings()->mIsEnableRefreshKingdomEnter

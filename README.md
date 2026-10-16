@@ -20,7 +20,15 @@ Le site officiel en ligne est disponible sur **GitHub Pages** ([https://mezfndu0
 
 ---
 
-## 🆕 Nouveautés v1.9.3
+## 🆕 Nouveautés v1.9.4
+
+- **Options > Text Refresh** : les textes de Cappy (début des royaumes, explication des drapeaux…) reviennent à chaque rechargement. Désactivé : ils ne s'affichent jamais. *Cutscene Refresh* ne s'en occupe plus.
+- **Broodals** (Topper…) : la cinématique de début de combat se passe toujours avec *Moon Refresh*, *Gray Moon Refresh* ou *Cutscene Refresh* (le jeu la croyait jamais vue après Restart Scene).
+- **Timer > Odyssey Power Up** : se lance aussi quand l'Odyssée est réparée (Lost…), au premier écran noir du voyage.
+- **Écran titre** : retour au logo d'origine du jeu.
+- **Site** : avertissement affiché 5 secondes à l'ouverture.
+
+## Nouveautés v1.9.3
 
 - **Input Display > Style « Motion »** : nouvelles manettes 3D (manette Pro et Joy-Con) faites pour le mod (`tools/subareas/gen_motion_models.py`). Les boutons et les sticks restent toujours visibles par-dessus la manette.
 

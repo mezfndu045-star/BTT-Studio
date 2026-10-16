@@ -69,6 +69,23 @@ HkTrampoline odysseyGoToWorldMapWithFadeHook = [](TrampolineStatic(), al::LiveAc
     }
 };
 
+// Odyssey repaired (Lost Kingdom, Ruined Kingdom...): the "The Odyssey is fixed" message (exeDemoInformRepairHome;
+// in 1.3 its nerve's execute, the step is inlined there, hence the two pointers) leads straight to the takeoff to the
+// next kingdom, without the world map: Odyssey Power Up fires at the next black screen (the travel), or at the next
+// scene start if none was seen.
+static bool sIsOdysseyRepairMessageShown = false;
+HkTrampoline odysseyRepairMessageHook = [](TrampolineStatic(), void* a, void* b) -> void {
+    sIsOdysseyRepairMessageShown = true;
+    orig(a, b);
+};
+namespace btt {
+void onTimerSceneInit() {
+    if (!sIsOdysseyRepairMessageShown) return;
+    sIsOdysseyRepairMessageShown = false;
+    if (Timer::sInstance) Timer::sInstance->event(TimerHookType::OdysseyPowerUp);
+}
+} // namespace btt
+
 // Capture and Moon Get fire once per event: ignore a repeat of the same type within half a second
 static void eventOnce(TimerHookType type, s64* lastTick) {
     s64 now = nn::os::GetSystemTick().value;
@@ -182,6 +199,7 @@ static s64 sLastBlackScreenTick = 0;
 static s64 sLastWhiteScreenTick = 0;
 static void onWipeClosed(const void* wipe) {
     WipeColor color = findWipeColor(wipe);
+    if (color == WipeColor::Black && sIsOdysseyRepairMessageShown) btt::onTimerSceneInit();
     if (color == WipeColor::Black) eventOnce(TimerHookType::BlackScreen, &sLastBlackScreenTick);
     else if (color == WipeColor::White) eventOnce(TimerHookType::WhiteScreen, &sLastWhiteScreenTick);
 }
@@ -223,6 +241,7 @@ void TimerHooks::installTimerHooks() {
     shineGrabHook.installAtSym<"_ZN10StageScene15exeDemoShineGetEv">();
     odysseyPowerUpMessageHook.installAtSym<"_ZN16ShineTowerRocket27exeDemoInformPowerUpMessageEv">();
     odysseyGoToWorldMapWithFadeHook.installAtSym<"_ZN16ShineTowerRocket23exeGoToWorldMapWithFadeEv">();
+    odysseyRepairMessageHook.installAtSym<"OdysseyInformRepairHome">();
     hackStartDemoHook.installAtSym<"_ZN16PlayerHackKeeper18startHackStartDemoEPN2al9LiveActorE">();
     hackStartDemoPuppetableHook.installAtSym<"_ZN16PlayerHackKeeper28startHackStartDemoPuppetableEPN2al9LiveActorE">();
     shineWaitRequestDemoHook.installAtSym<"_ZN5Shine18exeWaitRequestDemoEv">();

@@ -1056,3 +1056,69 @@ footer a:hover {
   text-transform: uppercase;
   opacity: 0.7;
 }
+
+/* Disclaimer shown for 5 seconds when the page opens */
+.disclaimer {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(5, 7, 12, 0.82);
+  backdrop-filter: blur(6px);
+  transition: opacity 0.4s ease;
+}
+.disclaimer.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.disclaimer-card {
+  max-width: 520px;
+  width: 100%;
+  padding: 28px 28px 20px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-glow);
+  background: var(--bg-card);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+.disclaimer-card h2 {
+  margin-bottom: 14px;
+  font-size: 1.5rem;
+  color: var(--switch-red);
+}
+.disclaimer-card p {
+  margin-bottom: 10px;
+  color: var(--text-secondary);
+}
+.disclaimer-card strong {
+  color: var(--text-primary);
+}
+.disclaimer-card a {
+  color: var(--switch-blue);
+  font-weight: 600;
+}
+.disclaimer-bar {
+  height: 4px;
+  margin: 18px 0 8px;
+  border-radius: var(--radius-full);
+  background: var(--border-subtle);
+  overflow: hidden;
+}
+.disclaimer-bar span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--switch-red), var(--switch-blue));
+  animation: disclaimer-countdown 5s linear forwards;
+}
+.disclaimer-count {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+@keyframes disclaimer-countdown {
+  from { width: 100%; }
+  to { width: 0%; }
+}

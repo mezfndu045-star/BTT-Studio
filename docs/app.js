@@ -47,3 +47,22 @@ function initCopyButtons() {
     });
   });
 }
+
+// Disclaimer: shown for 5 seconds when the page opens, then fades out
+(function () {
+  const box = document.getElementById('disclaimer');
+  if (!box) return;
+  const seconds = document.getElementById('disclaimer-seconds');
+  let left = 5;
+  document.body.style.overflow = 'hidden';
+  const timer = setInterval(() => {
+    left -= 1;
+    if (seconds) seconds.textContent = String(Math.max(left, 0));
+    if (left <= 0) {
+      clearInterval(timer);
+      box.classList.add('is-hidden');
+      document.body.style.overflow = '';
+      setTimeout(() => box.remove(), 500);
+    }
+  }, 1000);
+})();

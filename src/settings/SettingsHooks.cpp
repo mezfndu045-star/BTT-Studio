@@ -104,6 +104,19 @@ HkTrampoline gateKeeperStartDemoHook = [](TrampolineStatic(), const void* holder
     if (s && s->mIsEnableRefreshNpc) return false;
     return orig(holder);
 };
+// A Broodal fight's start cutscene can only be skipped once it was seen (StateGateKeeperBattleStartDemo::isFirstDemo
+// = the save never showed it). With Moon Refresh / Gray Moon Refresh, Restart Scene puts the save back as it was at
+// the start of the scene (cutscene not seen yet), and Cutscene Refresh makes it unseen: it can always be skipped then.
+static bool isBroodalStartDemoAlwaysSkippable() {
+    auto* s = SettingsMgr::getSettings();
+    return s && (s->mIsEnableMoonRefresh || s->mIsEnableGrayMoonRefresh || s->mIsEnableRefreshNpc);
+}
+HkTrampoline gateKeeperFirstDemoHook = [](TrampolineStatic(), const void* state) -> bool {
+    return isBroodalStartDemoAlwaysSkippable() ? false : orig(state);
+};
+HkTrampoline gateKeeperFirstDemoThunkHook = [](TrampolineStatic(), const void* state) -> bool {
+    return isBroodalStartDemoAlwaysSkippable() ? false : orig(state);
+};
 
 // Items of type DotMarioCat roll al::isPercentProbability(10.0f) at init to become
 // "ドットキャラクター(レア)" (8-bit Luigi popping out of the ground) instead of a coin.
@@ -211,15 +224,17 @@ HkTrampoline mofumofuInitHook = [](TrampolineStatic(), al::LiveActor* mofumofu, 
     if (shine) sNightMetroShine = shine;
 };
 
-// Warp Text Refresh (and Cutscene Refresh): Cappy's texts (start of the kingdoms...) come back. Each one is said once
+// Text Refresh: Cappy's texts (start of the kingdoms...) come back. Each one is said once
 // (GameDataFunction::isFlagOnTalkMessageInfo): only the ones said since the scene started stay said, so they come
-// back at each reload without being repeated in the same scene.
+// back at each reload without being repeated in the same scene. Text Refresh off: they all count as said (never shown,
+// even on a new save).
 static int sSceneTalkFlags[64];
 static int sSceneTalkFlagNum = 0;
 
 HkTrampoline talkMessageFlagHook = [](TrampolineStatic(), const al::IUseSceneObjHolder* holder, int index) -> bool {
     auto* s = SettingsMgr::getSettings();
-    if (!s || !s->mIsEnableRefreshNpc) return orig(holder, index);
+    if (!s) return orig(holder, index);
+    if (!s->mIsEnableRefreshWarpText) return true;
     for (int i = 0; i < sSceneTalkFlagNum; i++)
         if (sSceneTalkFlags[i] == index) return true;
     return false;
@@ -530,7 +545,11 @@ HkTrampoline isOnSaveObjInfoHook = [](TrampolineStatic(), const void* info) -> b
 // Pots with a grow level kept in memory by Seeds Refresh (see seedGetGrowLevelHook), reset on each scene
 static int sSeedGrowLevelNum = 0;
 
+namespace btt {
+void onTimerSceneInit();  // TimerHooks.cpp
+} // namespace btt
 HkTrampoline stageSceneInitHook = [](TrampolineStatic(), StageScene* stageScene, const al::SceneInitInfo& info) -> void {
+    btt::onTimerSceneInit();
     sNightMetroShine = nullptr;
     sIsNightMetroShineAppeared = false;
     sSeedGrowLevelNum = 0;
@@ -932,19 +951,20 @@ HkTrampoline NoDamageHook = [](TrampolineStatic(), PlayerHitPointData* hitPointD
     if (!SettingsMgr::instance()->getSettings()->mIsEnableNoDamage) orig(hitPointData);
 };
 
+// Text Refresh: Cappy explains the checkpoint flags (warp) at each flag; off: never
 HkTrampoline warpTextHook = [](TrampolineStatic(), GameDataHolderAccessor accessor) -> bool {
     auto* s = SettingsMgr::instance()->getSettings();
-    return (s && s->mIsEnableRefreshNpc) ? false : orig(accessor);
+    return s ? !s->mIsEnableRefreshWarpText : orig(accessor);
 };
 
 HkTrampoline isEnableShowExplainHook = [](TrampolineStatic(), GameDataHolderAccessor accessor) -> bool {
     auto* s = SettingsMgr::instance()->getSettings();
-    return (s && s->mIsEnableRefreshNpc) ? true : orig(accessor);
+    return s ? s->mIsEnableRefreshWarpText : orig(accessor);
 };
 
 HkTrampoline gameDataFileAlreadyShowExplainHook = [](TrampolineStatic(), void* file) -> bool {
     auto* s = SettingsMgr::instance()->getSettings();
-    return (s && s->mIsEnableRefreshNpc) ? false : orig(file);
+    return s ? !s->mIsEnableRefreshWarpText : orig(file);
 };
 
 HkTrampoline refreshPurpsHook = [](TrampolineStatic(), GameDataHolderAccessor accessor,
@@ -1314,6 +1334,8 @@ void SettingsHooks::installSettingsHooks() {
     checkCostumeMissMatchNextHook.installAtSym<"_ZNK38EventFlowNodeCheckCostumeMissMatchPart9getNextIdEv">();
     gateKeeperDeadHook.installAtSym<"_ZNK20GateKeeperDataHolder13isAlreadyDeadEv">();
     gateKeeperStartDemoHook.installAtSym<"_ZNK20GateKeeperDataHolder22isAlreadyShowStartDemoEv">();
+    gateKeeperFirstDemoHook.installAtSym<"_ZNK30StateGateKeeperBattleStartDemo11isFirstDemoEv">();
+    gateKeeperFirstDemoThunkHook.installAtSym<"_ZThn48_NK30StateGateKeeperBattleStartDemo11isFirstDemoEv">();
     GreyShineRefreshHook
         .installAtSym<"_ZN16GameDataFunction10isGotShineE22GameDataHolderAccessorPK9ShineInfo">();
     ShineRefreshHook.installAtSym<"_ZN16GameDataFunction11setGotShineE20GameDataHolderWriterPK9ShineInfo">();

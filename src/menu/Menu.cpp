@@ -396,14 +396,10 @@ void Menu::initCategories() {
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableDoorRefresh, "Doors Refresh"));
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableShardRefresh, "Moon Shards Refresh"));
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableRefreshKingdomEnter, "Kingdom Enter Refresh"));
-    // Warp Text Refresh is now part of Cutscene Refresh: an older setting turns Cutscene Refresh on instead
-    if (set->getSettings()->mIsEnableRefreshWarpText) {
-        set->getSettings()->mIsEnableRefreshWarpText = false;
-        set->getSettings()->mIsEnableRefreshNpc = true;
-    }
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableFlowerPotRefresh, "Seeds Refresh"));
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableSeedGrowing, "Seeds Growing"));
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableRefreshNpc, "Cutscene Refresh"));
+    mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableRefreshWarpText, "Text Refresh"));
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableAlwaysManualCutscene, "Always Manual Cutscene"));
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableAlwaysCheckpoints, "Always Checkpoints"));
     mCategories[0].components.push_back(new BoolMenuComponent(&set->getSettings()->mIsEnableDisableAutoSave, "Disable Autosave"));
@@ -438,7 +434,8 @@ void Menu::initCategories() {
         { "Kingdom Enter Refresh", "The Odyssey arrival cutscene of the kingdom plays again." },
         { "Seeds Refresh", "Seeds come back and pots are empty at each reload. The plant grows normally (with time or water)." },
         { "Seeds Growing", "A planted seed grows to the end at once and its moon appears. Works with or without Seeds Refresh." },
-        { "Cutscene Refresh", "Cutscenes and first talks of the characters (Toads, Peach, Captain Toad...) play again, with Cappy's texts (the checkpoint warp explanation, his texts at the start of the kingdoms) and the camera with the story text at the start of a kingdom." },
+        { "Cutscene Refresh", "Cutscenes and first talks of the characters (Toads, Peach, Captain Toad...) play again, with the camera with the story text at the start of a kingdom." },
+        { "Text Refresh", "Cappy's texts (at the start of the kingdoms, the checkpoint flags explanation...) come back at each reload. Off: they never show." },
         { "Always Manual Cutscene", "Cutscenes never skip by themselves: you choose when to skip them." },
         { "Always Checkpoints", "You can always warp to the flags from the map, even where the game normally forbids it." },
         { "Disable Autosave", "The game no longer saves by itself: your save file stays the same while you practice." },

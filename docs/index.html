@@ -12,11 +12,24 @@
 </head>
 <body>
 
+  <!-- Disclaimer, shown for 5 seconds when the page opens -->
+  <div id="disclaimer" class="disclaimer" role="dialog" aria-modal="true" aria-labelledby="disclaimer-title">
+    <div class="disclaimer-card">
+      <h2 id="disclaimer-title">Disclaimer</h2>
+      <p>This mod draws heavily on <strong>BTT-Studio</strong> and <strong>Practice Mod 1.3</strong>.</p>
+      <p>It was made with AI, but I truly respect the work of the developers behind those projects.</p>
+      <p>If you feel like insulting someone, feel free to head over here:
+        <a href="https://www.twitch.tv/lazyr11" target="_blank" rel="noopener">twitch.tv/lazyr11</a></p>
+      <div class="disclaimer-bar"><span></span></div>
+      <p class="disclaimer-count">Closing in <span id="disclaimer-seconds">5</span>s…</p>
+    </div>
+  </div>
+
   <!-- Navigation -->
   <header class="navbar">
     <a href="#" class="brand">
       <div class="brand-icon">B</div>
-      <div class="brand-title">BTT Studio <span class="brand-badge">v1.9.3 Update</span></div>
+      <div class="brand-title">BTT Studio <span class="brand-badge">v1.9.4 Update</span></div>
     </a>
     <nav class="nav-links">
       <a href="#options">Options</a>
@@ -38,7 +51,7 @@
     <div class="container">
       <div class="hero-pill">
         <span class="pulse-dot"></span>
-        Nouveau en v1.9.3 — Nouvelles manettes 3D pour l'Input Display « Motion »
+        Nouveau en v1.9.4 — Text Refresh, skip des cinématiques des Broodals, timer à la réparation de l'Odyssée
       </div>
       <h1>
         L'outil d'entraînement ultime pour <br>
@@ -50,7 +63,7 @@
       <div class="hero-cta">
         <a href="#installation" class="btn-primary">
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-          Installer le Mod v1.9.3
+          Installer le Mod v1.9.4
         </a>
         <a href="#options" class="btn-secondary">
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
@@ -107,7 +120,8 @@
             <li><strong>Kingdom Enter Refresh :</strong> Rejoue la cinématique d'arrivée de l'Odyssée dans le royaume.</li>
             <li><strong>Seeds Refresh :</strong> Les graines réapparaissent et les pots sont vides à chaque rechargement. La plante pousse normalement (avec le temps ou l'eau).</li>
             <li><strong>Seeds Growing :</strong> Une graine plantée pousse tout de suite jusqu'au bout et la lune apparaît. Peut s'utiliser avec ou sans Seeds Refresh.</li>
-            <li><strong>Cutscene Refresh :</strong> Les cinématiques et les premiers dialogues des personnages (Toads, Peach…) se rejouent, avec les textes de Cappy (explication des drapeaux, textes du début des royaumes) et la caméra d'introduction du scénario (l'ancien Warp Text Refresh).</li>
+            <li><strong>Cutscene Refresh :</strong> Les cinématiques et les premiers dialogues des personnages (Toads, Peach…) se rejouent, avec la caméra d'introduction du scénario.</li>
+            <li><strong>Text Refresh :</strong> Les textes de Cappy (début des royaumes, explication des drapeaux…) reviennent à chaque rechargement. Désactivé : ils ne s'affichent jamais. <span class="badge-tag-highlight">Nouveau</span></li>
             <li><strong>Always Manual Cutscene :</strong> Les cinématiques ne se passent jamais toutes seules : c'est toi qui décides quand les passer.</li>
             <li><strong>Always Checkpoints :</strong> Tu peux toujours te téléporter aux drapeaux depuis la carte, même là où le jeu l'interdit normalement.</li>
             <li><strong>Disable Autosave :</strong> Le jeu ne sauvegarde plus tout seul : ta sauvegarde ne bouge pas pendant l'entraînement.</li>
@@ -208,9 +222,9 @@
             <li><strong>Input Display :</strong> Affiche ou cache la manette sur l'écran de jeu.</li>
             <li><strong>2P Mode :</strong> Affiche également les commandes de la 2e manette (Cappy).</li>
             <li><strong>Style :</strong> Apparence de la manette : Classic, Periscope ou Minimal, avec le nom des boutons (A, B, X, Y, L, R…), et 109 styles repris d'Open Joystick Display (OJD) : manettes Switch, Xbox, PS4, GameCube, N64…</li>
-            <li><strong>Style « Motion » :</strong> La manette en 3D (manette Pro ou les deux Joy-Con) tourne comme la vraie (gyroscope), avec autour ZL/L, ZR/R, les sticks, la croix, A/B/X/Y et +/-. <span class="badge-tag-highlight">Nouveau</span></li>
-            <li><strong>Reset Motion :</strong> Touche qui fait de la position actuelle de la manette la vue de face (L + R par défaut, « Custom » pour une autre combinaison). <span class="badge-tag-highlight">Nouveau</span></li>
-            <li><strong>Motion Controller :</strong> La manette dont on voit les mouvements et sa forme : Auto (la manette utilisée), Pro Controller ou Joy-Con. <span class="badge-tag-highlight">Nouveau</span></li>
+            <li><strong>Style « Motion » :</strong> La manette en 3D (manette Pro ou les deux Joy-Con) tourne comme la vraie (gyroscope), avec autour ZL/L, ZR/R, les sticks, la croix, A/B/X/Y et +/-.</li>
+            <li><strong>Reset Motion :</strong> Touche qui fait de la position actuelle de la manette la vue de face (L + R par défaut, « Custom » pour une autre combinaison).</li>
+            <li><strong>Motion Controller :</strong> La manette dont on voit les mouvements et sa forme : Auto (la manette utilisée), Pro Controller ou Joy-Con.</li>
             <li><strong>Preset Pos :</strong> Place la manette au Centre ou dans les 4 coins d'un clic.</li>
             <li><strong>Position X & Y :</strong> Réglage fin par pas de 25px (ou glisser-déposer à la souris).</li>
             <li><strong>Reset Position :</strong> Replace automatiquement la manette au centre.</li>
@@ -490,8 +504,8 @@
           <div class="dl-icon">💻</div>
           <h3>Émulateur Yuzu</h3>
           <p>Package prêt à l'emploi pour le dossier <code>load/0100000000010000/</code>.</p>
-          <div class="dl-meta">Version 1.9.3 • 15.5 Mo</div>
-          <a href="downloads/BTT-Studio-1.0-Yuzu-v1.9.3.zip" class="btn-download" download>
+          <div class="dl-meta">Version 1.9.4 • 15.3 Mo</div>
+          <a href="downloads/BTT-Studio-1.0-Yuzu-v1.9.4.zip" class="btn-download" download>
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
             Télécharger (Yuzu)
           </a>
@@ -502,8 +516,8 @@
           <div class="dl-icon">🕹️</div>
           <h3>Simple Mod Manager</h3>
           <p>Prêt à glisser-déposer directement dans <code>SD:/mods/</code>.</p>
-          <div class="dl-meta">Version 1.9.3 • 15.5 Mo</div>
-          <a href="downloads/BTT-Studio-1.0-SimpleModManager-v1.9.3.zip" class="btn-download primary" download>
+          <div class="dl-meta">Version 1.9.4 • 15.3 Mo</div>
+          <a href="downloads/BTT-Studio-1.0-SimpleModManager-v1.9.4.zip" class="btn-download primary" download>
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
             Télécharger (SMM)
           </a>
@@ -514,8 +528,8 @@
           <div class="dl-icon">⚡</div>
           <h3>Atmosphere Direct</h3>
           <p>Arborescence <code>atmosphere/contents/</code> prête à copier à la racine SD.</p>
-          <div class="dl-meta">Version 1.9.3 • 15.5 Mo</div>
-          <a href="downloads/BTT-Studio-1.0-Atmosphere-v1.9.3.zip" class="btn-download" download>
+          <div class="dl-meta">Version 1.9.4 • 15.3 Mo</div>
+          <a href="downloads/BTT-Studio-1.0-Atmosphere-v1.9.4.zip" class="btn-download" download>
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
             Télécharger (Atmosphere)
           </a>
@@ -533,8 +547,8 @@
           <div class="dl-icon">💻</div>
           <h3>Émulateur Yuzu (1.3)</h3>
           <p>Dossier <code>Practice mod BTT 1.3</code> pour <code>load/0100000000010000/</code>.</p>
-          <div class="dl-meta">SMO 1.3.0 • Version 1.9.3 • 13.3 Mo</div>
-          <a href="downloads/BTT-Studio-1.3-Yuzu-v1.9.3.zip" class="btn-download" download>
+          <div class="dl-meta">SMO 1.3.0 • Version 1.9.4 • 13.1 Mo</div>
+          <a href="downloads/BTT-Studio-1.3-Yuzu-v1.9.4.zip" class="btn-download" download>
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
             Télécharger (Yuzu 1.3)
           </a>
@@ -544,8 +558,8 @@
           <div class="dl-icon">🕹️</div>
           <h3>Simple Mod Manager (1.3)</h3>
           <p>Prêt à glisser-déposer dans <code>SD:/mods/</code>.</p>
-          <div class="dl-meta">SMO 1.3.0 • Version 1.9.3 • 13.3 Mo</div>
-          <a href="downloads/BTT-Studio-1.3-SimpleModManager-v1.9.3.zip" class="btn-download primary" download>
+          <div class="dl-meta">SMO 1.3.0 • Version 1.9.4 • 13.1 Mo</div>
+          <a href="downloads/BTT-Studio-1.3-SimpleModManager-v1.9.4.zip" class="btn-download primary" download>
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
             Télécharger (SMM 1.3)
           </a>
@@ -555,8 +569,8 @@
           <div class="dl-icon">⚡</div>
           <h3>Atmosphere Direct (1.3)</h3>
           <p>Arborescence <code>atmosphere/contents/</code> prête à copier à la racine SD.</p>
-          <div class="dl-meta">SMO 1.3.0 • Version 1.9.3 • 13.3 Mo</div>
-          <a href="downloads/BTT-Studio-1.3-Atmosphere-v1.9.3.zip" class="btn-download" download>
+          <div class="dl-meta">SMO 1.3.0 • Version 1.9.4 • 13.1 Mo</div>
+          <a href="downloads/BTT-Studio-1.3-Atmosphere-v1.9.4.zip" class="btn-download" download>
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
             Télécharger (Atmosphere 1.3)
           </a>
