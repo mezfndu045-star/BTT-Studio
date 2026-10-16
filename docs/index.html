@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2cdc90e">
+  <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
@@ -90,199 +90,22 @@
     </div>
   </section>
 
-  <!-- Mod Options Section -->
+  <!-- Mod Options Section: interactive copy of the in-game menu (menu-data.js, menu.js) -->
   <section class="mod-options" id="options">
     <div class="container">
       <div class="section-title-wrap">
         <div class="hero-pill" style="margin-bottom: 1rem;">
           <span class="pulse-dot"></span>
-          Open the menu: L + D-Pad Left
+          Open the menu in game: L + D-Pad Left
         </div>
-        <h2>Every Menu Option</h2>
-        <p>Clearly organized into 8 simple categories so you can focus on practicing. The Options category has 2 columns: D-Pad Right goes to the right column, D-Pad Left comes back.</p>
+        <h2>Try the Menu</h2>
+        <p>The same menu as in the game. Click a category, then click an option to see what it does. You can also change the values like in the game.</p>
       </div>
 
-      <div class="options-grid">
-        <!-- 1. Options -->
-        <div class="option-card">
-          <div class="option-header">
-            <span class="option-icon">⚙️</span>
-            <h3>1. Options (Practice)</h3>
-          </div>
-          <p class="option-sub">Left column</p>
-          <ul class="option-list">
-            <li><strong>Moon Refresh:</strong> Moons you collect are not saved: you can grab them again as many times as you want.</li>
-            <li><strong>Gray Moon Refresh:</strong> Moons you already have look normal again (not gray), as if you never collected them.</li>
-            <li><strong>Purple Coins Refresh:</strong> Purple coins come back when you reload the scene.</li>
-            <li><strong>Doors Refresh:</strong> Doors you already opened close again when you reload the scene.</li>
-            <li><strong>Moon Shards Refresh:</strong> Moon shards come back when you reload the scene.</li>
-            <li><strong>Kingdom Enter Refresh:</strong> Plays the Odyssey arrival cutscene of the kingdom again.</li>
-            <li><strong>Seeds Refresh:</strong> Seeds come back and pots are empty at each reload. The plant grows normally (with time or water).</li>
-            <li><strong>Seeds Growing:</strong> A planted seed grows to the end at once and its moon appears. Works with or without Seeds Refresh.</li>
-            <li><strong>Cutscene Refresh:</strong> Cutscenes and first talks of the characters (Toads, Peach…) play again, with the scenario intro camera.</li>
-            <li><strong>Text Refresh:</strong> Cappy's texts (start of the kingdoms, checkpoint flag explanation…) come back at each reload. Off: they never show. <span class="badge-tag-highlight">New</span></li>
-            <li><strong>Always Manual Cutscene:</strong> Cutscenes never skip by themselves: you decide when to skip them.</li>
-            <li><strong>Always Checkpoints:</strong> You can always warp to the flags from the map, even where the game normally forbids it.</li>
-            <li><strong>Disable Autosave:</strong> The game no longer saves by itself: your save file stays the same while you practice.</li>
-            <li><strong>Disable TP Puppet:</strong> Turns off Mario's automatic placement during the moon get animation. The crash when loading a position during a moon get is fixed.</li>
-            <li><strong>Skip Cloud:</strong> In the Cloud Kingdom, Bowser is beaten as soon as his intro cutscene ends: the end-of-fight cutscene starts right away.</li>
-          </ul>
-          <p class="option-sub">Right column (→ on the controller to get there)</p>
-          <ul class="option-list">
-            <li><strong>All Checkpoints:</strong> Every flag of the kingdom is available on the map, even the ones you have not touched yet.</li>
-            <li><strong>Luigi Pixels:</strong> The 8-bit Luigi hidden in some bushes comes out every time (10% chance in the normal game). Reload the scene after turning it on. <span class="badge-tag-highlight">testing</span></li>
-            <li><strong>Spawn All Hint Art:</strong> Every hint painting appears, without having to unlock it.</li>
-            <li><strong>Pipe Maze Override:</strong> Forces the path of the pipe mazes.</li>
-            <li><strong>No Checkpoint Touch:</strong> Touching a flag does not activate it (handy so it does not mess up your attempts).</li>
-            <li><strong>No Damage:</strong> Mario no longer loses health.</li>
-            <li><strong>Disable Music:</strong> Turns the music off so you only hear the sound effects.</li>
-            <li><strong>Disable Moon Lock:</strong> The Odyssey can leave without the required number of moons.</li>
-            <li><strong>Skip Broodals:</strong> As soon as the intro of a Broodal fight ends (Hariet, Rango, Spewart, Madame Broode), the boss is beaten and its Multi Moon appears.</li>
-            <li><strong>Always Odyssey Power Up:</strong> Every time you go to the Odyssey, even with no moon, it powers up and offers to fly to the next kingdom of the story (Cascade → Sand → Lake → Wooded…). The destination kingdom plays its intro and scenario like the real game.</li>
-            <li><strong>Odyssey In All Kingdoms:</strong> The Odyssey is in every kingdom, even the ones your save has not reached yet, and you can warp to it from the map. <span class="badge-tag-highlight">testing</span></li>
-            <li><strong>Night Metro Multi Moon:</strong> At the start of Night Metro, Mechawiggler's Multi Moon falls next to Mario: grab it to go straight to Day Metro. <span class="badge-tag-highlight">testing</span></li>
-            <li><strong>Open Outfit Doors:</strong> The guards of the outfit rooms let Mario in, whatever he wears.</li>
-            <li><strong>Noclip:</strong> Mario flies and goes through everything. Left stick = move, ZR = up, ZL = down, X/Y = faster, A/B = slower. Turns off every time the game starts.</li>
-            <li><strong>Reload Scene at Pos:</strong> When you reload the scene, Mario comes back exactly where he was.</li>
-          </ul>
-        </div>
-
-        <!-- 2. Stages -->
-        <div class="option-card">
-          <div class="option-header">
-            <span class="option-icon">🗺️</span>
-            <h3>2. Stages (Teleport)</h3>
-          </div>
-          <ul class="option-list">
-            <li><strong>Kingdom:</strong> Pick one of the 17 kingdoms (Cap, Cascade, Sand, Wooded, Metro, Moon, etc.), with a picture of the kingdom next to the menu.</li>
-            <li><strong>Scenario:</strong> Pick the story scenario number (0 to 15).</li>
-            <li><strong>Warp to Stage:</strong> Warps right away to the selected stage. Also works from a new save (still in Cap or Cascade): a kingdom not unlocked yet gets unlocked like with the Odyssey, with the ones before it in the story, so you can pay moons and leave again.</li>
-            <li><strong>Cap Sub Area … Darker Side Sub Area:</strong> One row per kingdom with all its sub-areas (156 in total: secret rooms, shops, towers, Bound Bowl races, fights…). On a row, two pictures show up to the right of the menu: the entrance seen from outside (pipe, door…) and the inside of the area. A to choose, Left/Right to change the area, A to warp there, B to cancel. With Scenario at 0, you arrive in the last scenario of the kingdom (everything unlocked).</li>
-          </ul>
-        </div>
-
-        <!-- 3. Misc -->
-        <div class="option-card">
-          <div class="option-header">
-            <span class="option-icon">🎒</span>
-            <h3>3. Misc (Actions &amp; Tools)</h3>
-          </div>
-          <p class="option-sub">2 columns: D-Pad Right / Left to switch columns.</p>
-          <ul class="option-list">
-            <li><strong>Outfit Body:</strong> Pick one of the 42 official outfits.</li>
-            <li><strong>Outfit Cap:</strong> Pick one of the 42 caps/hats.</li>
-            <li><strong>Apply Outfit:</strong> Puts the outfit on right away.</li>
-            <li><strong>Save Position:</strong> Saves the current coordinates by hand.</li>
-            <li><strong>Load Position:</strong> Teleports Mario to the saved position (instant camera).</li>
-            <li><strong>Restart Scene:</strong> Restarts the scene from its normal starting point.</li>
-            <li><strong>Reload at Pos:</strong> Turns on reloading the scene at the current position.</li>
-            <li><strong>Restart at Pos:</strong> Button to reload at the position right now.</li>
-            <li><strong>Kill Mario:</strong> Kills Mario instantly.</li>
-            <li><strong>Damage Mario:</strong> Removes 1 health point to test hit reactions.</li>
-            <li><strong>Life Up Heart:</strong> Gives a Life-Up Heart (6 health points max).</li>
-            <li><strong>Heal Mario:</strong> Restores all of Mario's health.</li>
-            <li><strong>Add 1000 Coins:</strong> Adds 1000 gold coins to the counter.</li>
-            <li><strong>Remove 1000 Coins:</strong> Removes 1000 gold coins from the counter.</li>
-            <li><strong>Reload Scene:</strong> Forces a clean restart of the scene.</li>
-            <li><strong>Previous Scene:</strong> Goes back to the previous area or kingdom.</li>
-            <li><strong>Wiggler Pattern:</strong> Sets the attack pattern of the Mechawiggler boss (23 choices).</li>
-            <li><strong>Rename All Moons:</strong> Type a name with the on-screen keyboard: every moon takes that name (when you get it, on the map…).</li>
-            <li><strong>Reset All Moon Names:</strong> Moons get their real names back.</li>
-          </ul>
-        </div>
-
-        <!-- 4. Timer -->
-        <div class="option-card">
-          <div class="option-header">
-            <span class="option-icon">⏱️</span>
-            <h3>4. Timer</h3>
-          </div>
-          <ul class="option-list">
-            <li><strong>Segment Timer:</strong> Shows the timer on screen.</li>
-            <li><strong>Timer Split:</strong> Instead of stopping, the timer shows a split time.</li>
-            <li><strong>Splits / Split Count:</strong> Like LiveSplit: each End Type event goes to the next split (2 to 30 splits), the last one ends the run. Under the timer, each split shows the time it ended at.</li>
-            <li><strong>Edit Split / Split Type:</strong> Each split can have its own end type (End Type = the timer's).</li>
-            <li><strong>Start Type / End Type:</strong> What starts and stops the timer by itself. With <em>Odyssey Power Up</em> on both, it starts when the screen goes black after "The Odyssey has powered up" (or when it is repaired) and stops the next time (only that black screen counts, so the timer stops properly).</li>
-            <li><strong>Available types:</strong> Press Start (A on the mode select screen of a new game), Odyssey Power Up, Black Screen, White Screen, Capture, Damage (Mario gets hit), Escape Wire (captured Bowser leaves along the final electric wire of the Moon Kingdom escape), Moon Get, Shine Tick (the moon counter goes up), 2 Moons (Grab / Tick), Shine Grab. The Start Type always restarts the timer from zero.</li>
-            <li><strong>Start Count / End Count:</strong> How many times the event must happen to start / stop the timer (1 to 99). Example: End Type Moon Get + End Count 3 = the timer stops at the 3rd moon.</li>
-            <li><strong>Start / Stop / Reset Timer:</strong> Starts, stops or resets the timer by hand.</li>
-            <li><strong>Preset Pos / Position X / Position Y / Reset Position:</strong> Puts the timer wherever you want (you can also drag it with the mouse while the menu is open).</li>
-          </ul>
-        </div>
-
-        <!-- 5. Input Display -->
-        <div class="option-card">
-          <div class="option-header">
-            <span class="option-icon">🎮</span>
-            <h3>5. Input Display</h3>
-          </div>
-          <p class="option-sub">2 columns: 1st controller on the left, 2nd controller and colors on the right.</p>
-          <ul class="option-list">
-            <li><strong>Input Display:</strong> Shows or hides the controller on the game screen.</li>
-            <li><strong>2P Mode:</strong> Also shows the inputs of the 2nd controller (Cappy).</li>
-            <li><strong>Style:</strong> Look of the controller: Classic, Periscope or Minimal, with the button names (A, B, X, Y, L, R…), and 109 styles from Open Joystick Display (OJD): Switch, Xbox, PS4, GameCube, N64 controllers…</li>
-            <li><strong>"Motion" style:</strong> The 3D controller (Pro Controller or both Joy-Con) turns like the real one (gyroscope), with ZL/L, ZR/R, the sticks, the D-Pad, A/B/X/Y and +/- around it.</li>
-            <li><strong>Reset Motion:</strong> Key that makes the current orientation of the controller the front view (L + R by default, "Custom" for another combination).</li>
-            <li><strong>Motion Controller:</strong> The controller whose motion is shown, and its shape: Auto (the controller in use), Pro Controller or Joy-Con.</li>
-            <li><strong>Preset Pos:</strong> Puts the controller in the center or in one of the 4 corners in one click.</li>
-            <li><strong>Position X &amp; Y:</strong> Fine tuning in steps of 25px (or drag and drop with the mouse).</li>
-            <li><strong>Reset Position:</strong> Puts the controller back in the center.</li>
-            <li><strong>Size:</strong> Size of the controller, from 30 to 150% (also for the 2nd controller).</li>
-            <li><strong>P2 Preset Pos / P2 Position X / P2 Position Y / P2 Reset Position:</strong> The same settings for the 2nd controller (2P Mode), which can now also be moved with the controller.</li>
-            <li><strong>Button Color:</strong> Color of the buttons at rest (13 colors to choose from).</li>
-            <li><strong>Pressed Color:</strong> Color of the buttons while pressed.</li>
-            <li><strong>Stick Color:</strong> Color of the analog stick.</li>
-            <li><strong>Ring Color:</strong> Color of the analog stick outline.</li>
-            <li><strong>BG Color:</strong> Color and transparency of the controller background.</li>
-            <li><strong>Multicolor:</strong> Smooth animated RGB rainbow effect, available on every element.</li>
-          </ul>
-        </div>
-
-        <!-- 6. Keybinds -->
-        <div class="option-card">
-          <div class="option-header">
-            <span class="option-icon">🕹️</span>
-            <h3>6. Keybinds (Controller Shortcuts)</h3>
-          </div>
-          <p class="option-sub">Every keybind can use any combination of buttons: choose <em>Custom</em>, press A, then hold the buttons you want and release them. The default settings do not change.</p>
-          <ul class="option-list">
-            <li><strong>Open Menu:</strong> Key to show the menu (default: <em>L + D-Pad Left</em>, which always works). The sticks can no longer open the menu by accident.</li>
-            <li><strong>Save Position:</strong> Quick key to save the position (default: <em>D-Pad Left</em>).</li>
-            <li><strong>Load Position:</strong> Quick teleport key (default: <em>D-Pad Right</em>).</li>
-            <li><strong>Restart Scene:</strong> Quick key to restart the stage (default: <em>D-Pad Up</em>).</li>
-            <li><strong>Heal Mario:</strong> Shortcut to heal Mario instantly.</li>
-            <li><strong>Life Up:</strong> Shortcut to give the 6 HP heart.</li>
-            <li><strong>Prev Scene:</strong> Shortcut to go back to the previous scene.</li>
-            <li><strong>Warp Last CP:</strong> Shortcut to warp to the last flag you touched.</li>
-            <li><strong>Timer Start:</strong> Shortcut to start the timer with the controller.</li>
-            <li><strong>Timer End:</strong> Shortcut to stop the timer.</li>
-            <li><strong>Timer Reset:</strong> Shortcut to reset the timer.</li>
-          </ul>
-        </div>
-
-        <!-- 7. Info -->
-        <div class="option-card">
-          <div class="option-header">
-            <span class="option-icon">📊</span>
-            <h3>7. Info (Live Data)</h3>
-          </div>
-          <ul class="option-list">
-            <li><strong>Info Window:</strong> Turns the on-screen data panel on or off.</li>
-            <li><strong>Player Info:</strong> Shows the exact coordinates (X, Y, Z), the movement speed and what Cappy has captured.</li>
-          </ul>
-        </div>
-
-        <!-- 8. Settings -->
-        <div class="option-card">
-          <div class="option-header">
-            <span class="option-icon">🛠️</span>
-            <h3>8. Settings</h3>
-          </div>
-          <ul class="option-list">
-            <li><strong>Menu Corner:</strong> Picks the corner of the screen the vertical menu sticks to (Top Left, Top Right, Bottom Left, Bottom Right).</li>
-            <li><strong>Saved settings:</strong> Your options are saved about 1 second after each change (in <em>sd:/BTT-Studio/Settings.bin</em>), even if you close the emulator without quitting the game.</li>
-          </ul>
-        </div>
+      <div class="gm-screen" id="game-menu">
+        <nav class="gm-cats" aria-label="Menu categories"></nav>
+        <div class="gm-items" aria-live="polite"></div>
+        <aside class="gm-help" aria-live="polite"></aside>
       </div>
     </div>
   </section>
@@ -698,6 +521,8 @@
     </div>
   </footer>
 
-  <script src="app.js?v=2cdc90e"></script>
+  <script src="menu-data.js?v=1"></script>
+  <script src="menu.js?v=1"></script>
+  <script src="app.js?v=3"></script>
 </body>
 </html>
