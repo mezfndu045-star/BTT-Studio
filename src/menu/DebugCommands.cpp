@@ -24,18 +24,28 @@
 #include "logger.h"
 #include "menu/stage_warp.h"
 #include "menu/SubAreaImages.h"
+#include "menu/Menu.h"
+#include "al/Library/LiveActor/ActorPoseUtil.h"
 #include "imgui.h"
 #include "src/settings/SettingsMgr.h"
 
 namespace btt {
+bool enterStageDoorNear(const sead::Vector3f& pos, float maxDist);  // SettingsHooks.cpp
 
 namespace {
 
     constexpr const char* cCmdPath = "sd:/BTT-Studio/dbg_cmd.txt";
     int sPoll = 0;
+    // Test builds trace from the start (the command file is read only once the game runs)
+#if BTT_DEBUG_COMMANDS
+    bool sIsTrace = true;
+#else
     bool sIsTrace = false;
+#endif
     bool sIsCloudWin = false;
     char sDebugImage[96] = {};
+    int sPressButton = -1;
+    int sPressFrames = 0;
 
     void run(char* line, HakoniwaSequence* gameSeq) {
         char cmd[32] = {}, a[96] = {}, b[96] = {};
@@ -70,6 +80,27 @@ namespace {
         } else if (strcmp(cmd, "img") == 0) {
             snprintf(sDebugImage, sizeof(sDebugImage), "%s", count >= 2 && strcmp(a, "off") != 0 ? a : "");
             dbgLog("DBG: img %s", sDebugImage);
+        } else if (strcmp(cmd, "press") == 0) {
+            // press <NpadButton index: A 0, B 1, X 2, Y 3, L 6, R 7, ZL 8, ZR 9, + 10, - 11, left 12, up 13, right 14,
+            // down 15> <frames>
+            sPressButton = atoi(a);
+            sPressFrames = count >= 3 ? atoi(b) : 6;
+            dbgLog("DBG: press %d for %d frames", sPressButton, sPressFrames);
+        } else if (strcmp(cmd, "restart") == 0) {
+            // Restart Scene, as the keybind does
+            dbgLog("DBG: restart command");
+            Menu::instance()->restartScene();
+        } else if (strcmp(cmd, "tp") == 0) {
+            // tp <x> <y> <z>: Mario is put there
+            float x = 0, y = 0, z = 0;
+            al::LiveActor* player = (al::LiveActor*)helpers::tryGetPlayerActorHakoniwa(gameSeq);
+            if (player && sscanf(line, "%*s %f %f %f", &x, &y, &z) == 3) al::setTrans(player, sead::Vector3f(x, y, z));
+            dbgLog("DBG: tp %.0f %.0f %.0f", x, y, z);
+        } else if (strcmp(cmd, "door") == 0) {
+            // Mario goes through the door of the stage nearest to him
+            al::LiveActor* player = (al::LiveActor*)helpers::tryGetPlayerActorHakoniwa(gameSeq);
+            bool ok = player && enterStageDoorNear(al::getTrans(player), 5000.0f);
+            dbgLog("DBG: door command %d", ok);
         } else if (strcmp(cmd, "cloudwin") == 0) {
             sIsCloudWin = true;
             dbgLog("DBG: cloudwin requested");
@@ -91,6 +122,12 @@ bool takeDbgCloudWin() {
     bool r = sIsCloudWin;
     sIsCloudWin = false;
     return r;
+}
+
+int getDebugPressedButton() {
+    if (sPressFrames <= 0) return -1;
+    sPressFrames--;
+    return sPressButton;
 }
 
 bool isDebugTrace() {

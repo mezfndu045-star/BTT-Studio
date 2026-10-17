@@ -20,7 +20,11 @@ Le site officiel en ligne est disponible sur **GitHub Pages** ([https://mezfndu0
 
 ---
 
-## 🆕 Nouveautés v1.9.5
+## 🆕 Nouveautés v1.9.6
+
+- **Restart Scene** après une porte ou une boutique : on revient à cette porte (ex. les 4 portes de Shiveria, la boutique du Pays des Neiges) au lieu du début de la zone, avec l'animation de Mario qui sort en marchant et la caméra de l'entrée. Le jeu refait lui-même le passage (zone de téléportation, ou retour de la boutique).
+
+## Nouveautés v1.9.5
 
 - **Input Display** : un seul style par manette (Xbox One, Switch Pro, Joy-Con, HORI Pokkén, PS4 SCUF, PlayStation, Streamers, Fight Sticks), et trois nouveaux réglages :
   - **Controller Color** : la couleur du corps de la manette (ombres gardées, boutons inchangés) ;

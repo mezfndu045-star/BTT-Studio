@@ -2,7 +2,9 @@
 #include "hk/sail/detail.h"
 
 #include "al/Library/LiveActor/ActorPoseUtil.h"
+#include "al/Library/LiveActor/ActorMovementFunction.h"
 #include "al/Library/Nerve/Nerve.h"
+#include "al/Library/Nerve/NerveUtil.h"
 #include "al/Library/Nerve/NerveKeeper.h"
 #include "al/Library/Nerve/NerveStateCtrl.h"
 
@@ -18,6 +20,14 @@
 #include "imgui.h"
 #include "menu/CustomKeys.h"
 #include "menu/Menu.h"
+#include "menu/DebugCommands.h"
+namespace btt {
+const char* findStageStartNear(const sead::Vector3f& pos, float maxDist);  // SettingsHooks.cpp
+void traceStageStarts();
+const ChangeStageInfo* getLastGameChangeStage();
+void setModChangeStage(bool isMod);
+bool enterStageDoorNear(const sead::Vector3f& pos, float maxDist);
+} // namespace btt
 #include "menu/MotionDisplay.h"
 #include "src/settings/SettingsMgr.h"
 
@@ -170,14 +180,75 @@ bool Menu::isHotkey(const Hotkey& key) {
     }
 }
 
+void Menu::updateSceneSpawn() {
+    if (!stageScene || !stageScene->mIsAlive) {
+        mIsSceneGone = true;
+        return;
+    }
+    if (mIsSceneGone || stageScene != mSpawnScene) {
+        mIsSceneGone = false;
+        mSpawnScene = stageScene;
+        // A scene made by a reload keeps the spawn point of the one before
+        // the restarted scene: its walk out can be played (not the old scene, still playing for a few frames)
+        mIsWalkArmed = mIsWalkPending;
+        mWalkArmedFrames = 0;
+        if (!mIsKeepSpawn) {
+            mHasSpawn = false;
+            // a restart at a door of the same stage stays a spawn after a warp
+            if (!mIsWalkPending) mIsSpawnAfterWarp = false;
+        }
+        mIsKeepSpawn = false;
+    }
+    // A door that leads to another place of the same stage (the 4 doors of Shiveria): StageScene Warp nerve, then
+    // Play again; Mario appears there, so that place is the new spawn point
+    if (al::NerveKeeper* keeper = stageScene->getNerveKeeper()) {
+        const al::Nerve* cur = keeper->getCurrentNerve();
+        const char* name = cur ? typeid(*cur).name() : "";
+        static const al::Nerve* sPlay = (const al::Nerve*)hk::sail::lookupSymbolFromDb<>("StageSceneNrvPlay");
+        if (strstr(name, "StageSceneNrvWarpE")) {
+            // where Mario went into the door: his place when the warp starts (in the warp area)
+            if ((!mIsSpawnAfterWarp || mHasSpawn) && playerHak) mWarpDoorPos = al::getTrans(playerHak);
+            mHasSpawn = false;
+            mIsSpawnAfterWarp = true;
+        }
+        if (cur == sPlay && playerHak) mLastPlayPos = al::getTrans(playerHak);
+        // Restart Scene after a door of the same stage (a warp area, like the 4 doors of Shiveria): once the scene
+        // plays, Mario is put back where he went into it, and the game warps him again (fade, then he walks out with
+        // the camera of the other side)
+        if (mIsWalkArmed && cur == sPlay && playerHak && ++mWalkArmedFrames >= 5) {
+            mIsWalkPending = false;
+            mIsWalkArmed = false;
+            al::setTrans(playerHak, mWarpDoorPos);
+            al::setVelocityZero(playerHak);
+            if (isDebugTrace()) dbgLog("DBG: back in the warp at %.0f %.0f %.0f", mWarpDoorPos.x, mWarpDoorPos.y, mWarpDoorPos.z);
+        }
+    }
+    if (mHasSpawn || !playerHak || mReloadState != 0) return;
+    static const al::Nerve* sPlayNerve = (const al::Nerve*)hk::sail::lookupSymbolFromDb<>("StageSceneNrvPlay");
+    if (sPlayNerve && al::isNerve(stageScene, sPlayNerve)) {
+        mSpawnPos = al::getTrans(playerHak);
+        mSpawnQuat = al::getQuat(playerHak);
+        mHasSpawn = true;
+        if (isDebugTrace()) dbgLog("DBG: spawn %.0f %.0f %.0f", mSpawnPos.x, mSpawnPos.y, mSpawnPos.z);
+    }
+}
+
 void Menu::triggerReloadPos() {
+    if (!stageScene || !playerHak || !gameSeq) return;
+    triggerReloadAt(al::getTrans(playerHak), al::getQuat(playerHak), true);
+}
+
+void Menu::triggerReloadAt(const sead::Vector3f& pos, const sead::Quatf& quat, bool isShowPopup) {
     if (!stageScene || !playerHak || !gameSeq) return;
 
     GameDataFunction::recoveryPlayer(playerHak);
     GameDataFunction::recoveryPlayer(playerHak);
 
-    reloadStagePos = al::getTrans(playerHak);
-    reloadStageQuat = al::getQuat(playerHak);
+    reloadStagePos = pos;
+    reloadStageQuat = quat;
+    mIsReloadPopup = isShowPopup;
+    // the reloaded scene keeps the spawn point of this one (Mario is moved after it starts)
+    mIsKeepSpawn = true;
     mReloadOldScene = stageScene;
     mReloadState = 1;
     reloadPosTimer = 0;
@@ -231,13 +302,62 @@ void Menu::restartScene() {
         if (!(cmpNrv || cmpState || PlayerFunction::isPlayerDeadStatus(playerHak))) {
             GameDataFunction::recoveryPlayer(playerHak);
             GameDataFunction::recoveryPlayer(playerHak);
+            // No entrance to restart at (e.g. back in a stage from one of its rooms): the game would use the start of the
+            // stage, Mario is put back where he appeared instead
+            // copied: the game data are reset by Moon Refresh below
+            char startId[128] = {};
+            if (const char* s = ProgressSnapshot_getRestartStartId(GameDataHolderAccessor(stageScene).mData))
+                snprintf(startId, sizeof(startId), "%s", s);
+            bool isNoEntrance = !mIsReloadPos && !startId[0] && mHasSpawn && mSpawnScene == stageScene;
+            // the entrance (door) where Mario appeared: the game restarts there itself, with its walk out and camera
+            char entrance[64] = {};
+            const char* curStage = GameDataFunction::getCurrentStageName(GameDataHolderAccessor(stageScene));
+            const ChangeStageInfo* last = getLastGameChangeStage();
+            // Back from a room at the start of this scene: the same return again (the door makes Mario walk out)
+            // (same entrance, or none: a restart at the scene start; the last stage change came to this stage)
+            bool isReplay = !mIsReloadPos && !mIsSpawnAfterWarp && last && last->getStageName() && curStage &&
+                            strcmp(last->getStageName(), curStage) == 0 && last->getChangeStageId()[0] &&
+                            (!startId[0] || strcmp(startId, last->getChangeStageId()) == 0);
+            if (mIsSpawnAfterWarp) {
+                // After a door to another place of the same stage: restart in front of the door Mario went into, then he
+                // goes through it again (the game plays the way in, the warp and the walk out with its camera)
+                if (const char* near = findStageStartNear(mWarpDoorPos, 900.0f)) snprintf(entrance, sizeof(entrance), "%s", near);
+            } else if (isNoEntrance && !isReplay) {
+                if (const char* near = findStageStartNear(mSpawnPos, 900.0f)) snprintf(entrance, sizeof(entrance), "%s", near);
+            }
+            if (isDebugTrace()) {
+                dbgLog("DBG: restartScene cur %s start %s reloadPos %d noEntrance %d entrance %s replay %d (%s %s ret %d) afterWarp %d",
+                       curStage, startId[0] ? startId : "(null)", mIsReloadPos, isNoEntrance, entrance, isReplay,
+                       last ? last->getStageName() : "-", last ? last->getChangeStageId() : "-", last ? last->isReturn() : 0,
+                       mIsSpawnAfterWarp);
+                dbgLog("DBG: spawn was %.0f %.0f %.0f", mSpawnPos.x, mSpawnPos.y, mSpawnPos.z);
+                traceStageStarts();
+            }
             // Moon Refresh: moons and story steps of this try are undone (the stage restarts at the same entrance)
             restoreProgressSnapshot(GameDataHolderAccessor(stageScene).mData);
 
             if (mIsReloadPos) {
                 triggerReloadPos();
+            } else if (isReplay) {
+                setModChangeStage(true);
+                GameDataHolderAccessor(stageScene).mData->changeNextStage(last, 0);
+                setModChangeStage(false);
+            } else if (isNoEntrance && !entrance[0]) {
+                triggerReloadAt(mSpawnPos, mSpawnQuat, false);
             } else {
-                stageScene->kill();
+                // The stage changes to itself at its entrance, like going through a door (the scene ends by itself): the
+                // stage starts like an arrival, with Mario walking out of the door and the camera of the entrance.
+                // Killing the scene instead is a retry, without them.
+                GameDataHolderAccessor acc(stageScene);
+                char stage[128], start[128];
+                snprintf(stage, sizeof(stage), "%s", GameDataFunction::getCurrentStageName(acc));
+                snprintf(start, sizeof(start), "%s", entrance[0] ? entrance : startId);
+                ChangeStageInfo info(acc.mData, start, stage, false, -1, ChangeStageInfo::SubScenarioType::NO_SUB_SCENARIO);
+                setModChangeStage(true);
+                acc.mData->changeNextStage(&info, 0);
+                setModChangeStage(false);
+                // then through the door again, once the restarted scene plays (updateSceneSpawn)
+                mIsWalkPending = mIsSpawnAfterWarp && entrance[0];
             }
         }
     }

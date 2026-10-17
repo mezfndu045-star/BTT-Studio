@@ -149,6 +149,11 @@ HkTrampoline hakoniwaSequenceUpdate = [](TrampolineStatic(), HakoniwaSequence* h
 };
 
 void disableButtons(nn::hid::NpadBaseState* state, int count) {
+#if BTT_DEBUG_COMMANDS
+    // Test channel "press <button> <frames>": a button held by the mod
+    if (int button = btt::getDebugPressedButton(); button >= 0)
+        for (int i = 0; i < count; i++) state[i].mButtons.Set(button, true);
+#endif
     // Quick wheel: Mario keeps moving, only the right stick (points at a slot) is taken from the game
     if (!InputHelper::isReadInputs() && btt::Menu::instance() && !btt::Menu::instance()->mIsEnabledMenu &&
         btt::isQuickWheelOpen()) {

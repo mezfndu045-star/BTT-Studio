@@ -26,6 +26,7 @@
 #include "custom/game/Scene/StageSceneStateStageMap.h"
 #include "game/Item/CoinStackGroup.h"
 #include "game/MapObj/ChangeStageInfo.h"
+#include <new>
 #include "game/System/GameDataFile.h"
 #include "game/System/GameDataFunction.h"
 #include "game/System/GameDataHolder.h"
@@ -485,7 +486,27 @@ HkTrampoline repairHomeByCrashedBossHook = [](TrampolineStatic(), GameDataHolder
 // door or pipe gives none, then the placement takes the save's scenario even when the loading one is the visit's (a save
 // further in the story would show the enemies of a later scenario). A stage change to the kingdom being visited without
 // a scenario gets the visit's one, as an Odyssey travel does.
+// The last stage change asked by the game (a door, a pipe...), not by Restart Scene: Restart Scene replays it when the game
+// has no entrance to restart at (back from a room: the door of the room makes Mario walk out only for that return)
+alignas(8) static u8 sLastChangeInfo[sizeof(ChangeStageInfo)];
+static bool sIsLastChangeInfo = false;
+static bool sIsModChangeStage = false;
+namespace btt {
+const ChangeStageInfo* getLastGameChangeStage() {
+    return sIsLastChangeInfo ? reinterpret_cast<const ChangeStageInfo*>(sLastChangeInfo) : nullptr;
+}
+void setModChangeStage(bool isMod) {
+    sIsModChangeStage = isMod;
+}
+} // namespace btt
 HkTrampoline changeNextStageHook = [](TrampolineStatic(), GameDataHolder* holder, const ChangeStageInfo* info, s32 raceType) -> void {
+    if (info && !sIsModChangeStage && info->getStageName() && info->getStageName()[0]) {
+        if (!sIsLastChangeInfo) {
+            new (sLastChangeInfo) ChangeStageInfo(holder, "", "", false, -1, ChangeStageInfo::SubScenarioType::NO_SUB_SCENARIO);
+            sIsLastChangeInfo = true;
+        }
+        reinterpret_cast<ChangeStageInfo*>(sLastChangeInfo)->copy(*info);
+    }
     if (info && sVisitScenario > 0) {
         s32* scenario = reinterpret_cast<s32*>(reinterpret_cast<u8*>(const_cast<ChangeStageInfo*>(info)) + 0x1cc);
         const char* stage = info->getStageName();
@@ -548,7 +569,94 @@ static int sSeedGrowLevelNum = 0;
 namespace btt {
 void onTimerSceneInit();  // TimerHooks.cpp
 } // namespace btt
+// Entrances of the stage (PlayerStartInfo, made for every start point while the stage loads: its start id at +0x18
+// (string: the given name, else the ChangeStageId of the placement, else its placement id) and its place at +0xb0; doors
+// DoorWarp / DoorWarpStageChange give the place Mario walks out to). Restart Scene uses them when the game has no entrance to restart at (back from a room, or after a door that
+// leads to another place of the same stage): the stage restarts at the entrance where Mario appeared, with its walk out
+// and its camera.
+namespace {
+struct StageStart {
+    char id[64];
+    sead::Vector3f trans;
+};
+StageStart sStageStarts[96];
+int sStageStartNum = 0;
+int sStageStartCalls = 0;
+} // namespace
+HkTrampoline playerStartInfoCtorHook = [](TrampolineStatic(), void* info, const void* placement, void* camera,
+                                          const char* id, void* startObj, const sead::Vector3f* trans,
+                                          const void* quat) -> void {
+    orig(info, placement, camera, id, startObj, trans, quat);
+    sStageStartCalls++;
+    const char* startId = *reinterpret_cast<const char* const*>(static_cast<u8*>(info) + 0x18);
+    if (!startId || !startId[0] || sStageStartNum >= int(sizeof(sStageStarts) / sizeof(sStageStarts[0]))) return;
+    StageStart& s = sStageStarts[sStageStartNum++];
+    snprintf(s.id, sizeof(s.id), "%s", startId);
+    s.trans = *reinterpret_cast<const sead::Vector3f*>(static_cast<u8*>(info) + 0xb0);
+};
+// Doors that lead to another place of the same stage (DoorWarp) of the stage, to send Mario through one again after a
+// Restart Scene
+al::LiveActor* sStageDoors[64];
+int sStageDoorNum = 0;
+HkTrampoline doorWarpInitHook = [](TrampolineStatic(), al::LiveActor* door, const al::ActorInitInfo& info) -> void {
+    orig(door, info);
+    if (sStageDoorNum < int(sizeof(sStageDoors) / sizeof(sStageDoors[0]))) sStageDoors[sStageDoorNum++] = door;
+};
+extern "C" void* al_getHitSensor(const al::LiveActor* actor, const char* name) asm("_ZN2al12getHitSensorEPKNS_9LiveActorEPKc");
+extern "C" void rs_requestBindPlayer(const al::LiveActor* actor, void* sensor)
+    asm("_ZN2rs17requestBindPlayerEPKN2al9LiveActorEPNS0_9HitSensorE");
+namespace btt {
+// Mario goes through the door of the stage nearest to pos (within maxDist), like walking into it; false: none
+bool enterStageDoorNear(const sead::Vector3f& pos, float maxDist) {
+    al::LiveActor* best = nullptr;
+    float bestD = maxDist * maxDist;
+    for (int i = 0; i < sStageDoorNum; i++) {
+        sead::Vector3f d = al::getTrans(sStageDoors[i]) - pos;
+        float dd = d.x * d.x + d.y * d.y + d.z * d.z;
+        if (dd < bestD) {
+            bestD = dd;
+            best = sStageDoors[i];
+        }
+    }
+    if (isDebugTrace()) {
+        dbgLog("DBG: %d doors near %.0f %.0f %.0f", sStageDoorNum, pos.x, pos.y, pos.z);
+        for (int i = 0; i < sStageDoorNum && i < 20; i++) {
+            const sead::Vector3f& t = al::getTrans(sStageDoors[i]);
+            dbgLog("DBG:   door %.0f %.0f %.0f", t.x, t.y, t.z);
+        }
+    }
+    void* sensor = best ? al_getHitSensor(best, "Bind") : nullptr;
+    if (!sensor) return false;
+    rs_requestBindPlayer(best, sensor);
+    return true;
+}
+// Test traces: the entrances noted for this stage
+void traceStageStarts() {
+    dbgLog("DBG: %d entrances (%d calls)", sStageStartNum, sStageStartCalls);
+    for (int i = 0; i < sStageStartNum && i < 40; i++)
+        dbgLog("DBG:   %s %.0f %.0f %.0f", sStageStarts[i].id, sStageStarts[i].trans.x, sStageStarts[i].trans.y, sStageStarts[i].trans.z);
+}
+// The entrance of the stage nearest to pos (within maxDist), or null
+const char* findStageStartNear(const sead::Vector3f& pos, float maxDist) {
+    const char* best = nullptr;
+    float bestD = maxDist * maxDist;
+    for (int i = 0; i < sStageStartNum; i++) {
+        sead::Vector3f d = sStageStarts[i].trans - pos;
+        float dd = d.x * d.x + d.y * d.y + d.z * d.z;
+        if (dd < bestD) {
+            bestD = dd;
+            best = sStageStarts[i].id;
+        }
+    }
+    return best;
+}
+} // namespace btt
+
 HkTrampoline stageSceneInitHook = [](TrampolineStatic(), StageScene* stageScene, const al::SceneInitInfo& info) -> void {
+    // the entrances of the stage are registered again while it loads
+    sStageStartNum = 0;
+    sStageStartCalls = 0;
+    sStageDoorNum = 0;
     btt::onTimerSceneInit();
     sNightMetroShine = nullptr;
     sIsNightMetroShineAppeared = false;
@@ -1269,6 +1377,8 @@ inline void installPipeRandoHooks() {
 }
 
 void SettingsHooks::installSettingsHooks() {
+    playerStartInfoCtorHook.installAtSym<"PlayerStartInfoCtor">();
+    doorWarpInitHook.installAtSym<"DoorWarpInit">();
     hk::hook::writeBranchLinkAtSym<"ShineChipRefresh">(shardRefreshHook);
     hk::hook::writeBranchLinkAtSym<"ShineChipWatcherGotCheck1">(shardWatcherIsGotShine);
     hk::hook::writeBranchLinkAtSym<"ShineChipWatcherGotCheck2">(shardWatcherIsGotShine);

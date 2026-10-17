@@ -1193,6 +1193,8 @@ void Menu::handleAlways() {
         }
     }
 
+    updateSceneSpawn();
+
     if (mReloadState == 1) {
         // Step 1: Wait for old scene to die or become invalid
         if (!stageScene || stageScene != mReloadOldScene || !stageScene->mIsAlive) {
@@ -1200,8 +1202,9 @@ void Menu::handleAlways() {
             reloadPosTimer = 0;
         }
     } else if (mReloadState == 2) {
-        // Step 2: New scene has loaded, wait for player to initialize
-        if (stageScene && stageScene != mReloadOldScene && stageScene->mIsAlive && playerHak) {
+        // Step 2: New scene has loaded, wait for player to initialize (the old one ended in step 1: the new one may be at
+        // the same address)
+        if (stageScene && stageScene->mIsAlive && playerHak) {
             reloadPosTimer++;
             if (reloadPosTimer >= 10) {
                 playerHak->startDemoPuppetable();
@@ -1216,7 +1219,7 @@ void Menu::handleAlways() {
                 mReloadState = 0;
                 reloadPosTimer = -1;
                 mReloadOldScene = nullptr;
-                setPopupText("Reloaded at Position");
+                if (mIsReloadPopup) setPopupText("Reloaded at Position");
             }
         }
     } else if (reloadPosTimer != -1 && playerHak) {
@@ -1231,7 +1234,7 @@ void Menu::handleAlways() {
             al::requestCancelCameraInterpole(playerHak, 0);
             menuTimer = 0;
             reloadPosTimer = -1;
-            setPopupText("Reloaded at Position");
+            if (mIsReloadPopup) setPopupText("Reloaded at Position");
         }
     }
 }

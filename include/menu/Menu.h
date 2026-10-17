@@ -69,6 +69,12 @@ public:
     void showMenu();
     void restartScene();
     void triggerReloadPos();
+    // Reloads the scene and puts Mario at pos (Reload at Pos, or the spawn point of the scene)
+    void triggerReloadAt(const sead::Vector3f& pos, const sead::Quatf& quat, bool isShowPopup);
+    // Where Mario appeared in the current scene (first frame of play). Restart Scene puts him back there when the game
+    // has no entrance to restart at (e.g. back in Shiveria from the Snow Kingdom shop: the game would use the start of
+    // the town). Kept for the scene that a reload made.
+    void updateSceneSpawn();
     void applyOutfit();
 
 public:
@@ -146,6 +152,21 @@ private:
     int tpIndex = 0;
     sead::Vector3f reloadStagePos = { 0, 0, 0 };
     sead::Quatf reloadStageQuat = { 0, 0, 0, 0 };
+    bool mIsReloadPopup = true;
+    StageScene* mSpawnScene = nullptr;
+    bool mHasSpawn = false;
+    bool mIsKeepSpawn = false;
+    // The scene ended (a new scene can be at the same address as the old one: a reload of the same stage)
+    bool mIsSceneGone = false;
+    // The spawn point is a door of the same stage (after its warp); the walk out to play after a restart there
+    bool mIsSpawnAfterWarp = false;
+    bool mIsWalkPending = false;
+    bool mIsWalkArmed = false;
+    int mWalkArmedFrames = 0;
+    sead::Vector3f mLastPlayPos = { 0, 0, 0 };
+    sead::Vector3f mWarpDoorPos = { 0, 0, 0 };
+    sead::Vector3f mSpawnPos = { 0, 0, 0 };
+    sead::Quatf mSpawnQuat = { 0, 0, 0, 0 };
 
     char popupText[0x40] = "Input Disabled";
 

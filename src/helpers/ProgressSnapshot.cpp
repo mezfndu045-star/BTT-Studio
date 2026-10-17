@@ -10,6 +10,7 @@
 #include "game/System/GameDataHolderAccessor.h"
 
 #include "src/settings/SettingsMgr.h"
+#include "menu/DebugCommands.h"
 
 // sead::RamWriteStream (Modes: 0 = binary) and the GameDataFile save code (same in 1.0 and 1.3)
 extern "C" void ProgressSnapshot_RamWriteStream_ctor(void* self, void* buffer, u32 size, int mode)
@@ -153,6 +154,10 @@ bool takeOrRestoreTravelSnapshot(GameDataHolder* holder, const char* stageName) 
     return false;
 }
 
+const char* ProgressSnapshot_getRestartStartId(GameDataHolder* holder) {
+    return holder ? ProgressSnapshot_getNextPlayerStartId(holder) : nullptr;
+}
+
 bool restoreProgressSnapshot(GameDataHolder* holder) {
     if (!holder || !sIsSnapshotValid || !isMoonRefresh()) return false;
     void* file = fileOf(holder);
@@ -164,6 +169,7 @@ bool restoreProgressSnapshot(GameDataHolder* holder) {
     if (!curStage || !curStage[0]) return false;
     snprintf(stage, sizeof(stage), "%s", curStage);
     snprintf(startId, sizeof(startId), "%s", curStart && curStart[0] ? curStart : "start");
+    if (isDebugTrace()) dbgLog("DBG: restore snapshot stage %s start %s", stage, startId);
 
     saveCheckpointTrans(file);
     ProgressSnapshot_initializeData(file);
